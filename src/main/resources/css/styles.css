@@ -1,0 +1,285 @@
+#loginCard {
+    /*-fx-background-image: url('/images/noise-texture.png');*/
+    -fx-background-size: cover;
+    -fx-background-color: linear-gradient(to bottom right, #26a69a, #4fc3f7);
+}
+
+#loginButton:hover {
+    -fx-background-color: #00897b;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
+
+#signupButton:hover {
+    -fx-text-fill: #f4511e;
+    -fx-underline: true;
+}
+
+/* styles.css */
+
+/* General styles */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar styles */
+#sidebar {
+    -fx-background-color: #00897b; /* Teal 700 */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-border-radius: 8;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-margin-bottom: 8;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+#usersButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20 12 40;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-content-display: LEFT;
+    -fx-graphic: url('/images/users-icon.png'); /* Ensure icon exists */
+    -fx-graphic-text-gap: 10;
+}
+
+#usersButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 2, 2);
+}
+
+.sidebar-button-logout {
+    -fx-background-color: #d32f2f; /* Red Accent */
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-border-radius: 8;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+}
+
+.sidebar-button-logout:hover {
+    -fx-background-color: #b71c1c;
+}
+
+/* Dashboard Header */
+/* Defined directly in FXML for more specific styling */
+
+/* Welcome Card */
+#welcomeCard {
+    -fx-background-color: #e0f2f1; /* Teal 50 */
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2);
+    -fx-padding: 25;
+    -fx-alignment: CENTER_LEFT;
+}
+
+#welcomeLabel {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00897b; /* Teal 700 */
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+#totalUsersLabel, #activeUsersLabel {
+    -fx-font-size: 16px;
+    -fx-text-fill: #00897b; /* Teal 700 */
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* User Management Section */
+/* Defined directly in FXML for the container */
+
+/* Action Button */
+.action-button {
+    -fx-background-color: #43a047; /* Green Accent */
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #2e7d32;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 1, 1);
+}
+/* Modern Table Styles */
+.data-table .column-header-background {
+    -fx-background-color: #00897b; /* Teal 700 */
+    -fx-background-radius: 8 8 0 0;
+    -fx-padding: 10;
+}
+
+.data-table .column-header {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.data-table .table-column {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table .table-cell {
+    -fx-padding: 7; /* Decreased padding */
+    -fx-font-size: 14px;
+    -fx-text-fill: #424242;
+}
+
+.data-table .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #f5f5f5;
+}
+
+.data-table .table-row-cell:hover {
+    -fx-background-color: #b2dfdb; /* Teal 100 */
+    -fx-cursor: hand;
+}
+
+.data-table .table-row-cell:filled:selected {
+    -fx-background-color: #80cbc4; /* Teal 200 */
+    -fx-text-fill: #ffffff;
+}
+
+/* Specific column header styles (optional, for more control) */
+.data-column-header {
+    -fx-alignment: CENTER; /* Example: Center align all headers */
+}
+
+.data-column-id {
+    -fx-alignment: CENTER; /* Example: Center align ID column content */
+}
+
+.data-column-name {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-column-email {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-column-roles {
+    -fx-alignment: CENTER;
+}
+
+.data-column-blocked {
+    -fx-alignment: CENTER;
+}
+
+.data-column-actions {
+    -fx-alignment: CENTER;
+}
+
+.data-table .scroll-bar:vertical, .data-table .scroll-bar:horizontal {
+    -fx-pref-width: 10;
+    -fx-pref-height: 10;
+}
+
+.data-table .scroll-bar:vertical .increment-button,
+.data-table .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.data-table .scroll-bar:vertical .increment-arrow,
+.data-table .scroll-bar:vertical .decrement-arrow {
+    -fx-fill: #757575;
+}
+
+.data-table .scroll-bar:horizontal .increment-button,
+.data-table .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.data-table .scroll-bar:horizontal .increment-arrow,
+.data-table .scroll-bar:horizontal .decrement-arrow {
+    -fx-fill: #757575;
+}
+
+.data-table .scroll-bar .thumb {
+    -fx-background-color: #bdbdbd;
+    -fx-background-radius: 5;
+}
+
+.data-table .scroll-bar .thumb:hover {
+    -fx-background-color: #9e9e9e;
+}
+
+/* Pagination Styles */
+.pagination-control {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 1, 1);
+    -fx-padding: 5;
+}
+
+.pagination-control .pagination .toggle-button {
+    -fx-background-color: #bdbdbd;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+    -fx-cursor: hand;
+}
+
+.pagination-control .pagination .toggle-button:hover {
+    -fx-background-color: #4db6ac;
+}
+
+.pagination-control .pagination .toggle-button:selected {
+    -fx-background-color: #00897b;
+}
+
+.pagination-control .pagination .left-arrow-button,
+.pagination-control .pagination .right-arrow-button {
+    -fx-background-color: #00897b;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+}
+
+.pagination-control .pagination .left-arrow-button:hover,
+.pagination-control .pagination .right-arrow-button:hover {
+    -fx-background-color: #00695c;
+}
+
+.pagination-control .pagination .left-arrow,
+.pagination-control .pagination .right-arrow {
+    -fx-fill: #ffffff;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}

@@ -39,6 +39,6 @@
     </children>
     <!-- Inline CSS for animations and texture -->
     <stylesheets>
-<!--        <URL value="@/css/login.css" />-->
+        <URL value="@/css/styles.css" />
     </stylesheets>
 </AnchorPane>

@@ -30,7 +30,25 @@ public class UserService implements Service<User> {
         ps.setString(7, "[\"ROLE_USER\"]");
         ps.executeUpdate();
     }
-
+    public void ajouterAdmin(User user) throws SQLException {
+        String sql = "INSERT INTO user (last_name, first_name, email, password, is_verified, is_blocked, roles) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setString(1, user.getLastName());
+        ps.setString(2, user.getFirstName());
+        ps.setString(3, user.getEmail());
+        ps.setString(4, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        ps.setBoolean(5, false);
+        ps.setBoolean(6, false);
+        ps.setString(7, "[\"ROLE_ADMIN\"]");
+        ps.executeUpdate();
+    }
+    public void ajouterNouveau(User user) throws SQLException {
+        // Check if the email already exists
+        if (findByEmail(user.getEmail()) != null) {
+            throw new SQLException("Email address already exists.");
+        }
+        ajouter(user); // Use the original ajouter method to perform the insertion
+    }
     @Override
     public void modifier(User user) throws SQLException {
         String sql = "update user set last_name = ?, first_name = ?, email = ?, password = ?, is_verified = ?, is_blocked = ?, profile_img = ?, roles = ? where id = ?";
@@ -100,5 +118,16 @@ public class UserService implements Service<User> {
         }
 
         throw new SQLException("User not found");
+    }
+
+    public void updateBlockStatus(int userId, boolean isBlocked) throws SQLException {
+        String sql = "UPDATE user SET is_blocked = ? WHERE id = ?";
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setBoolean(1, isBlocked);
+        ps.setInt(2, userId);
+        int rowsUpdated = ps.executeUpdate();
+        if (rowsUpdated == 0) {
+            throw new SQLException("No user found with id: " + userId);
+        }
     }
 }

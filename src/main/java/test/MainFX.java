@@ -17,11 +17,11 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SignUp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SignUp.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 1080, 720);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Sign Up to your application");
+            primaryStage.setTitle("CulureSpace");
             primaryStage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
