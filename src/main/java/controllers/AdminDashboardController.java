@@ -12,15 +12,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import services.UserService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import java.util.Optional;
 
 public class AdminDashboardController {
     @FXML
@@ -77,25 +79,24 @@ public class AdminDashboardController {
     @FXML
     private TableColumn<User, Void> actionsColumn;
 
-    @FXML
-    private Pagination pagination;
+    // Removed Pagination
+    // @FXML
+    // private Pagination pagination;
 
     private UserService userService = new UserService();
     private ObservableList<User> allUsers = FXCollections.observableArrayList();
-    private final int usersPerPage = 10;
+    // Removed usersPerPage
+    // private final int usersPerPage = 10;
 
     @FXML
     public void initialize() {
-        // Configure TableView columns
-        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
-        firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
-        lastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
-        emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-        isBlockedColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().isBlocked()));
-        rolesColumn.setCellValueFactory(cellData -> {
-            List<String> roles = cellData.getValue().getRoles();
-            return new SimpleStringProperty(roles != null ? String.join(", ", roles) : "");
-        });
+        // Configure TableView columns using PropertyValueFactory
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        isBlockedColumn.setCellValueFactory(new PropertyValueFactory<>("blocked"));
+        rolesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join(", ", cellData.getValue().getRoles())));
 
         // Configure Actions column with Edit, Delete, and Block/Unblock buttons
         actionsColumn.setCellFactory(column -> new TableCell<>() {
@@ -140,42 +141,17 @@ public class AdminDashboardController {
         loadAllUsers();
         loadStats();
 
-        // Initialize pagination
-        pagination.setPageFactory(this::createPage);
-
-        // Add a listener to handle page changes
-        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
-            createPage(newIndex.intValue());
-        });
-
-        // Explicitly load the first page
-        createPage(0);
+        // Directly set all users to the table
+        usersTable.setItems(allUsers);
     }
 
     void loadAllUsers() {
         try {
             List<User> users = userService.recuperer();
             allUsers.setAll(users);
-            updatePagination();
         } catch (SQLException e) {
             showError("Failed to load users: " + e.getMessage());
         }
-    }
-
-    private void updatePagination() {
-        int pageCount = (int) Math.ceil((double) allUsers.size() / usersPerPage);
-        pagination.setPageCount(Math.max(1, pageCount));
-    }
-
-    private Parent createPage(int pageIndex) {
-        int fromIndex = pageIndex * usersPerPage;
-        int toIndex = Math.min(fromIndex + usersPerPage, allUsers.size());
-        ObservableList<User> usersOnPage = FXCollections.observableArrayList();
-        if (fromIndex < allUsers.size()) {
-            usersOnPage.addAll(allUsers.subList(fromIndex, toIndex));
-        }
-        usersTable.setItems(usersOnPage);
-        return null;
     }
 
     private void loadStats() {
@@ -217,29 +193,53 @@ public class AdminDashboardController {
 
     @FXML
     public void editUser(User user) {
-        showAlert(Alert.AlertType.INFORMATION, "Edit User", "Update user functionality to be implemented for user: " + user.getEmail());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditUserForm.fxml"));
+            Parent root = loader.load();
+
+            EditUserFormController editUserController = loader.getController();
+            editUserController.setAdminDashboardController(this); // Pass the current controller
+            editUserController.initData(user); // Pass the user data to the edit form
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit User");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            showError("Failed to load edit user form: " + e.getMessage());
+        }
     }
 
-    @FXML
-    public void deleteUser(User user) {
-        showAlert(Alert.AlertType.INFORMATION, "Delete User", "Delete user functionality to be implemented for user: " + user.getEmail());
-    }
+    public void deleteUser(User userToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete User");
+        alert.setHeaderText("Confirm Delete");
+        alert.setContentText("Are you sure you want to delete user: " + userToDelete.getFirstName() + " " + userToDelete.getLastName() + "?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                userService.supprimer(userToDelete);
+                loadAllUsers(); // Refresh the table
+                showAlert(Alert.AlertType.INFORMATION, "Success", "User deleted successfully.");
+            } catch (SQLException e) {
+                showError("Could not delete user: " + e.getMessage());
+            }
+        }
+    }
 
     @FXML
     public void toggleBlockUser(User user) {
-        // Implement the logic to block/unblock the user
         boolean newBlockedStatus = !user.isBlocked();
         try {
             userService.updateBlockStatus(user.getId(), newBlockedStatus);
-            // Update the user in the observable list to reflect the change immediately
             allUsers.stream()
                     .filter(u -> u.getId() == user.getId())
                     .findFirst()
                     .ifPresent(u -> u.setBlocked(newBlockedStatus));
-            // Refresh the table to update the button text
             usersTable.refresh();
-            loadStats(); // Update the active users count
+            loadStats();
             showAlert(Alert.AlertType.INFORMATION, "User Block Status", "User " + user.getEmail() + " is now " + (newBlockedStatus ? "blocked" : "unblocked") + ".");
         } catch (SQLException e) {
             showError("Failed to update block status: " + e.getMessage());
@@ -268,6 +268,4 @@ public class AdminDashboardController {
     private void showError(String message) {
         showAlert(Alert.AlertType.ERROR, "Erreur", message);
     }
-
-
 }

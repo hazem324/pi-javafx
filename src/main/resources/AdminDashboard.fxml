@@ -91,7 +91,6 @@
                             </TableView>
                         </content>
                     </ScrollPane>
-                    <Pagination fx:id="pagination" maxWidth="Infinity" styleClass="pagination-control" />
                 </children>
             </VBox>
         </VBox>

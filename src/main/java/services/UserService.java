@@ -51,17 +51,13 @@ public class UserService implements Service<User> {
     }
     @Override
     public void modifier(User user) throws SQLException {
-        String sql = "update user set last_name = ?, first_name = ?, email = ?, password = ?, is_verified = ?, is_blocked = ?, profile_img = ?, roles = ? where id = ?";
+        String sql = "update user set last_name = ?, first_name = ?, email = ?, is_blocked = ? where id = ?";
         PreparedStatement ps = cnx.prepareStatement(sql);
         ps.setString(1, user.getLastName());
         ps.setString(2, user.getFirstName());
         ps.setString(3, user.getEmail());
-        ps.setString(4, user.getPassword());
-        ps.setBoolean(5, user.isVerified());
-        ps.setBoolean(6, user.isBlocked());
-        ps.setString(7, user.getProfileIMG());
-        ps.setString(8, String.join(",", user.getRoles()));
-        ps.setInt(9, user.getId());
+        ps.setBoolean(4, user.isBlocked());
+        ps.setInt(5, user.getId());
         ps.executeUpdate();
     }
 

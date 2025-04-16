@@ -5,20 +5,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import services.UserService;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class AddUserFormController {
+public class EditUserFormController {
 
-    private static final Logger LOGGER = Logger.getLogger(AddUserFormController.class.getName());
+    @FXML
+    private TextField idField;
 
     @FXML
     private TextField firstNameField;
@@ -30,51 +29,75 @@ public class AddUserFormController {
     private TextField emailField;
 
     @FXML
-    private TextField passwordField;
+    private CheckBox blockedCheckBox;
 
     private UserService userService = new UserService();
     private AdminDashboardController adminDashboardController;
+    private User currentUser;
 
     public void setAdminDashboardController(AdminDashboardController controller) {
         this.adminDashboardController = controller;
     }
 
+    public void initData(User user) {
+        currentUser = user;
+        idField.setText(String.valueOf(user.getId()));
+        firstNameField.setText(user.getFirstName());
+        lastNameField.setText(user.getLastName());
+        emailField.setText(user.getEmail());
+        blockedCheckBox.setSelected(user.isBlocked());
+    }
+
     @FXML
     public void handleSave(ActionEvent event) {
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No user data to save.");
+            return;
+        }
+
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
         String email = emailField.getText().trim();
-        String password = passwordField.getText();
+        boolean isBlocked = blockedCheckBox.isSelected();
 
-        if (!isValidInput(firstName, lastName, email, password)) {
-            return; // Don't proceed if input is invalid
+        if (!isValidInput(firstName, lastName, email)) {
+            return;
         }
 
-        User newUser = new User( firstName, lastName, email, password, false, false, null, Arrays.asList("ROLE_STUDENT"));
+        // Create a new User object with the updated information
+        User updatedUser = new User(currentUser.getId(), firstName, lastName, email, currentUser.getPassword(), currentUser.isVerified(), isBlocked, currentUser.getProfileIMG(), currentUser.getRoles());
 
         try {
-            // Check if email already exists
-            try {
-                userService.findByEmail(email);
-                showAlert(Alert.AlertType.ERROR, "Error", "Email address already exists.");
-                return;
-            } catch (SQLException e) {
-                // Email not found, proceed with adding the new user
-                userService.ajouter(newUser);
-                showAlert(Alert.AlertType.INFORMATION, "Success", "New user added successfully.");
-                if (adminDashboardController != null) {
-                    adminDashboardController.loadAllUsers();
+            // Check if the email has been changed and if the new email already exists
+            if (!email.equals(currentUser.getEmail())) {
+                try {
+                    User existingUserWithEmail = userService.findByEmail(email);
+                    if (existingUserWithEmail != null) {
+                        showAlert(Alert.AlertType.ERROR, "Error", "This email address is already in use.");
+                        return;
+                    }
+                } catch (SQLException e) {
+                    // If findByEmail throws an exception, it might indicate a database issue or user not found,
+                    // but in the context of checking for an existing email, we should handle the non-existence
+                    // by not triggering the error.
                 }
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.close();
             }
+
+            userService.modifier(updatedUser);
+            showAlert(Alert.AlertType.INFORMATION, "Success", "User information updated successfully.");
+            // Refresh the user table in the Admin Dashboard
+            if (adminDashboardController != null) {
+                adminDashboardController.loadAllUsers();
+            }
+            // Close the modal
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "SQLException during add user:", e);
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not add user: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not update user: " + e.getMessage());
         }
     }
 
-    private boolean isValidInput(String firstName, String lastName, String email, String password) {
+    private boolean isValidInput(String firstName, String lastName, String email) {
         if (firstName.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error", "First name cannot be empty.");
             return false;
@@ -99,14 +122,6 @@ public class AddUserFormController {
             showAlert(Alert.AlertType.ERROR, "Error", "Please enter a valid email address.");
             return false;
         }
-        if (password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Password cannot be empty.");
-            return false;
-        }
-        if (password.length() < 6) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Password must be at least 6 characters long.");
-            return false;
-        }
         return true;
     }
 
@@ -126,6 +141,7 @@ public class AddUserFormController {
 
     @FXML
     public void handleCancel(ActionEvent event) {
+        // Close the modal
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }

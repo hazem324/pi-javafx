@@ -55,21 +55,30 @@ public class LoginController {
         UserService us = new UserService();
         try {
             User user = us.findByEmail(email);
-            if (BCrypt.checkpw(password, user.getPassword())) {
-                showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, " + user.getFirstName() + "!");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
-                try {
-                    Parent root = loader.load();
-                    emailTF.getScene().setRoot(root);
-                } catch (IOException e) {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load dashboard: " + e.getMessage());
+            if (user != null) {
+                if (user.isBlocked()) {
+                    showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
+                    return; // Prevent login for blocked users
+                }
+                if (BCrypt.checkpw(password, user.getPassword())) {
+                    showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, " + user.getFirstName() + "!");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                    try {
+                        Parent root = loader.load();
+                        emailTF.getScene().setRoot(root);
+                    } catch (IOException e) {
+                        showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load dashboard: " + e.getMessage());
+                    }
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid password. Please try again!");
+                    passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
                 }
             } else {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid password. Please try again!");
-                passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+                showAlert(Alert.AlertType.ERROR, "Erreur", "User not found. Please check your email or sign up!");
+                emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
             }
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "User not found or database error: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Database error during login: " + e.getMessage());
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         }
     }
