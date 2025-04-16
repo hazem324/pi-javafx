@@ -27,7 +27,7 @@ public class UserService implements Service<User> {
         ps.setString(4, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         ps.setBoolean(5, false);
         ps.setBoolean(6, false);
-        ps.setString(7, "[\"ROLE_USER\"]");
+        ps.setString(7, "[\"ROLE_STUDENT\"]");
         ps.executeUpdate();
     }
     public void ajouterAdmin(User user) throws SQLException {

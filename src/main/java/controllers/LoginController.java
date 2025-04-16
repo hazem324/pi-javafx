@@ -61,13 +61,17 @@ public class LoginController {
                     return; // Prevent login for blocked users
                 }
                 if (BCrypt.checkpw(password, user.getPassword())) {
-                    showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, " + user.getFirstName() + "!");
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
-                    try {
-                        Parent root = loader.load();
-                        emailTF.getScene().setRoot(root);
-                    } catch (IOException e) {
-                        showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load dashboard: " + e.getMessage());
+                    if (user.getRoles().contains("ROLE_ADMIN")) {
+                        showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, Administrator " + user.getFirstName() + "!");
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                        try {
+                            Parent root = loader.load();
+                            emailTF.getScene().setRoot(root);
+                        } catch (IOException e) {
+                            showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load dashboard: " + e.getMessage());
+                        }
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access the admin dashboard.");
                     }
                 } else {
                     showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid password. Please try again!");

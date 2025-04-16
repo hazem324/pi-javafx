@@ -126,7 +126,7 @@ public class SignupController {
     }
 
     private boolean isValidName(String name) {
-        String nameRegex = "^[A-Za-z]+$";
+        String nameRegex = "^[A-Za-z\\s]+$";
         Pattern pattern = Pattern.compile(nameRegex);
         return pattern.matcher(name).matches();
     }
