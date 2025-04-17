@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.mindrot.jbcrypt.BCrypt;
 import services.UserService;
+import utils.SessionManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -55,6 +56,7 @@ public class LoginController {
         UserService us = new UserService();
         try {
             User user = us.findByEmail(email);
+            User admin = us.findByEmail(email);
             if (user != null) {
                 if (user.isBlocked()) {
                     showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
@@ -63,6 +65,8 @@ public class LoginController {
                 if (BCrypt.checkpw(password, user.getPassword())) {
                     if (user.getRoles().contains("ROLE_ADMIN")) {
                         showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, Administrator " + user.getFirstName() + "!");
+                        SessionManager.setCurrentUser(admin); // Store the admin in the session
+
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
                         try {
                             Parent root = loader.load();

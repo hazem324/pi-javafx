@@ -13,12 +13,26 @@
 <?import javafx.scene.text.Font?>
 
 <?import java.net.URL?>
-<BorderPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #f4f6f8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0"  fx:id="dashboardPane" style="-fx-background-color: #f4f6f8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
     <left>
         <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
             </padding>
+<!--            <children>-->
+<!--                <Label text="Admin Panel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">-->
+<!--                    <font>-->
+<!--                        <Font name="Segoe UI Bold" size="26.0" />-->
+<!--                    </font>-->
+<!--                    <padding>-->
+<!--                        <Insets bottom="20.0" />-->
+<!--                    </padding>-->
+<!--                </Label>-->
+<!--                <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />-->
+<!--                <VBox VBox.vgrow="ALWAYS" />-->
+<!--                <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />-->
+<!--            </children>-->
+
             <children>
                 <Label text="Admin Panel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">
                     <font>
@@ -28,7 +42,10 @@
                         <Insets bottom="20.0" />
                     </padding>
                 </Label>
+<!--                <Button fx:id="homeButton" onAction="#showHome" text="Home" styleClass="sidebar-button" prefWidth="Infinity" />-->
+
                 <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="profileButton" onAction="#showProfile" text="Profile" styleClass="sidebar-button" prefWidth="Infinity" />
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>

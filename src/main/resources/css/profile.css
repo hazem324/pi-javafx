@@ -1,0 +1,131 @@
+/* profile.css */
+
+.profile-container {
+    -fx-background-color: #f4f6f8;
+    -fx-padding: 30px;
+}
+
+.profile-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 12, 0, 6, 6);
+    -fx-padding: 40px;
+}
+
+.profile-title-container {
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 30px 0;
+}
+
+.profile-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #37474f; /* Darker grey */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.profile-image-container {
+    -fx-alignment: center;
+    -fx-margin-bottom: 30px;
+}
+
+.profile-image-stackpane {
+    -fx-border-radius: 50%;
+    -fx-border-color: #00acc1; /* Teal accent */
+    -fx-border-width: 5px;
+}
+
+.profile-image-circle {
+    -fx-fill: #e0e0e0;
+    -fx-radius: 70px;
+}
+
+/*.profile-image-view {*/
+/*    -fx-fit-width: 140px;*/
+/*    -fx-fit-height: 140px;*/
+/*    -fx-clip: circle(70px, 70px, 70px);*/
+/*}*/
+
+.profile-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #546e7a; /* Blue grey */
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans", sans-serif;
+    -fx-min-width: 150px; /* Ensure consistent label width */
+}
+
+.profile-text-field {
+    -fx-background-color: #f9fbe7; /* Light yellow-green */
+    -fx-border-color: #aed581; /* Light green */
+    -fx-border-radius: 8px;
+    -fx-padding: 10 15px;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Roboto", sans-serif;
+}
+
+.profile-text-field:focused {
+    -fx-border-color: #4caf50; /* Green accent */
+    -fx-effect: dropshadow(gaussian, #81c784, 6, 0, 0, 0);
+}
+
+.password-field {
+    -fx-background-color: #ffe0b2; /* Light orange */
+    -fx-border-color: #ffb74d; /* Orange */
+    -fx-border-radius: 8px;
+    -fx-padding: 10 15px;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Roboto", sans-serif;
+}
+
+.password-field:focused {
+    -fx-border-color: #f57c00; /* Dark orange */
+    -fx-effect: dropshadow(gaussian, #ffb300, 6, 0, 0, 0);
+}
+
+.action-button-container {
+    -fx-alignment: center-right;
+    -fx-spacing: 20px;
+    -fx-padding: 30px 0 0 0;
+}
+
+.save-button {
+    /*-fx-background-color: linear-gradient(to right, #4db6ac, #00acc1); !* Teal gradient *!*/
+    -fx-background-color: green;
+
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 12 25px;
+    -fx-background-radius: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 3, 3);
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+}
+
+.save-button:hover {
+    -fx-background-color: linear-gradient(to right, #26a69a, #00838f);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 4, 4);
+}
+
+.cancel-button {
+    -fx-background-color: #e57373; /* Red accent */
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 12 25px;
+    -fx-background-radius: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 3, 3);
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #f44336;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 4, 4);
+}

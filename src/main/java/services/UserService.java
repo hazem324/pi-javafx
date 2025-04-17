@@ -126,4 +126,43 @@ public class UserService implements Service<User> {
             throw new SQLException("No user found with id: " + userId);
         }
     }
+
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String lastName = rs.getString("last_name");
+        String firstName = rs.getString("first_name");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        boolean isVerified = rs.getBoolean("is_verified");
+        boolean isBlocked = rs.getBoolean("is_blocked");
+        String profileIMG = rs.getString("profile_img");
+        String rolesStr = rs.getString("roles");
+        List<String> roles = rolesStr != null ? Arrays.asList(rolesStr.replace("[\"", "").replace("\"]", "").split(",")) : new ArrayList<>();
+        return new User(id, firstName, lastName, email, password, isVerified, isBlocked, profileIMG, roles);
+    }
+
+    public void updateAdminProfile(User admin) throws SQLException {
+        String sql = "UPDATE user SET last_name = ?, first_name = ?, email = ?, password = ? WHERE id = ?";
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setString(1, admin.getLastName());
+        ps.setString(2, admin.getFirstName());
+        ps.setString(3, admin.getEmail());
+        ps.setString(4, admin.getPassword()); // Assuming password might be updated
+        ps.setInt(5, admin.getId());
+        ps.executeUpdate();
+    }
+    public User getAdminDetails(int adminId) throws SQLException {
+        String sql = "SELECT * FROM user WHERE id = ?";
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setInt(1, adminId);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return mapResultSetToUser(rs);
+        }
+        return null;
+    }
 }
+
+
+
