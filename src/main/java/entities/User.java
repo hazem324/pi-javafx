@@ -38,6 +38,10 @@ public class User {
         this.roles = roles != null ? new ArrayList<>(roles) : new ArrayList<>();
     }
 
+    public User() {
+
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -126,7 +126,26 @@ public class UserService implements Service<User> {
             throw new SQLException("No user found with id: " + userId);
         }
     }
-
+    public User getUserById(int id) throws SQLException {
+        String query = "SELECT id, first_name, last_name, email, roles, is_blocked FROM users WHERE id = ?";
+        try (PreparedStatement stmt = cnx.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setEmail(rs.getString("email"));
+                // Assuming roles is stored as a comma-separated string in the database
+                String roles = rs.getString("roles");
+                user.setRoles(roles != null ? Arrays.asList(roles.split(",")) : new ArrayList<>());
+                user.setBlocked(rs.getBoolean("is_blocked"));
+                return user;
+            }
+            return null; // User not found
+        }
+    }
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String lastName = rs.getString("last_name");

@@ -40,16 +40,16 @@
                     <VBox spacing="30.0"
                           maxWidth="600"
                           style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 5, 5);">
-                        <HBox alignment="CENTER">
-                            <StackPane>
-                                <Circle radius="60.0" fill="#e0e0e0" />
-                                <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                                    <clip>
-                                        <Circle radius="60.0" centerX="60.0" centerY="60.0" />
-                                    </clip>
-                                </ImageView>
-                            </StackPane>
-                        </HBox>
+<!--                        <HBox alignment="CENTER">-->
+<!--                            <StackPane>-->
+<!--                                <Circle radius="60.0" fill="#e0e0e0" />-->
+<!--                                <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                                    <clip>-->
+<!--                                        <Circle radius="60.0" centerX="60.0" centerY="60.0" />-->
+<!--                                    </clip>-->
+<!--                                </ImageView>-->
+<!--                            </StackPane>-->
+<!--                        </HBox>-->
 
                         <!-- First Name -->
                         <HBox alignment="CENTER_LEFT" spacing="20.0">

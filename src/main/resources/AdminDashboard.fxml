@@ -13,26 +13,12 @@
 <?import javafx.scene.text.Font?>
 
 <?import java.net.URL?>
-<BorderPane prefHeight="1080.0" prefWidth="1920.0"  fx:id="dashboardPane" style="-fx-background-color: #f4f6f8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0"  fx:id="dashboardPane" style="-fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
     <left>
-        <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);">
+        <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);" spacing="10.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
             </padding>
-<!--            <children>-->
-<!--                <Label text="Admin Panel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">-->
-<!--                    <font>-->
-<!--                        <Font name="Segoe UI Bold" size="26.0" />-->
-<!--                    </font>-->
-<!--                    <padding>-->
-<!--                        <Insets bottom="20.0" />-->
-<!--                    </padding>-->
-<!--                </Label>-->
-<!--                <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />-->
-<!--                <VBox VBox.vgrow="ALWAYS" />-->
-<!--                <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />-->
-<!--            </children>-->
-
             <children>
                 <Label text="Admin Panel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">
                     <font>
@@ -42,7 +28,6 @@
                         <Insets bottom="20.0" />
                     </padding>
                 </Label>
-<!--                <Button fx:id="homeButton" onAction="#showHome" text="Home" styleClass="sidebar-button" prefWidth="Infinity" />-->
 
                 <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="profileButton" onAction="#showProfile" text="Profile" styleClass="sidebar-button" prefWidth="Infinity" />
@@ -53,8 +38,8 @@
     </left>
 
     <center>
-        <VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" style="-fx-padding: 30;">
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2); -fx-padding: 20;">
+        <VBox prefHeight="1080.0" prefWidth="1640.0" spacing="25.0" style="-fx-padding: 30;">
+            <HBox fx:id="headerBox" alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2); -fx-padding: 20;">
                 <children>
                     <Label text="Dashboard" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;">
                         <font>
@@ -66,7 +51,7 @@
                 </children>
             </HBox>
 
-            <HBox fx:id="welcomeCard" style="-fx-background-color: #e0f2f1; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2); -fx-padding: 25;" alignment="CENTER_LEFT">
+            <HBox fx:id="welcomeCard" alignment="CENTER_LEFT">
                 <children>
                     <VBox spacing="8">
                         <Label fx:id="welcomeLabel" text="Welcome, Admin!" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #00897b; -fx-font-family: 'Segoe UI', sans-serif;">
@@ -82,7 +67,7 @@
                 </children>
             </HBox>
 
-            <VBox fx:id="usersPane" spacing="15.0" style="-fx-background-color: #ffffff; -fx-background-radius: 12; -fx-padding: 20;">
+            <VBox fx:id="usersPane" spacing="15.0">
                 <children>
                     <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 15;">
                         <Label text="User Management" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;">
@@ -93,20 +78,17 @@
                         <HBox HBox.hgrow="ALWAYS" />
                         <Button fx:id="addUserButton" onAction="#addUser" text="Add User" styleClass="action-button" />
                     </HBox>
-
-
-                            <TableView fx:id="usersTable" prefHeight="750.0" prefWidth="1600.0" styleClass="data-table">
-                                <columns>
-                                    <TableColumn fx:id="idColumn" prefWidth="100.0" text="ID" />
-                                    <TableColumn fx:id="firstNameColumn" prefWidth="150.0" text="First Name" />
-                                    <TableColumn fx:id="lastNameColumn" prefWidth="150.0" text="Last Name" />
-                                    <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Email" />
-                                    <TableColumn fx:id="rolesColumn" prefWidth="150.0" text="Roles" />
-                                    <TableColumn fx:id="isBlockedColumn" prefWidth="100.0" text="Blocked" />
-                                    <TableColumn fx:id="actionsColumn" prefWidth="250.0" text="Actions" />
-                                </columns>
-                            </TableView>
-<!--                    <Pagination fx:id="pagination" prefWidth="Infinity"  />-->
+                    <TableView fx:id="usersTable" prefHeight="750.0" prefWidth="1600.0" styleClass="data-table">
+                        <columns>
+                            <TableColumn fx:id="idColumn" prefWidth="100.0" text="ID" />
+                            <TableColumn fx:id="firstNameColumn" prefWidth="150.0" text="First Name" />
+                            <TableColumn fx:id="lastNameColumn" prefWidth="150.0" text="Last Name" />
+                            <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Email" />
+                            <TableColumn fx:id="rolesColumn" prefWidth="150.0" text="Roles" />
+                            <TableColumn fx:id="isBlockedColumn" prefWidth="100.0" text="Blocked" />
+                            <TableColumn fx:id="actionsColumn" prefWidth="250.0" text="Actions" />
+                        </columns>
+                    </TableView>
                 </children>
             </VBox>
         </VBox>
