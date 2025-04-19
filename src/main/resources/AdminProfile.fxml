@@ -15,7 +15,6 @@
 <?import java.net.URL?>
 
 <BorderPane fx:id="profileRoot"
-            prefHeight="1080.0" prefWidth="1920.0"
             xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.AdminProfileController"
@@ -34,66 +33,43 @@
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
-            <content>
-                <StackPane alignment="CENTER" style="-fx-padding: 30;">
-                    <VBox spacing="30.0"
-                          maxWidth="600"
-                          style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 5, 5);">
-<!--                        <HBox alignment="CENTER">-->
-<!--                            <StackPane>-->
-<!--                                <Circle radius="60.0" fill="#e0e0e0" />-->
-<!--                                <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                                    <clip>-->
-<!--                                        <Circle radius="60.0" centerX="60.0" centerY="60.0" />-->
-<!--                                    </clip>-->
-<!--                                </ImageView>-->
-<!--                            </StackPane>-->
-<!--                        </HBox>-->
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-padding: 0;"> <content>
+            <StackPane alignment="CENTER" style="-fx-padding: 30;"> <VBox spacing="30.0"
+                                                                          maxWidth="600"
+                                                                          style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 5, 5);">
 
-                        <!-- First Name -->
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                            <Label text="First Name:" styleClass="profile-label" />
-                            <TextField fx:id="firstNameField" styleClass="profile-text-field" prefWidth="300.0" />
-                        </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label text="First Name:" styleClass="profile-label" minWidth="120"/> <TextField fx:id="firstNameField" styleClass="profile-text-field" HBox.hgrow="ALWAYS" /> </HBox>
 
-                        <!-- Last Name -->
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                            <Label text="Last Name:" styleClass="profile-label" />
-                            <TextField fx:id="lastNameField" styleClass="profile-text-field" prefWidth="300.0" />
-                        </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label text="Last Name:" styleClass="profile-label" minWidth="120"/>
+                    <TextField fx:id="lastNameField" styleClass="profile-text-field" HBox.hgrow="ALWAYS" />
+                </HBox>
 
-                        <!-- Email -->
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                            <Label text="Email:" styleClass="profile-label" />
-                            <TextField fx:id="emailField" styleClass="profile-text-field" prefWidth="300.0" />
-                        </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label text="Email:" styleClass="profile-label" minWidth="120"/>
+                    <TextField fx:id="emailField" styleClass="profile-text-field" HBox.hgrow="ALWAYS" />
+                </HBox>
 
-                        <!-- Password -->
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                            <Label text="Password:" styleClass="profile-label" />
-                            <TextField fx:id="passwordField" styleClass="profile-text-field" prefWidth="300.0" promptText="••••••••" />
-                        </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label text="Password:" styleClass="profile-label" minWidth="120"/>
+                    <TextField fx:id="passwordField" styleClass="profile-text-field" promptText="Leave blank to keep current" HBox.hgrow="ALWAYS" />
+                </HBox>
 
-                        <!-- Confirm Password -->
-                        <HBox alignment="CENTER_LEFT" spacing="20.0">
-                            <Label text="Confirm Password:" styleClass="profile-label" />
-                            <TextField fx:id="confirmPasswordField" styleClass="profile-text-field" prefWidth="300.0" promptText="••••••••" />
-                        </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label text="Confirm Password:" styleClass="profile-label" minWidth="120"/>
+                    <TextField fx:id="confirmPasswordField" styleClass="profile-text-field" promptText="Confirm new password" HBox.hgrow="ALWAYS" />
+                </HBox>
 
-                        <!-- Action Buttons -->
-                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
-                            <Button onAction="#saveProfileChanges" text="Save Changes" styleClass="save-button" />
-                            <Button fx:id="cancelButton" onAction="#cancelChanges" text="Back to Users" styleClass="cancel-button" />
-                        </HBox>
-                    </VBox>
-                </StackPane>
-            </content>
+                <HBox alignment="CENTER_RIGHT" spacing="20.0" style="-fx-padding: 20 0 0 0;"> <Button onAction="#saveProfileChanges" text="Save Changes" styleClass="save-button" />
+                    <Button fx:id="cancelButton" onAction="#cancelChanges" text="Back" styleClass="cancel-button" /> </HBox>
+            </VBox>
+            </StackPane>
+        </content>
         </ScrollPane>
     </center>
 
     <stylesheets>
         <URL value="@/css/styles.css" />
-        <URL value="@/css/profile.css" />
-    </stylesheets>
+        <URL value="@/css/profile.css" /> </stylesheets>
 </BorderPane>

@@ -32,11 +32,11 @@ public class EditUserFormController {
     private CheckBox blockedCheckBox;
 
     private UserService userService = new UserService();
-    private AdminDashboardController adminDashboardController;
+    private UserManagementController userManagementController;
     private User currentUser;
 
-    public void setAdminDashboardController(AdminDashboardController controller) {
-        this.adminDashboardController = controller;
+    public void setUserManagementController(UserManagementController controller) {
+        this.userManagementController = controller;
     }
 
     public void initData(User user) {
@@ -86,8 +86,8 @@ public class EditUserFormController {
             userService.modifier(updatedUser);
             showAlert(Alert.AlertType.INFORMATION, "Success", "User information updated successfully.");
             // Refresh the user table in the Admin Dashboard
-            if (adminDashboardController != null) {
-                adminDashboardController.loadAllUsers();
+            if (userManagementController != null) {
+                userManagementController.loadAllUsers();
             }
             // Close the modal
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

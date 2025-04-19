@@ -1,0 +1,88 @@
+/* Pagination container styles */
+#paginationContainer {
+    -fx-alignment: center; /* Center the buttons within the container */
+    -fx-padding: 10px;
+    -fx-spacing: 8; /* Space between buttons */
+}
+
+/* Base style for all pagination buttons */
+#paginationContainer > .button {
+    -fx-background-color: #e0e0e0; /* Light gray background */
+    -fx-text-fill: #424242; /* Dark gray text */
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', sans-serif;  /* Explicitly set font-family */
+    -fx-padding: 8 12;
+    -fx-border-radius: 5; /* Slightly rounded corners */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 1, 1); /* Subtle shadow */
+    -fx-transition: all 0.2s ease-in-out; /* Smooth transition */
+}
+
+/* Style for page number buttons */
+#paginationContainer > .button.page-button {
+    -fx-min-width: 30; /* Give page number buttons a minimum width */
+    -fx-alignment: center; /* center the number */
+    -fx-font-family: 'Arial', sans-serif; /* Changed font-family for page numbers */
+}
+
+/* Hover effect for all buttons */
+#paginationContainer > .button:hover {
+    -fx-background-color: #b0bec5; /* Light gray hover */
+    -fx-text-fill: #212121; /* Darker text on hover */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 2, 2); /* Slightly stronger shadow */
+}
+
+/* Style for the currently selected page number */
+#paginationContainer > .button.page-button.selected {
+    -fx-background-color: #00897b; /* Teal for selected page */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 2, 2);
+    -fx-font-family: 'Arial', sans-serif; /* Keep Arial for selected page */
+}
+
+/* Style for "First", "Previous", "Next", "Last" buttons */
+#paginationContainer > .button.nav-button {
+    -fx-background-color: #4db6ac; /* A lighter teal */
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI', sans-serif; /* Keep Segoe UI for nav buttons*/
+}
+
+#paginationContainer > .button.nav-button:hover {
+    -fx-background-color: #00897b; /* A darker teal */
+}
+
+/* Disable style for "Previous" and "First" when on the first page */
+#paginationContainer > .button.nav-button.first-disabled,
+#paginationContainer > .button.nav-button.prev-disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+    -fx-effect: null;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+#paginationContainer > .button.nav-button.first-disabled:hover,
+#paginationContainer > .button.nav-button.prev-disabled:hover{
+    -fx-background-color: #4db6ac; /* keep the original color */
+    -fx-text-fill: white;
+}
+
+/* Disable style for "Next" and "Last" when on the last page */
+#paginationContainer > .button.nav-button.last-disabled,
+#paginationContainer > .button.nav-button.next-disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+    -fx-effect: null;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+#paginationContainer > .button.nav-button.last-disabled:hover,
+#paginationContainer > .button.nav-button.next-disabled:hover {
+    -fx-background-color: #4db6ac; /* keep the original color */
+    -fx-text-fill: white;
+}

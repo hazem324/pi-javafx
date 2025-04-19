@@ -168,15 +168,21 @@ public class AdminProfileController {
 
     private void loadAdminDashboard(ActionEvent event) {
         try {
+            // Instead of creating a new scene and stage, get the current stage and scene.
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            Scene scene = source.getScene();
+
+            // Load the new content (AdminDashboard.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+
+            //Set the new content on the existing scene.
+            scene.setRoot(root);
+
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load dashboard.");
-            e.printStackTrace(); // Print the stack trace for debugging
+            e.printStackTrace(); // Important for debugging
         }
     }
 

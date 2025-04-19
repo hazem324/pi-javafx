@@ -33,11 +33,12 @@ public class AddUserFormController {
     private TextField passwordField;
 
     private UserService userService = new UserService();
-    private AdminDashboardController adminDashboardController;
+    private UserManagementController userManagementController;
 
-    public void setAdminDashboardController(AdminDashboardController controller) {
-        this.adminDashboardController = controller;
+    public void setUserManagementController(UserManagementController controller) {
+        this.userManagementController = controller;
     }
+
 
     @FXML
     public void handleSave(ActionEvent event) {
@@ -50,7 +51,7 @@ public class AddUserFormController {
             return; // Don't proceed if input is invalid
         }
 
-        User newUser = new User( firstName, lastName, email, password, false, false, null, Arrays.asList("ROLE_STUDENT"));
+        User newUser = new User(firstName, lastName, email, password, false, false, null, Arrays.asList("ROLE_STUDENT"));
 
         try {
             // Check if email already exists
@@ -62,8 +63,8 @@ public class AddUserFormController {
                 // Email not found, proceed with adding the new user
                 userService.ajouter(newUser);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "New user added successfully.");
-                if (adminDashboardController != null) {
-                    adminDashboardController.loadAllUsers();
+                if (userManagementController != null) {
+                    userManagementController.loadAllUsers(); // Call with page 0
                 }
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
