@@ -198,7 +198,7 @@ public class CartController {
     @FXML
     private void onContinuer() {
         try {
-            MainFX.chargerVue("/ProductList.fxml");
+            MainFX.chargerVue("/Product_List.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,11 +6,12 @@ import java.sql.SQLException;
 
 public class MyDatabase {
 
-    private final String URL="jdbc:mysql://localhost:3306/culturespacedbbb";
+    private final String URL="jdbc:mysql://localhost:3306/culturespacedb";
     private final String USER="root";
     private final String PASSWORD="";
     private Connection cnx;
     private static MyDatabase instance;
+
 
     private MyDatabase() {
         try {
