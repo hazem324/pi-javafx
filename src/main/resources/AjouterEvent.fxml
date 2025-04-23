@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEventController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+    <Label text="Add Event" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10">
+        <Label text="Title:" />
+        <TextField fx:id="titleField" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Description:" />
+        <TextArea fx:id="descriptionField" prefWidth="200" prefHeight="100" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Start Date:" />
+        <DatePicker fx:id="startDatePicker" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="End Date:" />
+        <DatePicker fx:id="endDatePicker" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Location:" />
+        <TextField fx:id="locationField" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Status:" />
+        <ChoiceBox fx:id="statusChoiceBox" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Category:" />
+        <ChoiceBox fx:id="categoryChoiceBox" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Number of Places:" />
+        <TextField fx:id="placesField" prefWidth="200" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Image:" />
+        <TextField fx:id="imageField" prefWidth="150" editable="false" />
+        <Button fx:id="chooseImageButton" text="Choose Image" onAction="#chooseImage" />
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="addEventButton" text="Add Event" onAction="#addEvent" />
+        <Button fx:id="backButton" text="Back" onAction="#back" />
+    </HBox>
+</VBox>

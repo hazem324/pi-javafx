@@ -1,0 +1,111 @@
+/* Style for the ScrollPane (center section) */
+.scroll-pane {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+/* Style for the VBox containing posts */
+#postsVBox {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+/* Style for the post input section */
+.post-input {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Style for the TextArea in post input */
+.post-input .text-area {
+    -fx-background-color: white;
+    -fx-border-color: #d1d1d1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+/* Style for individual posts */
+.post {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Style for post title */
+.post-title {
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+/* Style for post content */
+.post .label {
+    -fx-text-fill: #555;
+    -fx-font-size: 14px;
+}
+
+/* Style for comment input section */
+.comment-input {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Style for comment TextField */
+.comment-input .text-field {
+    -fx-background-color: white;
+    -fx-border-color: #d1d1d1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+}
+
+/* Style for comments display area */
+.comments {
+    -fx-padding: 10;
+}
+
+/* Style for individual comments */
+.comments .label {
+    -fx-text-fill: #666;
+    -fx-font-size: 13px;
+    -fx-padding: 5;
+    -fx-background-color: #f9f9f9;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Style for submit buttons (post and comment) */
+.submit-btn {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+/* Hover effect for submit buttons */
+.submit-btn:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Pressed effect for submit buttons */
+.submit-btn:pressed {
+    -fx-background-color: #004085;
+}

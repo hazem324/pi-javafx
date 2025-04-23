@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<!-- Admin Dashboard FXML with StackPane for view switching -->
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.AdminDashboardController" styleClass="admin-dashboard"
+      prefHeight="1080.0" prefWidth="1920.0">
+
+    <HBox spacing="0" VBox.vgrow="ALWAYS">
+        <!-- Sidebar -->
+        <VBox fx:id="sidebar" prefWidth="280.0" styleClass="side-nav">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+            </padding>
+            <children>
+                <Text styleClass="nav-title" text="Admin Dashboard" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">
+                    <font>
+                        <Font name="Segoe UI Bold" size="26.0" />
+                    </font>
+<!--                    <padding>-->
+<!--                        <Insets bottom="20.0" />-->
+<!--                    </padding>-->
+                </Text>
+                <Button fx:id="btnCommunities" text="Communities" onAction="#showCommunities" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnAddCommunity" text="Add Community" onAction="#showAddCommunity" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnPosts" text="Posts" onAction="#showPosts" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnEventCategory" text="Event Categories" onAction="#handleEventCategory" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnAddEventCategory" text="Add Event Category" onAction="#handleAddEventCategory" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnEvent" text="Events" onAction="#handleEvents" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="btnAddEvent" text="Add Event" onAction="#handleAddEvent" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="usersButton" text="Users" onAction="#showUsers" styleClass="nav-button" prefWidth="Infinity" />
+                <Button fx:id="profileButton" text="Profile" onAction="#showProfile" styleClass="nav-button" prefWidth="Infinity" />
+                <VBox VBox.vgrow="ALWAYS" />
+                <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout" styleClass="nav-button-logout" prefWidth="Infinity" />
+            </children>
+        </VBox>
+
+        <!-- Content Area -->
+        <StackPane fx:id="contentArea" HBox.hgrow="ALWAYS" styleClass="content-area">
+            <!-- Communities View -->
+            <VBox fx:id="communitiesView" spacing="10" styleClass="content-view" visible="false" managed="false" prefWidth="1600.0" prefHeight="1000.0">
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header">
+                    <Text text="Communities Management" styleClass="page-title" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;" />
+                </HBox>
+                <TableView fx:id="communitiesTable" VBox.vgrow="ALWAYS" styleClass="data-table">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="200" />
+                        <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="300" />
+                        <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150" />
+                        <TableColumn fx:id="bannerColumn" text="Banner" prefWidth="150" />
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Community Form View -->
+            <VBox fx:id="communityFormView" spacing="15" styleClass="content-view" visible="false" managed="false" prefWidth="1600.0" prefHeight="1000.0">
+                <Text fx:id="formTitle" text="Add New Community" styleClass="page-title" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;" />
+                <GridPane vgap="10" hgap="10">
+                    <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-family: 'Segoe UI', sans-serif;" />
+                    <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="400" />
+                    <Text fx:id="nameError" styleClass="error-text" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+
+                    <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-family: 'Segoe UI', sans-serif;" />
+                    <TextArea fx:id="descriptionField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="400" prefHeight="100" />
+                    <Text fx:id="descriptionError" styleClass="error-text" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+
+                    <Label text="Category:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-family: 'Segoe UI', sans-serif;" />
+                    <ComboBox fx:id="categoryComboBox" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="400" />
+                    <Text fx:id="categoryError" styleClass="error-text" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+
+                    <Label text="Banner URL:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-family: 'Segoe UI', sans-serif;" />
+                    <TextField fx:id="bannerField" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="400" />
+                    <Text fx:id="bannerError" styleClass="error-text" GridPane.rowIndex="3" GridPane.columnIndex="2" />
+                </GridPane>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="Cancel" onAction="#cancelEdit" styleClass="action-button" />
+                    <Button text="Save" onAction="#saveCommunity" styleClass="primary-button" />
+                </HBox>
+            </VBox>
+
+            <!-- Posts View -->
+            <VBox fx:id="postsView" spacing="10" styleClass="content-view" visible="false" managed="false" prefWidth="1600.0" prefHeight="1000.0">
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header">
+                    <Text text="Posts Management" styleClass="page-title" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;" />
+                </HBox>
+                <TableView fx:id="postsTable" VBox.vgrow="ALWAYS" styleClass="data-table">
+                    <columns>
+                        <TableColumn fx:id="authorColumn" text="Author" prefWidth="150" />
+                        <TableColumn fx:id="contentColumn" text="Content" prefWidth="300" />
+                        <TableColumn fx:id="communityNameColumn" text="Community Name" prefWidth="200" />
+                        <TableColumn fx:id="postActionsColumn" text="Actions" prefWidth="100" />
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Users View -->
+            <VBox fx:id="usersPane" spacing="15.0" styleClass="content-view" visible="false" managed="false" prefWidth="1600.0" prefHeight="1000.0">
+                <HBox fx:id="welcomeCard" styleClass="welcome-card" alignment="CENTER_LEFT">
+                    <children>
+                        <VBox spacing="8">
+                            <Label fx:id="welcomeLabel" text="Welcome, Admin!" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #00897b; -fx-font-family: 'Segoe UI', sans-serif;">
+                                <font>
+                                    <Font name="Segoe UI Bold" size="28.0" />
+                                </font>
+                            </Label>
+                            <HBox spacing="20.0">
+                                <Label fx:id="totalUsersLabel" text="Total Users: 0" style="-fx-font-size: 16px; -fx-text-fill: #00897b; -fx-font-family: 'Segoe UI', sans-serif;" />
+                                <Label fx:id="activeUsersLabel" text="Active Users: 0" style="-fx-font-size: 16px; -fx-text-fill: #00897b; -fx-font-family: 'Segoe UI', sans-serif;" />
+                            </HBox>
+                        </VBox>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <Label fx:id="adminLabel" text="Admin" style="-fx-font-size: 18px; -fx-text-fill: #757575; -fx-font-family: 'Segoe UI', sans-serif;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 15;">
+                    <Label text="User Management" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;">
+                        <font>
+                            <Font name="Segoe UI Bold" size="24.0" />
+                        </font>
+                    </Label>
+                    <HBox HBox.hgrow="ALWAYS" />
+                    <Button fx:id="addUserButton" onAction="#addUser" text="Add User" styleClass="action-button" />
+                </HBox>
+                <TableView fx:id="usersTable" prefHeight="750.0" styleClass="data-table">
+                    <columns>
+                        <TableColumn fx:id="userIdColumn" prefWidth="100.0" text="ID" />
+                        <TableColumn fx:id="firstNameColumn" prefWidth="150.0" text="First Name" />
+                        <TableColumn fx:id="lastNameColumn" prefWidth="150.0" text="Last Name" />
+                        <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Email" />
+                        <TableColumn fx:id="rolesColumn" prefWidth="150.0" text="Roles" />
+                        <TableColumn fx:id="isBlockedColumn" prefWidth="100.0" text="Blocked" />
+                        <TableColumn fx:id="userActionsColumn" prefWidth="250.0" text="Actions" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </StackPane>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@/css/styles.css" />
+    </stylesheets>
+</VBox>

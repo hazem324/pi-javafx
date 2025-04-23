@@ -1,0 +1,121 @@
+/* Global styles for all elements */
+* {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 14;
+    -fx-font-weight: 500; /* Changed from 'medium' to 500 */
+    -fx-text-fill: #455a64;
+}
+
+/* Styles for the BorderPane (rootPane) */
+.root-pane {
+    -fx-background-color: linear-gradient(to bottom right, #e8eaf6, #9fa8da);
+}
+
+/* Styles for the sidebar VBox */
+.sidebar {
+    -fx-background-color: #3f51b5;
+    -fx-background-radius: 0 15 15 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 5, 0);
+}
+
+/* Styles for the sidebar title Label */
+.sidebar-title {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Styles for navigation buttons */
+.nav-button {
+    -fx-background-color: #5c6bc0;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-pref-width: 170;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.nav-button:hover {
+    -fx-background-color: #7986cb;
+}
+
+/* Styles for the content area VBox */
+.content-area {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 20;
+    -fx-border-color: #7986cb;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+}
+
+/* Styles for placeholder labels in the content area */
+.placeholder-label {
+    -fx-font-family: 'Segoe UI';
+    -fx-text-fill: #5c6bc0;
+    -fx-font-size: 20; /* Default size, overridden for the second label */
+}
+
+/* Existing styles for other components */
+.custom-textfield {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #0277bd;
+    -fx-border-radius: 5;
+}
+
+.custom-textarea {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #0277bd;
+    -fx-border-radius: 5;
+}
+
+.custom-combo-box {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #0277bd;
+    -fx-border-radius: 5;
+}
+
+.custom-date-picker {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #0277bd;
+    -fx-border-radius: 5;
+}
+
+.custom-button {
+    -fx-background-color: #0277bd;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+    -fx-border-radius: 5;
+}
+
+.submit-button {
+    -fx-background-color: #0277bd;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+.show-categories-button {
+    -fx-background-color: #6a1b9a;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+.custom-table {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #0277bd;
+}
+
+.back-button {
+    -fx-background-color: #6a1b9a;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+/* Style for the title label in AfficherEvent.fxml */
+.title-label {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6a1b9a;
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+
+<VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" styleClass="management-pane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventManagementController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <!-- Header -->
+        <HBox styleClass="header-box" alignment="CENTER_LEFT">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label text="Event Management Page" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;">
+                    <font>
+                        <Font name="Segoe UI Bold" size="32.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <!-- Add Event Form Card -->
+        <VBox styleClass="card" spacing="15.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <children>
+                        <TextField fx:id="titleField" promptText="Event Title" prefWidth="200.0" styleClass="text-input" />
+                        <TextArea fx:id="descriptionField" promptText="Event Description" prefWidth="300.0" prefHeight="100.0" styleClass="text-input" />
+                        <DatePicker fx:id="startDatePicker" promptText="Start Date" prefWidth="150.0" styleClass="date-picker" />
+                        <DatePicker fx:id="endDatePicker" promptText="End Date" prefWidth="150.0" styleClass="date-picker" />
+                    </children>
+                </HBox>
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <children>
+                        <TextField fx:id="locationField" promptText="Location" prefWidth="200.0" styleClass="text-input" />
+                        <ComboBox fx:id="statusComboBox" promptText="Status" prefWidth="150.0" styleClass="combo-box" />
+                        <ComboBox fx:id="categoryComboBox" promptText="Select Category" prefWidth="200.0" styleClass="combo-box" />
+                        <TextField fx:id="placesField" promptText="Number of Places" prefWidth="150.0" styleClass="text-input" />
+                    </children>
+                </HBox>
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <children>
+                        <TextField fx:id="imageField" promptText="Image Filename" prefWidth="200.0" styleClass="text-input" editable="false" />
+                        <Button fx:id="chooseImageButton" onAction="#chooseImage" text="Choose Image" styleClass="action-button" />
+                        <Button fx:id="addButton" onAction="#addEvent" text="Add Event" styleClass="action-button" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <!-- Event Table -->
+        <TableView fx:id="eventTable" prefHeight="800.0" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="titleColumn" prefWidth="150.0" text="Title" styleClass="data-column-name" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="200.0" text="Description" styleClass="data-column-name" />
+                <TableColumn fx:id="startDateColumn" prefWidth="150.0" text="Start Date" styleClass="data-column-name" />
+                <TableColumn fx:id="endDateColumn" prefWidth="150.0" text="End Date" styleClass="data-column-name" />
+                <TableColumn fx:id="locationColumn" prefWidth="150.0" text="Location" styleClass="data-column-name" />
+                <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" styleClass="data-column-name" />
+                <TableColumn fx:id="categoryColumn" prefWidth="150.0" text="Category" styleClass="data-column-name" />
+                <TableColumn fx:id="placesColumn" prefWidth="100.0" text="Places" styleClass="data-column-name" />
+                <TableColumn fx:id="imageColumn" prefWidth="150.0" text="Image" styleClass="data-column-name" />
+                <TableColumn fx:id="actionColumn" prefWidth="200.0" text="Actions" styleClass="data-column-actions" />
+            </columns>
+        </TableView>
+    </children>
+    <stylesheets>
+        <URL value="@/css/styles.css" />
+    </stylesheets>
+</VBox>

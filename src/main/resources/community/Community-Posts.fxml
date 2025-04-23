@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.CommunityPostsController"
+      stylesheets="@../assets/style/CommunityPosts.css"
+      styleClass="community-posts-page">
+
+<!--    &lt;!&ndash; Top Bar &ndash;&gt;-->
+<!--    <HBox styleClass="top-bar" VBox.vgrow="NEVER">-->
+<!--        <HBox HBox.hgrow="ALWAYS">-->
+<!--            <Text fx:id="communityName" styleClass="page-title"/>-->
+<!--        </HBox>-->
+<!--        <HBox spacing="10" alignment="CENTER_RIGHT">-->
+<!--            <ImageView fx:id="userAvatar" fitWidth="30" fitHeight="30" preserveRatio="true"/>-->
+<!--            <Text fx:id="userName" styleClass="user-name"/>-->
+<!--            <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>-->
+<!--        </HBox>-->
+<!--    </HBox>-->
+
+    <HBox spacing="0" VBox.vgrow="ALWAYS">
+        <!-- Left Sidebar -->
+        <VBox styleClass="side-nav" prefWidth="250">
+            <Button text="Profil" onAction="#goToProfile" styleClass="nav-button"/>
+            <Button text="Home" onAction="#goToHome" styleClass="nav-button"/>
+            <Button text="Liste des Communautés" onAction="#showAllCommunities" styleClass="nav-button"/>
+            <Button text="Mes Communautés" onAction="#showMyCommunities" styleClass="nav-button"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="nav-button"/>
+        </VBox>
+
+        <!-- Main Content Area -->
+        <ScrollPane HBox.hgrow="ALWAYS" styleClass="content-scroll">
+            <VBox styleClass="content-container">
+                <!-- New Post Form -->
+                <VBox styleClass="new-post-container">
+                    <Text text="Ajouter une nouvelle publication" styleClass="section-title"/>
+                    <TextArea fx:id="postContent" styleClass="post-textarea" promptText="Quoi de neuf ?"/>
+                    <HBox spacing="10" styleClass="post-actions">
+                        <Button text="Ajouter une image" onAction="#handleImageUpload" styleClass="image-button"/>
+                        <Button text="Publier" onAction="#handlePostSubmit" styleClass="submit-button"/>
+                    </HBox>
+                    <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="200" preserveRatio="true" visible="false"/>
+                </VBox>
+
+                <!-- Posts Timeline -->
+                <VBox fx:id="postsContainer" styleClass="timeline-container">
+                    <!-- Posts will be added dynamically -->
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </HBox>
+</VBox>

@@ -1,0 +1,24 @@
+.top-pane {
+    -fx-border-radius: 10;
+    -fx-border-width: 0.5;
+    -fx-border-color: black;
+    -fx-pref-height: 63.0;
+
+}
+
+.buttonb {
+    -fx-background-color: #219a6a;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-text-fill: white;           /* Correct property to change text color */
+    -fx-font-size: 14px;            /* Set text size */
+    -fx-font-weight: bold;          /* Make text bold */
+}
+
+.buttonb:hover{
+    -fx-background-color:#18a383;
+}
+
+.grid-container {
+
+}

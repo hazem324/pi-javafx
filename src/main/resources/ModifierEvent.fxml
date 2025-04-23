@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+
+
+        <?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierEventController"
+      alignment="CENTER" spacing="15" prefWidth="600" prefHeight="400">
+<padding>
+    <Insets top="20" right="20" bottom="20" left="20"/>
+</padding>
+
+<!-- Title -->
+<Label text="Update Event" styleClass="title-label"/>
+
+<!-- Form Grid -->
+<GridPane hgap="10" vgap="10" alignment="CENTER">
+    <!-- Title -->
+    <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="titleField" styleClass="custom-textfield" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <!-- Description -->
+    <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextArea fx:id="descriptionField" styleClass="custom-textarea" wrapText="true" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <!-- Start Date -->
+    <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <DatePicker fx:id="startDatePicker" styleClass="custom-date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <!-- End Date -->
+    <Label text="End Date:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <DatePicker fx:id="endDatePicker" styleClass="custom-date-picker" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <!-- Location -->
+    <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <TextField fx:id="locationField" styleClass="custom-textfield" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <!-- Status -->
+    <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <ComboBox fx:id="statusComboBox" styleClass="custom-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <!-- Category -->
+    <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+    <ComboBox fx:id="categoryComboBox" styleClass="custom-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+    <!-- Number of Places -->
+    <Label text="Number of Places:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+    <TextField fx:id="placesField" styleClass="custom-textfield" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+    <!-- Image Upload -->
+    <Label text="Image:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+    <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="8">
+        <TextField fx:id="imageField" styleClass="custom-textfield" editable="false"/>
+        <Button fx:id="uploadButton" text="Upload" styleClass="custom-button" onAction="#uploadImage"/>
+    </HBox>
+</GridPane>
+
+<!-- Buttons -->
+<HBox alignment="CENTER" spacing="15">
+    <Button fx:id="updateButton" text="Update Event" styleClass="submit-button" onAction="#updateEvent"/>
+    <Button fx:id="backButton" text="Back" styleClass="back-button" onAction="#goBack"/>
+</HBox>
+</VBox>
+
+

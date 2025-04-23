@@ -1,9 +1,8 @@
 #loginCard {
-    /*-fx-background-image: url('/images/noise-texture.png');*/
     -fx-background-size: cover;
     -fx-background-color: linear-gradient(to bottom right, #26a69a, #4fc3f7);
-    -fx-background-radius: 15; /* Added radius */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5); /* Enhanced shadow */
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5);
 }
 
 #loginButton:hover {
@@ -18,8 +17,6 @@
     -fx-underline: true;
 }
 
-/* styles.css */
-
 /* General styles */
 .root {
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -30,159 +27,251 @@
     -fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);
 }
 
-
 /* Sidebar styles */
 #sidebar {
-    -fx-background-color: #00897b; /* Teal 700 */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 4, 4); /* Enhanced shadow */
+    -fx-background-color: #00897b;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 4, 4);
 }
 
-/* Generic sidebar button style - kept for other buttons, but alignment will be overridden */
+/* Generic sidebar button style */
 .sidebar-button {
-    -fx-background-color: transparent; /* Will be overridden for Users/Profile */
+    -fx-background-color: transparent;
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-padding: 12 20;
     -fx-cursor: hand;
-    -fx-background-radius: 8; /* Changed border-radius to background-radius */
-    -fx-alignment: CENTER; /* Changed alignment to CENTER */
+    -fx-background-radius: 8;
+    -fx-alignment: CENTER;
     -fx-pref-width: Infinity;
-    /* Removed margin-bottom as VBox spacing is used */
 }
 
 .sidebar-button:hover {
-    /* Will be overridden for Users/Profile */
-    -fx-background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque hover */
+    -fx-background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Users Button - Creative Design & Centered */
 #usersButton {
-    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac); /* Same as before */
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-    -fx-font-family: 'Segoe UI', sans-serif;
-    -fx-padding: 12 20; /* Adjusted padding for centering */
-    -fx-background-radius: 8;
-    -fx-cursor: hand;
-    -fx-alignment: CENTER; /* Centered content */
-    /* Removed graphic styles - add back if graphic is needed AND you can center it effectively */
-    /* -fx-content-display: LEFT; */
-    /* -fx-graphic: url('/images/users-icon.png'); */
-    /* -fx-graphic-text-gap: 10; */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2); /* Subtle static shadow */
-    -fx-translate-y: 0; /* Ensure no translation initially */
-}
-
-#usersButton:hover {
-    -fx-background-color: linear-gradient(to right, #00695c, #26a69a); /* Same as before */
-    -fx-scale-x: 1.04; /* Slightly more */
-    -fx-scale-y: 1.04; /* Slightly more */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3); /* Stronger hover shadow */
-    -fx-translate-y: -2; /* Subtle lift on hover */
-}
-
-/* Profile Button - Same Creative Design & Centered */
-#profileButton {
-    /* --- Copied styles from #usersButton --- */
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
-    -fx-padding: 12 20; /* Adjusted padding for centering */
+    -fx-padding: 12 20;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-alignment: CENTER; /* Centered content */
-    /* Add graphic styles here if needed, ensuring alignment works */
-    /* -fx-graphic: url('/images/profile-icon.png'); */ /* Example */
-    /* -fx-graphic-text-gap: 10; */ /* Example */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2); /* Subtle static shadow */
-    -fx-translate-y: 0; /* Ensure no translation initially */
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
+
+#usersButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Communities Button */
+#communitiesButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
+
+#communitiesButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Posts Button */
+#postsButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
+
+#postsButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Profile Button */
+#profileButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
 }
 
 #profileButton:hover {
-    /* --- Copied styles from #usersButton:hover --- */
     -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
-    -fx-scale-x: 1.04; /* Slightly more */
-    -fx-scale-y: 1.04; /* Slightly more */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3); /* Stronger hover shadow */
-    -fx-translate-y: -2; /* Subtle lift on hover */
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
 }
 
+/* Events Button */
+#eventsButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
 
-/* Logout Button - Centered */
+#eventsButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Categories Button */
+#categoriesButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
+
+#categoriesButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Logout Button */
 .sidebar-button-logout {
-    -fx-background-color: #d32f2f; /* Red Accent */
+    -fx-background-color: #d32f2f;
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-padding: 12 20;
     -fx-cursor: hand;
-    -fx-background-radius: 8; /* Changed border-radius to background-radius */
-    -fx-alignment: CENTER; /* Changed alignment to CENTER */
+    -fx-background-radius: 8;
+    -fx-alignment: CENTER;
     -fx-pref-width: Infinity;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2); /* Subtle static shadow */
-    -fx-translate-y: 0; /* Ensure no translation initially */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
 }
 
 .sidebar-button-logout:hover {
     -fx-background-color: #b71c1c;
-    -fx-scale-x: 1.04; /* Slightly more */
-    -fx-scale-y: 1.04; /* Slightly more */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3); /* Stronger hover shadow */
-    -fx-translate-y: -2; /* Subtle lift on hover */
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
 }
 
-/* Dashboard Header - Enhanced Card Style */
+/* Dashboard Header */
 #headerBox {
-    -fx-background-color: #ffffff; /* White background */
-    -fx-background-radius: 15; /* More rounded corners */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5); /* Stronger shadow */
-    -fx-padding: 25; /* Increased padding */
-    -fx-alignment: CENTER_LEFT; /* Keep content aligned left */
-}
-
-
-/* Welcome Card - Enhanced Style */
-#welcomeCard {
-    -fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb); /* Gentle gradient background */
-    -fx-background-radius: 15; /* More rounded corners */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5); /* Stronger shadow */
-    -fx-padding: 30; /* Increased padding */
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5);
+    -fx-padding: 25;
     -fx-alignment: CENTER_LEFT;
 }
 
-/* User Management Section - Enhanced Card Style */
-#usersPane {
-    -fx-background-color: #ffffff; /* White background */
-    -fx-background-radius: 12; /* Rounded corners */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 4, 4); /* Added shadow */
-    -fx-padding: 25; /* Increased padding */
-    /* VBox spacing="15.0" is already good */
+/* Welcome Card */
+#welcomeCard {
+    -fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb);
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5);
+    -fx-padding: 30;
+    -fx-alignment: CENTER_LEFT;
 }
 
+/* User Management Section */
+#usersPane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 4, 4);
+    -fx-padding: 25;
+}
 
-/* Action Button - Subtle Enhancement */
+/* Action Button (Green for Edit, Add) */
 .action-button {
-    -fx-background-color: #43a047; /* Green Accent */
+    -fx-background-color: #43a047;
     -fx-text-fill: #ffffff;
     -fx-font-size: 14px;
     -fx-padding: 10 15;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1); /* Subtle static shadow */
-    -fx-translate-y: 0; /* Ensure no translation initially */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1);
+    -fx-translate-y: 0;
 }
 
 .action-button:hover {
     -fx-background-color: #2e7d32;
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2); /* Stronger hover shadow */
-    -fx-translate-y: -1; /* Subtle lift */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
+    -fx-translate-y: -1;
+}
+
+/* Delete Button (Red for Delete) */
+.delete-button {
+    -fx-background-color: #d32f2f;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1);
+    -fx-translate-y: 0;
+}
+
+.delete-button:hover {
+    -fx-background-color: #b71c1c;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
+    -fx-translate-y: -1;
 }
 
 /* Modern Table Styles */
 .data-table .column-header-background {
-    -fx-background-color: #00897b; /* Teal 700 */
+    -fx-background-color: #00897b;
     -fx-background-radius: 8 8 0 0;
     -fx-padding: 10;
 }
@@ -192,7 +281,7 @@
 }
 
 .data-table .column-header .label {
-    -fx-text-fill: black; /* Changed to black for better contrast on Teal */
+    -fx-text-fill: black;
     -fx-font-weight: bold;
     -fx-font-size: 15px;
 }
@@ -202,7 +291,7 @@
 }
 
 .data-table .table-cell {
-    -fx-padding: 7; /* Decreased padding */
+    -fx-padding: 7;
     -fx-font-size: 14px;
     -fx-text-fill: #424242;
 }
@@ -211,9 +300,9 @@
     -fx-background-color: #ffffff;
     -fx-border-color: #e0e0e0;
     -fx-border-width: 0 0 1 0;
-    -fx-effect: null; /* Ensure no static shadow on rows */
-    -fx-translate-y: 0; /* Ensure no translation initially */
-    -fx-background-insets: 0, 1; /* Added inset for clearer row separation */
+    -fx-effect: null;
+    -fx-translate-y: 0;
+    -fx-background-insets: 0, 1;
 }
 
 .data-table .table-row-cell:odd {
@@ -221,25 +310,25 @@
 }
 
 .data-table .table-row-cell:hover {
-    -fx-background-color: #b2dfdb; /* Teal 100 */
+    -fx-background-color: #b2dfdb;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2); /* Subtle hover shadow */
-    -fx-translate-y: -2; /* Subtle lift */
-    -fx-background-insets: 0; /* Adjust inset on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 2, 2);
+    -fx-translate-y: -2;
+    -fx-background-insets: 0;
 }
 
 .data-table .table-row-cell:filled:selected {
-    -fx-background-color: #80cbc4; /* Teal 200 */
+    -fx-background-color: #80cbc4;
     -fx-text-fill: #ffffff;
 }
 
-/* Specific column header styles (optional, for more control) */
+/* Specific column header styles */
 .data-column-header {
-    -fx-alignment: CENTER; /* Example: Center align all headers */
+    -fx-alignment: CENTER;
 }
 
 .data-column-id {
-    -fx-alignment: CENTER; /* Example: Center align ID column content */
+    -fx-alignment: CENTER;
 }
 
 .data-column-name {
@@ -262,7 +351,7 @@
     -fx-alignment: CENTER;
 }
 
-/* Scrollbar styles - kept as is, looks good */
+/* Scrollbar styles */
 .data-table .scroll-bar:vertical, .data-table .scroll-bar:horizontal {
     -fx-pref-width: 10;
     -fx-pref-height: 10;
@@ -299,7 +388,7 @@
     -fx-background-color: #9e9e9e;
 }
 
-/* Pagination Styles - kept as is, looks good */
+/* Pagination Styles */
 .pagination-control {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;
@@ -346,59 +435,99 @@
     -fx-scale-y: 0.8;
 }
 
-/* --- Input Field Base Styles --- */
-.text-input { /* Targets both TextField and PasswordField */
-    -fx-font-size: 14px; /* Example: Set your desired default font size */
-    -fx-padding: 8px 10px; /* Example: Set your desired default padding */
-    -fx-prompt-text-fill: derive(-fx-control-inner-background, -45%); /* Default prompt text color */
-    -fx-font-style: normal; /* Ensure font style is normal */
-    /* Add other base styles like border, background if needed */
+/* Input Field Base Styles */
+.text-input {
+    -fx-font-size: 14px;
+    -fx-padding: 8 10;
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, -45%);
+    -fx-font-style: normal;
     -fx-border-color: #bdbdbd;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1);
 }
 
-/* --- Input Field Placeholder Text Style --- */
 .text-input .prompt-text {
-    -fx-font-style: normal; /* Explicitly set placeholder font style to normal */
-    /* Ensure the color is what you expect */
+    -fx-font-style: normal;
     -fx-fill: derive(-fx-control-inner-background, -45%);
 }
 
-/* --- Input Field Focused Styles (Optional but Recommended) --- */
-/* Keep styles consistent even when focused, unless you want a specific focus effect */
 .text-input:focused {
-    -fx-font-size: 14px; /* Keep font size the same */
-    -fx-padding: 8px 10px; /* Keep padding the same */
-    -fx-font-style: normal; /* Keep font style normal */
-    /* Example focus effect: change border color */
+    -fx-font-size: 14px;
+    -fx-padding: 8 10;
+    -fx-font-style: normal;
     -fx-border-color: #00897b;
-    -fx-border-width: 1.5px;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
 }
 
 .text-input:focused .prompt-text {
-    -fx-font-style: normal; /* Keep placeholder normal when focused */
+    -fx-font-style: normal;
 }
 
-/* --- Specifically target login/signup inputs if needed --- */
-/* If your inputs have specific IDs like #usernameField, #passwordField */
-#usernameField, #passwordField {
-    /* You can override base styles here if needed */
+/* ComboBox Styles */
+.combo-box {
+    -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
-    -fx-padding: 8px 10px;
+    -fx-pref-height: 30;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1);
 }
 
-#usernameField .prompt-text, #passwordField .prompt-text {
-    -fx-font-style: normal;
+.combo-box .list-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 8 10;
 }
 
-#usernameField:focused, #passwordField:focused {
-    /* Consistent focused styles */
-    -fx-font-style: normal;
+.combo-box:focused {
+    -fx-border-color: #00897b;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
 }
 
-#usernameField:focused .prompt-text, #passwordField:focused .prompt-text {
-    -fx-font-style: normal;
+/* DatePicker Styles */
+.date-picker {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 1, 1);
 }
 
+.date-picker .text-field {
+    -fx-font-size: 14px;
+    -fx-padding: 8 10;
+}
 
+.date-picker:focused {
+    -fx-border-color: #00897b;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
+}
+
+/* Management Pane */
+.management-pane {
+    -fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);
+}
+
+/* Card Design for Forms */
+.card {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #e0f2f1);
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 4, 4);
+    -fx-padding: 20;
+}
+
+/* Header Box */
+.header-box {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5);
+    -fx-padding: 20;
+}

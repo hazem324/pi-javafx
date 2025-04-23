@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.AfficherCategoryController" spacing="10" alignment="CENTER">
+    <TableView fx:id="categoryTable">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+            <TableColumn fx:id="descColumn" text="Description" prefWidth="300"/>
+        </columns>
+    </TableView>
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="updateButton" text="Update" onAction="#update"/>
+        <Button fx:id="deleteButton" text="Delete" onAction="#delete"/>
+        <Button fx:id="backButton" text="Back" onAction="#back"/>
+    </HBox>
+</VBox>

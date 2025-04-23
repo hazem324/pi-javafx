@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fx:id="scrollPane" fitToWidth="true"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ProductListController">
+
+    <VBox spacing="10" alignment="TOP_CENTER">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <!-- Bouton "Voir mon panier" -->
+        <Button text="🛒 Voir mon panier"
+                onAction="#onVoirPanier"
+                style="-fx-background-color: #0AAE61; -fx-text-fill: white; -fx-font-size: 14px;" />
+
+        <!-- Conteneur des produits -->
+        <VBox fx:id="productContainer" spacing="15"/>
+    </VBox>
+
+</ScrollPane>

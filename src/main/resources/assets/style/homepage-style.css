@@ -1,0 +1,36 @@
+.top-form{
+    -fx-background-color: #ffffff;
+    -fx-border-color:#000;
+    -fx-border-width:0px 0px 0px 0px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.3, 0, 2);
+}
+
+.semi-top-form{
+    -fx-background-color:#ffffff;
+    -fx-border-color:#000;
+    -fx-border-width:.2px .4px .8px .4px;
+}
+
+.nav-form{
+    -fx-background-color:linear-gradient(to bottom right, #272b3f, #256b51);
+}
+
+.nav-btn{
+    -fx-background-color:transparent;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-font-size:14px;
+    -fx-text-fill:#fff;
+    -fx-alignment:CENTER-LEFT;
+}
+
+.logout{
+    -fx-background-color:#219a6a;
+    -fx-background-radius:10px;
+    -fx-cursor:hand;
+}
+.logout:hover{
+    -fx-background-color:#18a383;
+}
+
+

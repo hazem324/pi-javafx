@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.geometry.Insets?>
+<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomePageController"
+            style="-fx-background-color: linear-gradient(to bottom right, #e8eaf6, #9fa8da);">
+
+    <!-- Sidebar (Navbar) on the left -->
+    <left>
+        <VBox alignment="TOP_CENTER" spacing="15" style="-fx-background-color: #3f51b5; -fx-background-radius: 0 15 15 0;
+                                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 5, 0);"
+              prefWidth="200" prefHeight="600">
+            <padding>
+                <Insets top="20" right="15" bottom="20" left="15"/>
+            </padding>
+
+            <!-- Sidebar Title -->
+            <Label text="Menu" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+            <!-- Navigation Buttons -->
+            <Button fx:id="ajouterCategoryButton" text="Add Category" styleClass="nav-button" onAction="#goToAjouterCategory"/>
+            <Button fx:id="afficherCategoryButton" text="Show Categories" styleClass="nav-button" onAction="#goToAfficherCategory"/>
+            <Button fx:id="modifierCategoryButton" text="Update Category" styleClass="nav-button" onAction="#goToModifierCategory"/>
+            <Button fx:id="ajouterEventButton" text="Add Event" styleClass="nav-button" onAction="#goToAjouterEvent"/>
+            <Button fx:id="afficherEventButton" text="Show Events" styleClass="nav-button" onAction="#goToAfficherEvent"/>
+        </VBox>
+    </left>
+
+    <!-- Center Area -->
+    <center>
+        <VBox fx:id="contentArea" alignment="CENTER" spacing="10" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 20;
+                                                    -fx-border-color: #7986cb; -fx-border-width: 2; -fx-border-radius: 20;
+                                                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);"
+              prefWidth="600" prefHeight="400">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Placeholder Message -->
+            <Label text="Nothing to show here," style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20; -fx-text-fill: #5c6bc0;"/>
+            <Label text="navigate to other pages using the menu." style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16; -fx-text-fill: #5c6bc0;"/>
+        </VBox>
+    </center>
+</BorderPane>
+
+
+
+
