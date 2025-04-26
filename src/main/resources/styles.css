@@ -119,3 +119,70 @@
     -fx-font-weight: bold;
     -fx-text-fill: #6a1b9a;
 }
+
+
+
+/* Styles for export buttons */
+.export-button {
+    -fx-background-radius: 8;
+    -fx-padding: 8 15 8 15;
+    -fx-cursor: hand;
+    -fx-pref-height: 40;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.export-button:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.export-button:pressed {
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.3), 5, 0, 2, 2);
+}
+
+.excel-button {
+    -fx-background-color: linear-gradient(to bottom, #00897b, #00695c);
+}
+
+.excel-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #26A69A, #00897b);
+}
+
+.pdf-button {
+    -fx-background-color: linear-gradient(to bottom, #D32F2F, #B71C1C);
+}
+
+.pdf-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #EF5350, #D32F2F);
+}
+
+.export-text {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* For SVG-based icons */
+.add-user-icon {
+    -fx-fill: #00897b;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+
+.excel-icon {
+    -fx-fill: #00897b;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+
+.pdf-icon {
+    -fx-fill: #D32F2F;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}

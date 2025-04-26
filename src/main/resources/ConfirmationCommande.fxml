@@ -12,7 +12,7 @@
     </padding>
 
     <!--<ImageView fitHeight="100" fitWidth="100"
-               image="@/icons/checked.png" preserveRatio="true"/> -->
+               image="@/icons/verify-icon.png" preserveRatio="true"/> -->
 
     <Label text="Commande validée avec succès !"
            style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0AAE61;"/>

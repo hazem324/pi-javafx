@@ -1,5 +1,20 @@
 package controllers;
 
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.events.Event;
+import com.itextpdf.kernel.events.IEventHandler;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.layout.borders.SolidBorder;
 import entities.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,47 +27,43 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import services.UserService;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 public class UserManagementController {
 
-    @FXML
-    private Label totalUsersLabel;
-    @FXML
-    private Label activeUsersLabel;
-    @FXML
-    private Button addUserButton;
-    @FXML
-    private TableView<User> usersTable;
-    @FXML
-    private TableColumn<User, Number> idColumn;
-    @FXML
-    private TableColumn<User, String> firstNameColumn;
-    @FXML
-    private TableColumn<User, String> lastNameColumn;
-    @FXML
-    private TableColumn<User, String> emailColumn;
-    @FXML
-    private TableColumn<User, Boolean> isBlockedColumn;
-    @FXML
-    private TableColumn<User, String> rolesColumn;
-    @FXML
-    private TableColumn<User, Void> actionsColumn;
-    @FXML
-    private HBox paginationContainer; // Replace Pagination with an HBox
+    @FXML private Label totalUsersLabel;
+    @FXML private Label activeUsersLabel;
+    @FXML private Button addUserButton;
+    @FXML private TableView<User> usersTable;
+    @FXML private TableColumn<User, Number> idColumn;
+    @FXML private TableColumn<User, String> firstNameColumn;
+    @FXML private TableColumn<User, String> lastNameColumn;
+    @FXML private TableColumn<User, String> emailColumn;
+    @FXML private TableColumn<User, Boolean> isBlockedColumn;
+    @FXML private TableColumn<User, String> rolesColumn;
+    @FXML private TableColumn<User, Void> actionsColumn;
+    @FXML private HBox paginationContainer;
+    @FXML private Button exportExcelButton;
+    @FXML private Button exportPdfButton;
+
     private int totalUserCount = 0;
     private int currentPage = 0;
-    private final int USERS_PER_PAGE = 10; // Adjust as needed
-    private List<User> allUsers; // Keep a local copy of all users
-
-
+    private final int USERS_PER_PAGE = 10;
+    private List<User> allUsers;
     private final UserService userService = new UserService();
     private final ObservableList<User> usersOnPage = FXCollections.observableArrayList();
 
@@ -60,10 +71,9 @@ public class UserManagementController {
     public void initialize() {
         setupTableColumns();
         setupActionColumn();
-        loadAllUsers(); // Load all users
-        updatePagination(); // Initial pagination setup
+        loadAllUsers();
+        updatePagination();
         usersTable.setItems(usersOnPage);
-
     }
 
     private void setupTableColumns() {
@@ -72,6 +82,17 @@ public class UserManagementController {
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         isBlockedColumn.setCellValueFactory(new PropertyValueFactory<>("blocked"));
+        isBlockedColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Boolean blocked, boolean empty) {
+                super.updateItem(blocked, empty);
+                if (empty || blocked == null) {
+                    setText(null);
+                } else {
+                    setText(blocked ? "Blocked" : "Active");
+                }
+            }
+        });
         rolesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 String.join(", ", cellData.getValue().getRoles())
         ));
@@ -85,7 +106,6 @@ public class UserManagementController {
             private final HBox buttons = new HBox(10, editButton, deleteButton, toggleBlockButton);
 
             {
-                // Apply styles (consider moving to CSS)
                 editButton.setStyle("-fx-background-color: #00897b; -fx-text-fill: #ffffff; -fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif; -fx-background-radius: 8; -fx-padding: 8 15 8 15; -fx-cursor: hand;");
                 deleteButton.setStyle("-fx-background-color: #e57373; -fx-text-fill: #ffffff; -fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif; -fx-background-radius: 8; -fx-padding: 8 15 8 15; -fx-cursor: hand;");
                 toggleBlockButton.setStyle("-fx-background-color: #ffb300; -fx-text-fill: #ffffff; -fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif; -fx-background-radius: 8; -fx-padding: 8 15 8 15; -fx-cursor: hand;");
@@ -129,9 +149,8 @@ public class UserManagementController {
         try {
             allUsers = userService.recuperer();
             totalUserCount = allUsers.size();
-            loadStats(); // Update stats after loading users
+            loadStats();
             showUsersOnPage(currentPage);
-
         } catch (SQLException e) {
             showError("Failed to load users: " + e.getMessage());
         }
@@ -150,11 +169,10 @@ public class UserManagementController {
     }
 
     private void updatePagination() {
-        paginationContainer.getChildren().clear(); // Clear old buttons
+        paginationContainer.getChildren().clear();
         int pageCount = (int) Math.ceil((double) totalUserCount / USERS_PER_PAGE);
-        if (pageCount <= 1) return; // No pagination needed
+        if (pageCount <= 1) return;
 
-        // First Button
         Button firstButton = new Button("First");
         firstButton.setOnAction(event -> {
             currentPage = 0;
@@ -163,7 +181,6 @@ public class UserManagementController {
         });
         paginationContainer.getChildren().add(firstButton);
 
-        // Previous Button
         Button prevButton = new Button("Previous");
         prevButton.setOnAction(event -> {
             if (currentPage > 0) {
@@ -174,7 +191,6 @@ public class UserManagementController {
         });
         paginationContainer.getChildren().add(prevButton);
 
-        // Page Number Buttons
         int maxPagesToShow = 5;
         int startPage = Math.max(0, currentPage - maxPagesToShow / 2);
         int endPage = Math.min(pageCount - 1, currentPage + maxPagesToShow / 2);
@@ -191,7 +207,7 @@ public class UserManagementController {
             final int page = i;
             Button pageButton = new Button(String.valueOf(page + 1));
             if (page == currentPage) {
-                pageButton.setStyle("-fx-font-weight: bold; -fx-background-color: #b0bec5;"); // Highlight current page
+                pageButton.setStyle("-fx-font-weight: bold; -fx-background-color: #b0bec5;");
             }
             pageButton.setOnAction(event -> {
                 currentPage = page;
@@ -201,7 +217,6 @@ public class UserManagementController {
             paginationContainer.getChildren().add(pageButton);
         }
 
-        // Next Button
         Button nextButton = new Button("Next");
         nextButton.setOnAction(event -> {
             if (currentPage < pageCount - 1) {
@@ -212,7 +227,6 @@ public class UserManagementController {
         });
         paginationContainer.getChildren().add(nextButton);
 
-        // Last Button
         Button lastButton = new Button("Last");
         lastButton.setOnAction(event -> {
             currentPage = pageCount - 1;
@@ -220,8 +234,8 @@ public class UserManagementController {
             updatePagination();
         });
         paginationContainer.getChildren().add(lastButton);
-
     }
+
     private void showUsersOnPage(int page) {
         usersOnPage.clear();
         int start = page * USERS_PER_PAGE;
@@ -230,7 +244,6 @@ public class UserManagementController {
             usersOnPage.addAll(allUsers.subList(start, end));
         }
     }
-
 
     @FXML
     public void addUser(ActionEvent actionEvent) {
@@ -242,11 +255,10 @@ public class UserManagementController {
             stage.setTitle("Add New User");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.showAndWait(); // Wait for the form to close
+            stage.showAndWait();
 
-            loadAllUsers(); // Refresh the list after the modal closes
+            loadAllUsers();
             updatePagination();
-
         } catch (IOException e) {
             showError("Failed to load add user form: " + e.getMessage());
         }
@@ -257,19 +269,16 @@ public class UserManagementController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditUserForm.fxml"));
             Parent root = loader.load();
             EditUserFormController editUserController = loader.getController();
-            // Pass data needed for editing
             editUserController.initData(user);
-            // No need to pass this controller if refresh is handled below
 
             Stage stage = new Stage();
             stage.setTitle("Edit User");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.showAndWait(); // Wait for the form to close
+            stage.showAndWait();
 
-            loadAllUsers(); // Refresh the list after the modal closes
+            loadAllUsers();
             updatePagination();
-
         } catch (IOException e) {
             showError("Failed to load edit user form: " + e.getMessage());
         }
@@ -285,7 +294,7 @@ public class UserManagementController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 userService.supprimer(userToDelete);
-                loadAllUsers(); // Refresh the table AND update stats
+                loadAllUsers();
                 updatePagination();
                 showAlert(Alert.AlertType.INFORMATION, "Success", "User deleted successfully.");
             } catch (SQLException e) {
@@ -298,7 +307,7 @@ public class UserManagementController {
         boolean newBlockedStatus = !user.isBlocked();
         try {
             userService.updateBlockStatus(user.getId(), newBlockedStatus);
-            loadAllUsers(); // Reload users which implicitly refreshes table and stats
+            loadAllUsers();
             updatePagination();
             showAlert(Alert.AlertType.INFORMATION, "User Block Status", "User " + user.getEmail() + " is now " + (newBlockedStatus ? "blocked" : "unblocked") + ".");
         } catch (SQLException e) {
@@ -306,7 +315,176 @@ public class UserManagementController {
         }
     }
 
-    // --- Utility Methods ---
+    @FXML
+    private void exportToExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Excel File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+        fileChooser.setInitialFileName("Users_" + timestamp + ".xlsx");
+
+        Stage stage = (Stage) usersTable.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Users");
+
+                // Header style
+                org.apache.poi.ss.usermodel.CellStyle headerStyle = workbook.createCellStyle();
+                org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+                headerFont.setBold(true);
+                headerStyle.setFont(headerFont);
+
+                // Header row
+                Row header = sheet.createRow(0);
+                String[] headers = {"ID", "First Name", "Last Name", "Email", "Roles", "Status"};
+                for (int i = 0; i < headers.length; i++) {
+                    org.apache.poi.ss.usermodel.Cell cell = header.createCell(i);
+                    cell.setCellValue(headers[i]);
+                    cell.setCellStyle(headerStyle);
+                }
+
+                // Data rows
+                int rowNum = 1;
+                for (User user : allUsers) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(user.getId());
+                    row.createCell(1).setCellValue(user.getFirstName());
+                    row.createCell(2).setCellValue(user.getLastName());
+                    row.createCell(3).setCellValue(user.getEmail());
+                    row.createCell(4).setCellValue(String.join(", ", user.getRoles()));
+                    row.createCell(5).setCellValue(user.isBlocked() ? "Blocked" : "Active");
+                }
+
+                // Auto-size columns
+                for (int i = 0; i < headers.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                // Write to file
+                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    workbook.write(fileOut);
+                }
+
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Users exported to Excel successfully!");
+            } catch (IOException e) {
+                showError("Failed to export to Excel: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void exportToPDF() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save PDF File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+        fileChooser.setInitialFileName("Users_" + timestamp + ".pdf");
+
+        Stage stage = (Stage) usersTable.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try (PdfWriter writer = new PdfWriter(file);
+                 PdfDocument pdf = new PdfDocument(writer)) {
+                Document document = new Document(pdf);
+
+                // Add page number footer
+                pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new IEventHandler() {
+                    @Override
+                    public void handleEvent(Event event) {
+                        PdfDocumentEvent docEvent = (PdfDocumentEvent) event;
+                        PdfDocument pdfDoc = docEvent.getDocument();
+                        PdfPage page = docEvent.getPage();
+                        int pageNumber = pdfDoc.getPageNumber(page);
+                        int totalPages = pdfDoc.getNumberOfPages();
+                        PdfCanvas canvas = new PdfCanvas(page);
+                        try {
+                            canvas.beginText()
+                                    .setFontAndSize(com.itextpdf.kernel.font.PdfFontFactory.createFont("Helvetica"), 8)
+                                    .moveText(500, 20)
+                                    .showText(String.format("Page %d of %d", pageNumber, totalPages))
+                                    .endText();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        canvas.release();
+                    }
+                });
+
+                // Title
+                Paragraph title = new Paragraph("User List")
+                        .setFontSize(20)
+                        .setBold()
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setMarginTop(20);
+                document.add(title);
+
+                // Timestamp
+                Paragraph timestampPara = new Paragraph("Generated on: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))
+                        .setFontSize(10)
+                        .setItalic()
+                        .setTextAlignment(TextAlignment.LEFT)
+                        .setMarginBottom(20);
+                document.add(timestampPara);
+
+                // Table
+                Table table = new Table(UnitValue.createPercentArray(new float[]{1, 2, 2, 3, 2, 1}))
+                        .useAllAvailableWidth()
+                        .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f));
+
+                // Headers
+                String[] headers = {"ID", "First Name", "Last Name", "Email", "Roles", "Status"};
+                for (String header : headers) {
+                    table.addHeaderCell(new Cell()
+                            .add(new Paragraph(header)
+                                    .setFontSize(10)
+                                    .setBold())
+                            .setBackgroundColor(ColorConstants.LIGHT_GRAY)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                }
+
+                // Data rows
+                boolean alternate = false;
+                for (User user : allUsers) {
+                    table.addCell(new Cell()
+                            .add(new Paragraph(String.valueOf(user.getId())).setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    table.addCell(new Cell()
+                            .add(new Paragraph(user.getFirstName()).setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    table.addCell(new Cell()
+                            .add(new Paragraph(user.getLastName()).setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    table.addCell(new Cell()
+                            .add(new Paragraph(user.getEmail()).setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    table.addCell(new Cell()
+                            .add(new Paragraph(String.join(", ", user.getRoles())).setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    table.addCell(new Cell()
+                            .add(new Paragraph(user.isBlocked() ? "Blocked" : "Active").setFontSize(10))
+                            .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
+                            .setBorder(new SolidBorder(ColorConstants.BLACK, 0.5f)));
+                    alternate = !alternate;
+                }
+
+                document.add(table);
+                document.close();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Users exported to PDF successfully!");
+            } catch (IOException e) {
+                showError("Failed to export to PDF: " + e.getMessage());
+            }
+        }
+    }
+
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -319,4 +497,3 @@ public class UserManagementController {
         showAlert(Alert.AlertType.ERROR, "Error", message);
     }
 }
-

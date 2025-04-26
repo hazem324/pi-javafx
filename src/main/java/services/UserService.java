@@ -2,12 +2,15 @@ package services;
 
 import entities.User;
 import utils.MyDatabase;
+import utils.SessionManager;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class UserService implements Service<User> {
 
@@ -30,6 +33,7 @@ public class UserService implements Service<User> {
         ps.setString(7, "[\"ROLE_STUDENT\"]");
         ps.executeUpdate();
     }
+
     public void ajouterAdmin(User user) throws SQLException {
         String sql = "INSERT INTO user (last_name, first_name, email, password, is_verified, is_blocked, roles) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cnx.prepareStatement(sql);
@@ -42,13 +46,14 @@ public class UserService implements Service<User> {
         ps.setString(7, "[\"ROLE_ADMIN\"]");
         ps.executeUpdate();
     }
+
     public void ajouterNouveau(User user) throws SQLException {
-        // Check if the email already exists
         if (findByEmail(user.getEmail()) != null) {
             throw new SQLException("Email address already exists.");
         }
-        ajouter(user); // Use the original ajouter method to perform the insertion
+        ajouter(user);
     }
+
     @Override
     public void modifier(User user) throws SQLException {
         String sql = "update user set last_name = ?, first_name = ?, email = ?, is_blocked = ? where id = ?";
@@ -85,7 +90,6 @@ public class UserService implements Service<User> {
             boolean isBlocked = rs.getBoolean("is_blocked");
             List<String> roles = rolesStr != null ? Arrays.asList(rolesStr.replace("[\"", "").replace("\"]", "").split(",")) : new ArrayList<>();
 
-            // Set other fields to defaults since not retrieved
             User user = new User(id, firstName, lastName, email, null, false, isBlocked, null, roles);
             users.add(user);
         }
@@ -113,7 +117,7 @@ public class UserService implements Service<User> {
             return new User(id, firstName, lastName, email, password, isVerified, isBlocked, profileIMG, roles);
         }
 
-        throw new SQLException("User not found");
+        return null; // Changed to return null instead of throwing exception
     }
 
     public void updateBlockStatus(int userId, boolean isBlocked) throws SQLException {
@@ -126,8 +130,9 @@ public class UserService implements Service<User> {
             throw new SQLException("No user found with id: " + userId);
         }
     }
+
     public User getUserById(int id) throws SQLException {
-        String query = "SELECT id, first_name, last_name, email, roles, is_blocked FROM users WHERE id = ?";
+        String query = "SELECT id, first_name, last_name, email, roles, is_blocked FROM user WHERE id = ?";
         try (PreparedStatement stmt = cnx.prepareStatement(query)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -137,15 +142,15 @@ public class UserService implements Service<User> {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setEmail(rs.getString("email"));
-                // Assuming roles is stored as a comma-separated string in the database
                 String roles = rs.getString("roles");
                 user.setRoles(roles != null ? Arrays.asList(roles.split(",")) : new ArrayList<>());
                 user.setBlocked(rs.getBoolean("is_blocked"));
                 return user;
             }
-            return null; // User not found
+            return null;
         }
     }
+
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String lastName = rs.getString("last_name");
@@ -166,10 +171,11 @@ public class UserService implements Service<User> {
         ps.setString(1, admin.getLastName());
         ps.setString(2, admin.getFirstName());
         ps.setString(3, admin.getEmail());
-        ps.setString(4, admin.getPassword()); // Assuming password might be updated
+        ps.setString(4, admin.getPassword());
         ps.setInt(5, admin.getId());
         ps.executeUpdate();
     }
+
     public User getAdminDetails(int adminId) throws SQLException {
         String sql = "SELECT * FROM user WHERE id = ?";
         PreparedStatement ps = cnx.prepareStatement(sql);
@@ -181,7 +187,17 @@ public class UserService implements Service<User> {
         }
         return null;
     }
+
+    public void updateTwoFactorToken(int userId, String token, LocalDateTime expiry) {
+        SessionManager.getInstance().setTwoFactorToken(userId, token, expiry);
+    }
+
+    public boolean validateTwoFactorToken(int userId, String token) {
+        return SessionManager.getInstance().validateTwoFactorToken(userId, token);
+    }
+
+    public String generateTwoFactorToken() {
+        Random random = new Random();
+        return String.format("%06d", random.nextInt(1000000)); // 6-digit token
+    }
 }
-
-
-

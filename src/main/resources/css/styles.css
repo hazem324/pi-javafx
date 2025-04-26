@@ -1,3 +1,97 @@
+/* Two-Factor Authentication Styles */
+.two-factor .auth-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-opacity: 0;
+    -fx-animation: fadeIn 0.5s ease-in forwards;
+}
+
+.two-factor .header-text {
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.two-factor .instruction-text {
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+    -fx-max-width: 300px;
+}
+
+.two-factor .input-field {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 16px;
+    -fx-padding: 12 15 12 15;
+    -fx-prompt-text-fill: #888888;
+    -fx-text-fill: #1a1a1a;
+}
+
+.two-factor .input-field:focused {
+    -fx-border-color: #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.3), 5, 0, 0, 0);
+}
+
+.two-factor .input-field.error {
+    -fx-border-color: #dc3545;
+    -fx-effect: none;
+}
+
+.two-factor .timer-text {
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #666666;
+}
+
+.two-factor .verify-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+.two-factor .verify-button:hover {
+    -fx-background-color: #0056b3;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.two-factor .resend-button {
+    -fx-background-color: #ff9500;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+.two-factor .resend-button:hover {
+    -fx-background-color: #e68a00;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+@-fx-keyframes fadeIn {
+    from { -fx-opacity: 0; -fx-translate-y: 10; }
+    to { -fx-opacity: 1; -fx-translate-y: 0; }
+}
+
+/* Existing Styles (unchanged, moved below to reduce override risk) */
 #loginCard {
     -fx-background-size: cover;
     -fx-background-color: linear-gradient(to bottom right, #26a69a, #4fc3f7);
@@ -17,23 +111,20 @@
     -fx-underline: true;
 }
 
-/* General styles */
 .root {
     -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: #f4f4f9; /* Added to ensure root has a visible background */
 }
 
-/* Main Background - Subtle Gradient */
 #dashboardPane {
     -fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);
 }
 
-/* Sidebar styles */
 #sidebar {
     -fx-background-color: #00897b;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 4, 4);
 }
 
-/* Generic sidebar button style */
 .sidebar-button {
     -fx-background-color: transparent;
     -fx-text-fill: #ffffff;
@@ -49,7 +140,6 @@
     -fx-background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Users Button - Creative Design & Centered */
 #usersButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
@@ -71,9 +161,8 @@
     -fx-translate-y: -2;
 }
 
-/* Communities Button */
 #communitiesButton {
-    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-background-color: linear-gradient(to right, #00897b,  #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -93,7 +182,6 @@
     -fx-translate-y: -2;
 }
 
-/* Posts Button */
 #postsButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
@@ -115,7 +203,6 @@
     -fx-translate-y: -2;
 }
 
-/* Profile Button */
 #profileButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
@@ -137,7 +224,6 @@
     -fx-translate-y: -2;
 }
 
-/* Events Button */
 #eventsButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
@@ -159,7 +245,6 @@
     -fx-translate-y: -2;
 }
 
-/* Categories Button */
 #categoriesButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
@@ -181,7 +266,6 @@
     -fx-translate-y: -2;
 }
 
-/* Logout Button */
 .sidebar-button-logout {
     -fx-background-color: #d32f2f;
     -fx-text-fill: #ffffff;
@@ -203,7 +287,6 @@
     -fx-translate-y: -2;
 }
 
-/* Dashboard Header */
 #headerBox {
     -fx-background-color: #ffffff;
     -fx-background-radius: 15;
@@ -212,7 +295,6 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-/* Welcome Card */
 #welcomeCard {
     -fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb);
     -fx-background-radius: 15;
@@ -221,7 +303,6 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-/* User Management Section */
 #usersPane {
     -fx-background-color: #ffffff;
     -fx-background-radius: 12;
@@ -229,7 +310,6 @@
     -fx-padding: 25;
 }
 
-/* Action Button (Green for Edit, Add) */
 .action-button {
     -fx-background-color: #43a047;
     -fx-text-fill: #ffffff;
@@ -249,7 +329,6 @@
     -fx-translate-y: -1;
 }
 
-/* Delete Button (Red for Delete) */
 .delete-button {
     -fx-background-color: #d32f2f;
     -fx-text-fill: #ffffff;
@@ -269,7 +348,6 @@
     -fx-translate-y: -1;
 }
 
-/* Modern Table Styles */
 .data-table .column-header-background {
     -fx-background-color: #00897b;
     -fx-background-radius: 8 8 0 0;
@@ -322,7 +400,6 @@
     -fx-text-fill: #ffffff;
 }
 
-/* Specific column header styles */
 .data-column-header {
     -fx-alignment: CENTER;
 }
@@ -351,7 +428,6 @@
     -fx-alignment: CENTER;
 }
 
-/* Scrollbar styles */
 .data-table .scroll-bar:vertical, .data-table .scroll-bar:horizontal {
     -fx-pref-width: 10;
     -fx-pref-height: 10;
@@ -388,7 +464,6 @@
     -fx-background-color: #9e9e9e;
 }
 
-/* Pagination Styles */
 .pagination-control {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;
@@ -435,7 +510,6 @@
     -fx-scale-y: 0.8;
 }
 
-/* Input Field Base Styles */
 .text-input {
     -fx-font-size: 14px;
     -fx-padding: 8 10;
@@ -466,7 +540,6 @@
     -fx-font-style: normal;
 }
 
-/* ComboBox Styles */
 .combo-box {
     -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
@@ -489,7 +562,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
 }
 
-/* DatePicker Styles */
 .date-picker {
     -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
@@ -511,12 +583,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 2);
 }
 
-/* Management Pane */
 .management-pane {
     -fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);
 }
 
-/* Card Design for Forms */
 .card {
     -fx-background-color: linear-gradient(to bottom right, #ffffff, #e0f2f1);
     -fx-background-radius: 12;
@@ -524,7 +594,6 @@
     -fx-padding: 20;
 }
 
-/* Header Box */
 .header-box {
     -fx-background-color: #ffffff;
     -fx-background-radius: 15;

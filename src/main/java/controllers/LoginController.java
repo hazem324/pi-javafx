@@ -10,12 +10,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.mindrot.jbcrypt.BCrypt;
+import services.EmailService;
 import services.UserService;
 import utils.SessionManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
+import jakarta.mail.MessagingException;
 
 public class LoginController {
     @FXML
@@ -23,6 +26,9 @@ public class LoginController {
 
     @FXML
     private PasswordField passwordTF;
+
+    private final UserService userService = new UserService();
+    private final EmailService emailService = new EmailService();
 
     @FXML
     private void login(ActionEvent actionEvent) {
@@ -53,40 +59,48 @@ public class LoginController {
         }
 
         // Proceed with login
-        UserService us = new UserService();
         try {
-            User user = us.findByEmail(email);
-            User admin = us.findByEmail(email);
+            User user = userService.findByEmail(email);
             if (user != null) {
                 if (user.isBlocked()) {
                     showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
-                    return; // Prevent login for blocked users
+                    return;
                 }
                 if (BCrypt.checkpw(password, user.getPassword())) {
                     if (user.getRoles().contains("ROLE_ADMIN")) {
-                        showAlert(Alert.AlertType.INFORMATION, "Success!", "Welcome back, Administrator " + user.getFirstName() + "!");
-                        SessionManager.setCurrentUser(admin); // Store the admin in the session
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                        // Generate and send 2FA token
+                        String token = userService.generateTwoFactorToken();
+                        LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
+                        userService.updateTwoFactorToken(user.getId(), token, expiry);
                         try {
-                            Parent root = loader.load();
-                            emailTF.getScene().setRoot(root);
-                        } catch (IOException e) {
-                            showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load dashboard: " + e.getMessage());
+                            emailService.sendTwoFactorEmail(user.getEmail(), token);
+                        } catch (MessagingException e) {
+                            showAlert(Alert.AlertType.ERROR, "Error", "Failed to send 2FA email: " + e.getMessage());
+                            return;
                         }
+
+                        // Store user temporarily in SessionManager
+                        SessionManager.getInstance().setCurrentUser(user);
+
+                        // Navigate to 2FA view
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/TwoFactorAuth.fxml"));
+                        Parent root = loader.load();
+                        TwoFactorAuthController controller = loader.getController();
+                        controller.setUser(user);
+                        emailTF.getScene().setRoot(root);
                     } else {
                         showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access the admin dashboard.");
                     }
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid password. Please try again!");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Invalid password. Please try again!");
                     passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
                 }
             } else {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "User not found. Please check your email or sign up!");
+                showAlert(Alert.AlertType.ERROR, "Error", "User not found. Please check your email or sign up!");
                 emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
             }
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Database error during login: " + e.getMessage());
+        } catch (SQLException | IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error during login: " + e.getMessage());
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         }
     }
@@ -98,7 +112,7 @@ public class LoginController {
             Parent root = loader.load();
             emailTF.getScene().setRoot(root);
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Failed to load signup page: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load signup page: " + e.getMessage());
         }
     }
 
@@ -114,7 +128,6 @@ public class LoginController {
         alert.setHeaderText(null);
         alert.setContentText(content);
 
-        // Style the alert based on type
         alert.getDialogPane().setStyle("-fx-font-family: 'System'; -fx-font-size: 14px;");
         if (type == Alert.AlertType.INFORMATION) {
             alert.getDialogPane().lookupButton(ButtonType.OK).setStyle("-fx-background-color: #90EE90; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;");

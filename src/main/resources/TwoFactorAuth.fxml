@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f4f4f9;" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TwoFactorAuthController">
+    <children>
+        <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-border-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-padding: 30; -fx-max-width: 400;" spacing="20.0" alignment="CENTER">
+            <children>
+                <Label text="Two-Factor Authentication" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" />
+                <Label text="Enter the 6-digit code sent to your email" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 14px; -fx-text-fill: #666666; -fx-max-width: 300; -fx-wrap-text: true; -fx-text-alignment: center;" />
+                <TextField fx:id="tokenTF" promptText="Enter code" style="-fx-background-color: #f8f9fa; -fx-border-color: #ced4da; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 16px; -fx-padding: 12 15 12 15; -fx-prompt-text-fill: #888888; -fx-text-fill: #1a1a1a;" />
+                <Label fx:id="timerLabel" text="Code expires in: 2:00" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 13px; -fx-text-fill: #666666;" />
+                <HBox alignment="CENTER" spacing="15.0">
+                    <Button fx:id="verifyButton" onAction="#verifyToken" style="-fx-background-color: #007bff; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20 10 20; -fx-cursor: hand;">
+                        <graphic>
+                            <ImageView fitWidth="20.0" fitHeight="20.0">
+                                <image>
+                                    <Image url="@/images/verify-icon.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="resendButton" onAction="#resendToken" style="-fx-background-color: #ff9500; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20 10 20; -fx-cursor: hand;">
+                        <graphic>
+                            <ImageView fitWidth="20.0" fitHeight="20.0">
+                                <image>
+                                    <Image url="@/images/resend-icon.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@/css/styles.css" />
+    </stylesheets>
+</VBox>

@@ -1,5 +1,6 @@
 package entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class User {
     private boolean isBlocked;
     private String profileIMG;
     private List<String> roles;
+    private String twoFactorToken;
+    private LocalDateTime twoFactorTokenExpiry;
 
     public User(int id, String firstName, String lastName, String email, String password, boolean isVerified, boolean isBlocked, String profileIMG, List<String> roles) {
         this.id = id;
@@ -128,4 +131,11 @@ public class User {
     public void setRoles(List<String> roles) {
         this.roles = roles != null ? new ArrayList<>(roles) : new ArrayList<>();
     }
+
+
+    public String getTwoFactorToken() { return twoFactorToken; }
+    public void setTwoFactorToken(String twoFactorToken) { this.twoFactorToken = twoFactorToken; }
+
+    public LocalDateTime getTwoFactorTokenExpiry() { return twoFactorTokenExpiry; }
+    public void setTwoFactorTokenExpiry(LocalDateTime twoFactorTokenExpiry) { this.twoFactorTokenExpiry = twoFactorTokenExpiry; }
 }

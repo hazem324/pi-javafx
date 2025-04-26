@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
@@ -33,7 +35,60 @@
                         </font>
                     </Label>
                     <HBox HBox.hgrow="ALWAYS" />
-                    <Button fx:id="addUserButton" onAction="#addUser" text="Add User" styleClass="action-button" />
+                    <!-- Add User Button -->
+                    <Button fx:id="addUserButton" onAction="#addUser" styleClass="export-button excel-button">
+                        <graphic>
+                            <HBox spacing="8" alignment="CENTER">
+                                <ImageView>
+                                    <image>
+                                        <Image url="@/images/add-user-icon.png" />
+                                    </image>
+                                    <fitWidth>24</fitWidth>
+                                    <fitHeight>24</fitHeight>
+                                </ImageView>
+                                <Label text="Add User" styleClass="export-text" />
+                            </HBox>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Add a new user" />
+                        </tooltip>
+                    </Button>
+                    <!-- Export to Excel Button -->
+                    <Button fx:id="exportExcelButton" onAction="#exportToExcel" styleClass="export-button excel-button">
+                        <graphic>
+                            <HBox spacing="8" alignment="CENTER">
+                                <ImageView>
+                                    <image>
+                                        <Image url="@/images/excel-icon.png" />
+                                    </image>
+                                    <fitWidth>24</fitWidth>
+                                    <fitHeight>24</fitHeight>
+                                </ImageView>
+                                <Label text="Export to Excel" styleClass="export-text" />
+                            </HBox>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Export user list to Excel (.xlsx)" />
+                        </tooltip>
+                    </Button>
+                    <!-- Export to PDF Button -->
+                    <Button fx:id="exportPdfButton" onAction="#exportToPDF" styleClass="export-button pdf-button">
+                        <graphic>
+                            <HBox spacing="8" alignment="CENTER">
+                                <ImageView>
+                                    <image>
+                                        <Image url="@/images/pdf-icon.png" />
+                                    </image>
+                                    <fitWidth>24</fitWidth>
+                                    <fitHeight>24</fitHeight>
+                                </ImageView>
+                                <Label text="Export to PDF" styleClass="export-text" />
+                            </HBox>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Export user list to PDF" />
+                        </tooltip>
+                    </Button>
                 </HBox>
                 <TableView fx:id="usersTable" prefHeight="750.0" prefWidth="1600.0" styleClass="data-table" VBox.vgrow="ALWAYS">
                     <columns>
@@ -42,8 +97,8 @@
                         <TableColumn fx:id="lastNameColumn" prefWidth="150.0" text="Last Name" />
                         <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Email" />
                         <TableColumn fx:id="rolesColumn" prefWidth="150.0" text="Roles" />
-                        <TableColumn fx:id="isBlockedColumn" prefWidth="100.0" text="Blocked" />
-                        <TableColumn fx:id="actionsColumn" prefWidth="250.0" text="Actions" />
+                        <TableColumn fx:id="isBlockedColumn" prefWidth="100.0" text="Status" />
+                        <TableColumn fx:id="actionsColumn" prefWidth="300.0" text="Actions" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
