@@ -29,6 +29,7 @@
                 <Button fx:id="postsButton" onAction="#showPosts" text="Posts" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="eventsButton" onAction="#showEvents" text="Events" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="categoriesButton" onAction="#showCategories" text="Categories" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="productCategoriesButton" onAction="#showProductCategories" text="Product Category" styleClass="sidebar-button" prefWidth="Infinity" />
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>

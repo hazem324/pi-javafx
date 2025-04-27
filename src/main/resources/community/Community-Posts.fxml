@@ -13,17 +13,17 @@
       stylesheets="@../assets/style/CommunityPosts.css"
       styleClass="community-posts-page">
 
-<!--    &lt;!&ndash; Top Bar &ndash;&gt;-->
-<!--    <HBox styleClass="top-bar" VBox.vgrow="NEVER">-->
-<!--        <HBox HBox.hgrow="ALWAYS">-->
-<!--            <Text fx:id="communityName" styleClass="page-title"/>-->
-<!--        </HBox>-->
-<!--        <HBox spacing="10" alignment="CENTER_RIGHT">-->
-<!--            <ImageView fx:id="userAvatar" fitWidth="30" fitHeight="30" preserveRatio="true"/>-->
-<!--            <Text fx:id="userName" styleClass="user-name"/>-->
-<!--            <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>-->
-<!--        </HBox>-->
-<!--    </HBox>-->
+    <!-- Top Bar -->
+    <HBox styleClass="top-bar" VBox.vgrow="NEVER">
+        <HBox HBox.hgrow="ALWAYS">
+            <Text fx:id="communityName" styleClass="page-title"/>
+        </HBox>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <ImageView fx:id="userAvatar" fitWidth="30" fitHeight="30" preserveRatio="true"/>
+            <Text fx:id="userName" styleClass="user-name"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
+        </HBox>
+    </HBox>
 
     <HBox spacing="0" VBox.vgrow="ALWAYS">
         <!-- Left Sidebar -->
@@ -56,4 +56,4 @@
             </VBox>
         </ScrollPane>
     </HBox>
-</VBox>
+</VBox> 

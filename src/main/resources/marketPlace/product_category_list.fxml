@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="20" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.marketplace.ProductCategoryController">
+    <Label text="Product Categories" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Button fx:id="addButton" text="Add Category" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 6;" onAction="#showAddForm"/>
+    <TableView fx:id="categoryTable" style="-fx-border-color: #dee2e6; -fx-border-radius: 6;">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+            <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="400"/>
+            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="200"/>
+        </columns>
+    </TableView>
+</VBox>

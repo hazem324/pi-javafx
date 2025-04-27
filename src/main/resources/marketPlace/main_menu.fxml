@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.*?>
+
+<?import java.lang.String?>
+
+<BorderPane
+ xmlns="http://javafx.com/javafx" 
+           fx:id="bp"
+            prefHeight="600.0"
+            prefWidth="800.0"
+xmlns:fx="http://javafx.com/fxml"
+ stylesheets="/assets/style/category_styles.css"
+fx:controller="controllers.marketplace.MainMenuController">
+
+<center>
+    <VBox spacing="20" alignment="CENTER" style="-fx-background-color: linear-gradient(to bottom right, #d1fae5, #a7f3d0);" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="40" right="20" bottom="40" left="20"/>
+        </padding>
+        <Pane style="-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-padding: 15;">
+            <HBox alignment="CENTER">
+                <Label text="Main Menu" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10b981; -fx-font-family: 'Inter', 'Roboto', sans-serif;"/>
+            </HBox>
+        </Pane>
+        <VBox spacing="15" alignment="CENTER" styleClass="premium-form-card">
+            <Button text="Manage Product Categories" onAction="#openCategoryUI" styleClass="green-button" prefWidth="300"/>
+            <Button text="Manage Products" onAction="#openProductUI" styleClass="green-button" prefWidth="300"/>
+        </VBox>
+    </VBox>
+
+</center>
+</BorderPane>

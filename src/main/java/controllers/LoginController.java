@@ -67,8 +67,11 @@ public class LoginController {
                     return;
                 }
                 if (BCrypt.checkpw(password, user.getPassword())) {
+                    // Store user in SessionManager
+                    SessionManager.getInstance().setCurrentUser(user);
+
                     if (user.getRoles().contains("ROLE_ADMIN")) {
-                        // Generate and send 2FA token
+                        // Generate and send 2FA token for admin
                         String token = userService.generateTwoFactorToken();
                         LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
                         userService.updateTwoFactorToken(user.getId(), token, expiry);
@@ -79,17 +82,19 @@ public class LoginController {
                             return;
                         }
 
-                        // Store user temporarily in SessionManager
-                        SessionManager.getInstance().setCurrentUser(user);
-
-                        // Navigate to 2FA view
+                        // Navigate to 2FA view for admin
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/TwoFactorAuth.fxml"));
                         Parent root = loader.load();
                         TwoFactorAuthController controller = loader.getController();
                         controller.setUser(user);
                         emailTF.getScene().setRoot(root);
+                    } else if (user.getRoles().contains("ROLE_STUDENT")) {
+                        // Navigate to student dashboard
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
+                        Parent root = loader.load();
+                        emailTF.getScene().setRoot(root);
                     } else {
-                        showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access the admin dashboard.");
+                        showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access this application.");
                     }
                 } else {
                     showAlert(Alert.AlertType.ERROR, "Error", "Invalid password. Please try again!");

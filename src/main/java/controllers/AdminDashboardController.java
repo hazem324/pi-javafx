@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.marketplace.ProductCategoryManagementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AdminDashboardController {
-    @FXML private BorderPane dashboardPane; // Main container
+    @FXML private BorderPane dashboardPane;
     @FXML private VBox sidebar;
     @FXML private Button usersButton;
     @FXML private Button profileButton;
@@ -22,19 +23,19 @@ public class AdminDashboardController {
     @FXML private Button postsButton;
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
+    @FXML private Button productCategoriesButton;
     @FXML private Button logoutButton;
-    @FXML private Label adminLabel; // In the header
+    @FXML private Label adminLabel;
     @FXML private VBox center;
 
     public void setCenterContent(javafx.scene.Node node) {
-        center.getChildren().setAll(node);
+        System.out.println("Setting center content: " + node);
+        dashboardPane.setCenter(node);
     }
 
     @FXML
     public void initialize() {
-        // Set the admin role label (or get from logged-in user data)
         adminLabel.setText("Admin");
-        // Optionally load a default view like the user management view on startup
         loadView("/UserManagementView.fxml");
     }
 
@@ -76,14 +77,32 @@ public class AdminDashboardController {
     public void showCategories(ActionEvent actionEvent) {
         loadView("/event-category/CategoryManagementView.fxml");
     }
-
+    @FXML
+    public void showProductCategories(ActionEvent actionEvent) {
+        System.out.println("showProductCategories called");
+        try {
+            java.net.URL resourceUrl = getClass().getResource("/marketPlace/ProductCategoryManagementView.fxml");
+            if (resourceUrl == null) {
+                throw new IllegalStateException("Resource not found: /marketPlace/ProductCategoryManagementView.fxml");
+            }
+            System.out.println("Loading resource: " + resourceUrl);
+            FXMLLoader loader = new FXMLLoader(resourceUrl);
+            Parent root = loader.load();
+            ProductCategoryManagementController categoryController = loader.getController();
+            System.out.println("Setting dashboardController for categoryController: this = " + this);
+            categoryController.setDashboardController(this);
+            dashboardPane.setCenter(root);
+            System.out.println("Product category view set to dashboardPane. Scene: " + (dashboardPane.getScene() != null ? "Attached" : "Not attached"));
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            showError("Failed to load product category management view: " + e.getMessage());
+        }
+    }
     @FXML
     public void logout(ActionEvent actionEvent) {
         try {
-            // Ensure Login.fxml is in the correct resource path
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
             Parent root = loader.load();
-            // Get the current stage and set the new scene
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(new javafx.scene.Scene(root));
             stage.setTitle("Login");
@@ -98,14 +117,15 @@ public class AdminDashboardController {
 
     private void loadView(String fxmlPath) {
         try {
-            // Debug: Print the resource path being loaded
             java.net.URL resourceUrl = getClass().getResource(fxmlPath);
             if (resourceUrl == null) {
                 throw new IllegalStateException("Resource not found: " + fxmlPath);
             }
+            System.out.println("Loading resource: " + resourceUrl);
             FXMLLoader loader = new FXMLLoader(resourceUrl);
             Parent viewRoot = loader.load();
             dashboardPane.setCenter(viewRoot);
+            System.out.println("View " + fxmlPath + " set to dashboardPane. Scene: " + (dashboardPane.getScene() != null ? "Attached" : "Not attached"));
         } catch (IOException e) {
             e.printStackTrace();
             showError("Failed to load view: " + fxmlPath + "\n" + e.getMessage());

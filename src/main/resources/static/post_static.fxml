@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/17"
+            prefHeight="600.0"
+            prefWidth="800.0"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.statistique.PostStaticController"
+            stylesheets="/assets/style/post_static.css">
+    <!-- Left: Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar">
+            <Button text="Dashboard" styleClass="sidebar-button" />
+            <Button text="Communities" styleClass="sidebar-button" />
+            <Button text="Posts" styleClass="sidebar-button" />
+        </VBox>
+    </left>
+
+    <!-- Center: Main Content -->
+    <center>
+    <ScrollPane fitToHeight="true" fitToWidth="false" pannable="true" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
+        <VBox fx:id="content" prefWidth="1500"> <!-- tu peux ajuster la largeur ici -->
+            <!-- Navbar -->
+            <HBox fx:id="navbar" styleClass="navbar">
+                <Label text="Tableau de Bord des Statistiques" styleClass="navbar-title" />
+            </HBox>
+
+            <!-- Main Content -->
+            <VBox fx:id="mainContent" styleClass="main-content">
+                <!-- Cards -->
+                <GridPane hgap="20" vgap="20" styleClass="cards-grid">
+                    <children>
+                        <!-- Total Communities Card -->
+                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="card">
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label text="👥" styleClass="card-icon" />
+                                <VBox>
+                                    <Label text="Total des Communautés" styleClass="card-label" />
+                                    <Label fx:id="totalCommunities" text="0" styleClass="card-value" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Total Posts Card -->
+                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card">
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label text="📄" styleClass="card-icon" />
+                                <VBox>
+                                    <Label text="Total des Publications" styleClass="card-label" />
+                                    <Label fx:id="totalPosts" text="0" styleClass="card-value" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </children>
+                </GridPane>
+
+                <!-- Charts -->
+                <GridPane hgap="20" vgap="20" styleClass="charts-grid">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50" />
+                        <ColumnConstraints percentWidth="50" />
+                    </columnConstraints>
+                    <children>
+                        <!-- Community Pie Chart -->
+                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="chart-container">
+                            <Label text="Répartition des Publications par Communauté" styleClass="chart-title" />
+                            <StackPane fx:id="communityChartContainer" minWidth="500" minHeight="500">
+                                <PieChart fx:id="communityPieChart" legendSide="BOTTOM" />
+                            </StackPane>
+                        </VBox>
+
+                        <!-- User Pie Chart -->
+                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="chart-container">
+                            <Label text="Répartition des Publications par Utilisateur" styleClass="chart-title" />
+                            <StackPane fx:id="userChartContainer" minWidth="500" minHeight="500">
+                                <PieChart fx:id="userPieChart" legendSide="BOTTOM" />
+                            </StackPane>
+                        </VBox>
+                    </children>
+                </GridPane>
+            </VBox>
+
+            <!-- Footer -->
+            <HBox fx:id="footer" styleClass="footer">
+                <Label text="© 2025 Dashboard. Tous droits réservés." styleClass="footer-text" />
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</center>
+</BorderPane>

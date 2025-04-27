@@ -36,44 +36,15 @@ public class OrderService {
 
     public void supprimer(Order order) throws SQLException {
         String sqlCart = "DELETE FROM cart WHERE order_id = ?";
+        PreparedStatement psCart = cnx.prepareStatement(sqlCart);
+        psCart.setInt(1, order.getId());
+        psCart.executeUpdate();
+
         String sqlOrder = "DELETE FROM `order` WHERE id = ?";
-
-        Connection cnx = null;
-        PreparedStatement psCart = null;
-        PreparedStatement psOrder = null;
-
-        try {
-            cnx = MyDatabase.getInstance().getCnx(); // ou ton gestionnaire de connexion
-            cnx.setAutoCommit(false); // début de la transaction
-
-            // Supprimer les lignes du panier associées à la commande
-            psCart = cnx.prepareStatement(sqlCart);
-            psCart.setInt(1, order.getId());
-            psCart.executeUpdate();
-
-            // Supprimer la commande elle-même
-            psOrder = cnx.prepareStatement(sqlOrder);
-            psOrder.setInt(1, order.getId());
-            psOrder.executeUpdate();
-
-            cnx.commit(); // valider la transaction
-        } catch (SQLException e) {
-            if (cnx != null) {
-                try {
-                    cnx.rollback(); // annuler les changements en cas d'erreur
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            throw e; // relancer l'exception après rollback
-        } finally {
-            // fermer les ressources
-            if (psCart != null) try { psCart.close(); } catch (SQLException e) { e.printStackTrace(); }
-            if (psOrder != null) try { psOrder.close(); } catch (SQLException e) { e.printStackTrace(); }
-            if (cnx != null) try { cnx.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
-        }
+        PreparedStatement psOrder = cnx.prepareStatement(sqlOrder);
+        psOrder.setInt(1, order.getId());
+        psOrder.executeUpdate();
     }
-
 
 
 

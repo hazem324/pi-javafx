@@ -117,8 +117,9 @@ public class UserService implements Service<User> {
             return new User(id, firstName, lastName, email, password, isVerified, isBlocked, profileIMG, roles);
         }
 
-        return null; // Changed to return null instead of throwing exception
+        throw new SQLException("User not found");
     }
+
 
     public void updateBlockStatus(int userId, boolean isBlocked) throws SQLException {
         String sql = "UPDATE user SET is_blocked = ? WHERE id = ?";

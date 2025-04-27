@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="20" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.marketplace.ProductCategoryController">
+    <Label fx:id="formTitle" text="Add/Edit Category" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <VBox spacing="10">
+        <Label text="Name" style="-fx-font-size: 14px;"/>
+        <TextField fx:id="nameField" promptText="Enter category name" style="-fx-border-color: #dee2e6; -fx-border-radius: 4;"/>
+    </VBox>
+    <VBox spacing="10">
+        <Label text="Description" style="-fx-font-size: 14px;"/>
+        <TextArea fx:id="descriptionField" promptText="Enter description" wrapText="true" style="-fx-border-color: #dee2e6; -fx-border-radius: 4;" prefHeight="100"/>
+    </VBox>
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="saveButton" text="Save" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 6;" onAction="#handleSave"/>
+        <Button fx:id="cancelButton" text="Back to List" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 6;" onAction="#showListView"/>
+    </HBox>
+</VBox>

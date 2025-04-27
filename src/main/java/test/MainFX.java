@@ -23,7 +23,9 @@ public class MainFX extends Application {
     public void start(Stage stage) {
         try {
             System.out.println("Loading FXML...");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SignUp.fxml"));
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+
             Parent root = loader.load();
 
             System.out.println("Creating scene...");

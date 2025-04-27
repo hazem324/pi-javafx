@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.sideBar.MainSidebar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +27,8 @@ public class CommunityListController {
     private Text userName;
     @FXML
     private ImageView userAvatar;
+    private  MainSidebar mainSidebar;
+    @FXML
 
     private final CommunityService communityService = new CommunityService();
   //  private final UserService userService = new UserService();
@@ -115,7 +118,9 @@ public class CommunityListController {
             e.printStackTrace();
         }
     }
-
+    public void setMainSidebarController(MainSidebar mainSidebar) {
+        this.mainSidebar = mainSidebar;
+    }
     @FXML
     private void goToHome() {
         try {
