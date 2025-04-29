@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" styleClass="community-list-page" stylesheets="@/assets/style/CommunityList.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CommunityListController">
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" styleClass="community-list-page" stylesheets="@/assets/style/CommunityList.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.community.CommunityListController">
     <center>
         <!-- Main Content Area -->
         <AnchorPane>

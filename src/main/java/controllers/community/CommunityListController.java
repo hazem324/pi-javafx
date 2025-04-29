@@ -1,8 +1,10 @@
-package controllers;
+package controllers.community;
 
 import controllers.sideBar.MainSidebar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +17,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.Community;
 import services.CommunityService;
+import javafx.scene.image.Image;
+import javafx.scene.text.Font;
+
 //import services.UserService;
 
 import java.io.IOException;
@@ -66,21 +71,45 @@ public class CommunityListController {
     }
 
     private VBox createCommunityCard(Community community) {
-        VBox card = new VBox(10);
-        card.getStyleClass().add("community-card");
-        
-        Label nameLabel = new Label(community.getName());
-        nameLabel.getStyleClass().add("community-name");
-        
-        Label categoryLabel = new Label(community.getCategory().getValue());
-        categoryLabel.getStyleClass().add("community-category");
-        
-        card.getChildren().addAll(nameLabel, categoryLabel);
-        
-        card.setOnMouseClicked(event -> showCommunityDetails(community));
-        
-        return card;
+    VBox card = new VBox(10);
+    card.getStyleClass().add("community-card");
+    card.setPadding(new Insets(10));
+    card.setAlignment(Pos.TOP_CENTER);
+    card.setPrefWidth(220);
+    card.setPrefHeight(220);
+
+    // Image (Banner)
+    ImageView imageView = new ImageView();
+    imageView.setFitWidth(180);
+    imageView.setFitHeight(115);
+    imageView.setPreserveRatio(true);
+    imageView.setPickOnBounds(true);
+
+    if (community.getBanner() != null && !community.getBanner().isEmpty()) {
+        try {
+            Image image = new Image(community.getBanner(), true);
+            imageView.setImage(image);
+        } catch (Exception e) {
+            System.err.println("Failed to load image: " + e.getMessage());
+        }
     }
+
+    // Name Label
+    Label nameLabel = new Label(community.getName());
+    nameLabel.getStyleClass().add("community-name");
+    nameLabel.setFont(Font.font("Cambria", 24));
+
+    // Category Label
+    Label categoryLabel = new Label(community.getCategory().getValue());
+    categoryLabel.getStyleClass().add("community-category");
+    categoryLabel.setFont(Font.font("Cambria Bold", 18));
+
+    card.getChildren().addAll(nameLabel, imageView, categoryLabel);
+    card.setOnMouseClicked(event -> showCommunityDetails(community));
+
+    return card;
+}
+
 
     private void showCommunityDetails(Community community) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

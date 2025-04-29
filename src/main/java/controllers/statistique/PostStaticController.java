@@ -6,6 +6,11 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.Node;
+import services.PostStatsService;
+import models.UserPostStats;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class PostStaticController {
 
@@ -28,82 +33,91 @@ public class PostStaticController {
     private StackPane userChartContainer;
 
     private Label tooltipLabel;
+    private PostStatsService postStatsService;
 
     @FXML
     public void initialize() {
+        // Initialize PostStatsService
+        postStatsService = new PostStatsService();
+
         // Initialize tooltip label
         tooltipLabel = new Label();
         tooltipLabel.setStyle("-fx-background-color: #333333; -fx-text-fill: #ffffff; -fx-font-size: 12; -fx-padding: 5; -fx-background-radius: 5; -fx-opacity: 0.9;");
         tooltipLabel.setVisible(false);
 
-        // Static data for testing
-        int totalCommunitiesCount = 10;
-        int totalPostsCount = 100;
+        try {
+            // Fetch total communities and posts
+            int totalCommunitiesCount = postStatsService.getTotalCommunities();
+            int totalPostsCount = postStatsService.getTotalPosts();
 
-        // Static data for community pie chart
-        PieChart.Data[] communityData = {
-            new PieChart.Data("Community A", 30),
-            new PieChart.Data("Community B", 20),
-            new PieChart.Data("Community C", 15),
-            new PieChart.Data("Community D", 10)
-        };
+            // Update labels
+            totalCommunities.setText(String.valueOf(totalCommunitiesCount));
+            totalPosts.setText(String.valueOf(totalPostsCount));
 
-        // Static data for user pie chart
-        PieChart.Data[] userData = {
-            new PieChart.Data("John Doe", 25),
-            new PieChart.Data("Jane Smith", 20),
-            new PieChart.Data("Alice Johnson", 15),
-            new PieChart.Data("Bob Brown", 10)
-        };
+            // Fetch user post stats
+            List<UserPostStats> userStats = postStatsService.getUserPostStats();
 
-        // Update UI
-        totalCommunities.setText(String.valueOf(totalCommunitiesCount));
-        totalPosts.setText(String.valueOf(totalPostsCount));
+            // Populate user pie chart
+            for (UserPostStats stat : userStats) {
+                PieChart.Data data = new PieChart.Data(stat.getFullName(), stat.getPostCount());
+                userPieChart.getData().add(data);
+            }
+            userPieChart.setPrefSize(500, 500);
+            userPieChart.setMinSize(500, 500);
 
-        // Populate community pie chart
-        communityPieChart.getData().addAll(communityData);
-        communityPieChart.setPrefSize(500, 500); // Larger chart size
-        communityPieChart.setMinSize(500, 500); // Ensure minimum size
+            // Note: Community pie chart data is commented out in the service.
+            // If you uncomment and use getCommunityPostStats(), you can populate communityPieChart similarly:
+            /*
+            List<CommunityPostStats> communityStats = postStatsService.getCommunityPostStats();
+            for (CommunityPostStats stat : communityStats) {
+                PieChart.Data data = new PieChart.Data(stat.getCommunityName(), stat.getPostCount());
+                communityPieChart.getData().add(data);
+            }
+            communityPieChart.setPrefSize(500, 500);
+            communityPieChart.setMinSize(500, 500);
+            */
 
-        // Populate user pie chart
-        userPieChart.getData().addAll(userData);
-        userPieChart.setPrefSize(500, 500); // Larger chart size
-        userPieChart.setMinSize(500, 500); // Ensure minimum size
+            // Add hover effects for user pie chart
+            for (PieChart.Data data : userPieChart.getData()) {
+                Node node = data.getNode();
+                node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+                    tooltipLabel.setText(data.getName() + ": " + (int)data.getPieValue() + " posts");
+                    tooltipLabel.setVisible(true);
+                    tooltipLabel.setTranslateX(event.getX());
+                    tooltipLabel.setTranslateY(event.getY() - 20);
+                });
+                node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+                    tooltipLabel.setVisible(false);
+                });
+            }
 
-        // Add hover effects for community pie chart
-        for (PieChart.Data data : communityPieChart.getData()) {
-            Node node = data.getNode();
-            node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-                tooltipLabel.setText(data.getName() + ": " + (int)data.getPieValue() + " posts");
-                tooltipLabel.setVisible(true);
-                tooltipLabel.setTranslateX(event.getX());
-                tooltipLabel.setTranslateY(event.getY() - 20);
-            });
-            node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-                tooltipLabel.setVisible(false);
-            });
-        }
+            // Add hover effects for community pie chart (if used)
+            for (PieChart.Data data : communityPieChart.getData()) {
+                Node node = data.getNode();
+                node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+                    tooltipLabel.setText(data.getName() + ": " + (int)data.getPieValue() + " posts");
+                    tooltipLabel.setVisible(true);
+                    tooltipLabel.setTranslateX(event.getX());
+                    tooltipLabel.setTranslateY(event.getY() - 20);
+                });
+                node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+                    tooltipLabel.setVisible(false);
+                });
+            }
 
-        // Add hover effects for user pie chart
-        for (PieChart.Data data : userPieChart.getData()) {
-            Node node = data.getNode();
-            node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-                tooltipLabel.setText(data.getName() + ": " + (int)data.getPieValue() + " posts");
-                tooltipLabel.setVisible(true);
-                tooltipLabel.setTranslateX(event.getX());
-                tooltipLabel.setTranslateY(event.getY() - 20);
-            });
-            node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-                tooltipLabel.setVisible(false);
-            });
-        }
+            // Add tooltip label to the scene
+            if (communityPieChart.getParent() instanceof StackPane) {
+                ((StackPane) communityPieChart.getParent()).getChildren().add(tooltipLabel);
+            }
+            if (userPieChart.getParent() instanceof StackPane) {
+                ((StackPane) userPieChart.getParent()).getChildren().add(tooltipLabel);
+            }
 
-        // Add tooltip label to the scene (assuming charts are in StackPanes)
-        if (communityPieChart.getParent() instanceof StackPane) {
-            ((StackPane) communityPieChart.getParent()).getChildren().add(tooltipLabel);
-        }
-        if (userPieChart.getParent() instanceof StackPane) {
-            ((StackPane) userPieChart.getParent()).getChildren().add(tooltipLabel);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Optionally, show an alert to the user
+            // Example: Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to load statistics: " + e.getMessage());
+            // alert.showAndWait();
         }
     }
 }

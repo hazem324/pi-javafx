@@ -1,6 +1,5 @@
 package controllers.sideBar;
 
-import controllers.CommunityListController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
 
 import java.io.IOException;
+
+import controllers.community.CommunityListController;
 
 public class MainSidebar {
 

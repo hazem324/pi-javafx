@@ -1,4 +1,4 @@
-package controllers;
+package controllers.community;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,7 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.net.URL;
-
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,8 +17,10 @@ import models.Community;
 import models.Post;
 import models.PostComment;
 import models.User;
+import models.Likes;
 import services.CommunityService;
 import services.PostService;
+import services.LikesService;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class CommunityPostsController {
 
     private final CommunityService communityService = new CommunityService();
     private final PostService postService = new PostService();
+    private final LikesService likesService = new LikesService();
     private Community currentCommunity;
     private File selectedImageFile;
     private String imageUrl;
@@ -81,7 +83,6 @@ public class CommunityPostsController {
             postsContainer.getChildren().add(postNode);
         }
     }
-
 
     private HBox createCommentNode(PostComment comment) {
         HBox commentNode = new HBox(10);
@@ -263,10 +264,16 @@ public class CommunityPostsController {
         return postNode;
     }
 
-
     private void handleLike(Post post) throws SQLException {
-        if (postService.likePost(post.getId())) {
+        // Check if the user has already liked the post
+        if (!likesService.hasLiked(post.getId(), String.valueOf(USER_ID))) {
+            // Create a new like
+            Likes like = new Likes(post.getId(), String.valueOf(USER_ID));
+            likesService.ajouter(like);
+            // Reload posts to update the like count
             loadPosts();
+        } else {
+            showAlert("Info", "You have already liked this post.");
         }
     }
 
