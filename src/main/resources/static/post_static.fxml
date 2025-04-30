@@ -12,18 +12,10 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.statistique.PostStaticController"
             stylesheets="/assets/style/post_static.css">
-    <!-- Left: Sidebar -->
-    <left>
-        <VBox fx:id="sidebar" styleClass="sidebar">
-            <Button text="Dashboard" styleClass="sidebar-button" />
-            <Button text="Communities" styleClass="sidebar-button" />
-            <Button text="Posts" styleClass="sidebar-button" />
-        </VBox>
-    </left>
 
     <!-- Center: Main Content -->
     <center>
-    <ScrollPane fitToHeight="true" fitToWidth="false" pannable="true" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
+   <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
         <VBox fx:id="content" prefWidth="1500"> <!-- tu peux ajuster la largeur ici -->
             <!-- Navbar -->
             <HBox fx:id="navbar" styleClass="navbar">
@@ -33,31 +25,28 @@
             <!-- Main Content -->
             <VBox fx:id="mainContent" styleClass="main-content">
                 <!-- Cards -->
-                <GridPane hgap="20" vgap="20" styleClass="cards-grid">
-                    <children>
-                        <!-- Total Communities Card -->
-                        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="card">
-                            <HBox alignment="CENTER_LEFT" spacing="10">
-                                <Label text="👥" styleClass="card-icon" />
-                                <VBox>
-                                    <Label text="Total des Communautés" styleClass="card-label" />
-                                    <Label fx:id="totalCommunities" text="0" styleClass="card-value" />
-                                </VBox>
-                            </HBox>
-                        </VBox>
-
-                        <!-- Total Posts Card -->
-                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card">
-                            <HBox alignment="CENTER_LEFT" spacing="10">
-                                <Label text="📄" styleClass="card-icon" />
-                                <VBox>
-                                    <Label text="Total des Publications" styleClass="card-label" />
-                                    <Label fx:id="totalPosts" text="0" styleClass="card-value" />
-                                </VBox>
-                            </HBox>
-                        </VBox>
-                    </children>
-                </GridPane>
+              <GridPane hgap="20" vgap="20" styleClass="cards-grid" prefHeight="100.0">
+    <children>
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="card" prefWidth="250" prefHeight="80">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="👥" styleClass="card-icon" />
+                <VBox>
+                    <Label text="Total des Communautés" styleClass="card-label" />
+                    <Label fx:id="totalCommunities" text="0" styleClass="card-value" />
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card" prefWidth="250" prefHeight="80">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="📄" styleClass="card-icon" />
+                <VBox>
+                    <Label text="Total des Publications" styleClass="card-label" />
+                    <Label fx:id="totalPosts" text="0" styleClass="card-value" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </children>
+</GridPane>
 
                 <!-- Charts -->
                 <GridPane hgap="20" vgap="20" styleClass="charts-grid">
@@ -84,11 +73,6 @@
                     </children>
                 </GridPane>
             </VBox>
-
-            <!-- Footer -->
-            <HBox fx:id="footer" styleClass="footer">
-                <Label text="© 2025 Dashboard. Tous droits réservés." styleClass="footer-text" />
-            </HBox>
         </VBox>
     </ScrollPane>
 </center>

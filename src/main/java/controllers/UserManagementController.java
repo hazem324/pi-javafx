@@ -67,6 +67,7 @@ public class UserManagementController {
     private final UserService userService = new UserService();
     private final ObservableList<User> usersOnPage = FXCollections.observableArrayList();
 
+
     @FXML
     public void initialize() {
         setupTableColumns();

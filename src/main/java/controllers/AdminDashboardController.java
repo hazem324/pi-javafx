@@ -20,6 +20,8 @@ public class AdminDashboardController {
     @FXML private Button usersButton;
     @FXML private Button profileButton;
     @FXML private Button communitiesButton;
+    @FXML private Button requestButton;
+    @FXML private Button communitiesStatButton;
     @FXML private Button postsButton;
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
@@ -61,6 +63,16 @@ public class AdminDashboardController {
     @FXML
     public void showCommunities(ActionEvent actionEvent) {
         loadView("/community/CommunityManagementView.fxml");
+    }
+
+    @FXML
+    public void showCommunitiesStat(ActionEvent actionEvent){
+         loadView("/static/post_static.fxml");
+    }
+
+    @FXML
+    public void showRequest(ActionEvent actionEvent){
+
     }
 
     @FXML

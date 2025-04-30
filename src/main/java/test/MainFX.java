@@ -7,14 +7,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+
+import entities.User;
+
 
 public class MainFX extends Application {
 
+    
     // Étape 1 : Déclarer un stage statique
     public static Stage primaryStage;
 
     public static void main(String[] args) {
+       
         System.out.println("Launching application...");
         launch(args);
     }

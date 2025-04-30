@@ -1,6 +1,7 @@
 package controllers.community;
 
 import controllers.sideBar.MainSidebar;
+import entities.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -9,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -16,16 +19,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.Community;
+import utils.SessionManager;
 import services.CommunityService;
+import services.JoinRequestService;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
 //import services.UserService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CommunityListController {
+
+    private User userLogin;
+    
+
     @FXML
     private GridPane communitiesGrid;
     @FXML
@@ -36,6 +46,7 @@ public class CommunityListController {
     @FXML
 
     private final CommunityService communityService = new CommunityService();
+    private final JoinRequestService joinRequestService = new JoinRequestService();
   //  private final UserService userService = new UserService();
 
     @FXML
@@ -43,6 +54,8 @@ public class CommunityListController {
       //  loadUserInfo();
         loadCommunities();
     }
+     
+
 
     /*private void loadUserInfo() {
         // Load current user info
@@ -111,31 +124,102 @@ public class CommunityListController {
 }
 
 
-    private void showCommunityDetails(Community community) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Community Details");
-        alert.setHeaderText(community.getName());
-        
-        VBox content = new VBox(10);
-        content.getStyleClass().add("alert-dialog");
-        
-        Label descriptionLabel = new Label("Description: " + community.getDescription());
+private void showCommunityDetails(Community community) {
+
+   userLogin = SessionManager.getCurrentUser();
+
+     userLogin.getId();
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Community Details");
+        dialog.setResizable(true);
+
+        // Custom dialog pane content
+        VBox content = new VBox(20);
+        content.setPadding(new Insets(20));
+        content.setAlignment(Pos.TOP_CENTER);
+        content.setPrefWidth(500);
+        content.setPrefHeight(500);
+
+        // Image view (banner)
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(200);
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+
+        if (community.getBanner() != null && !community.getBanner().isEmpty()) {
+            try {
+                imageView.setImage(new Image(community.getBanner(), true));
+            } catch (Exception e) {
+                System.err.println("Error loading image: " + e.getMessage());
+            }
+        }
+
+        // Name label
+        Label nameLabel = new Label(community.getName());
+        nameLabel.setFont(Font.font("Cambria", 26));
+        nameLabel.getStyleClass().add("alert-title");
+
+        // Description
+        Label descriptionLabel = new Label("Description:\n" + community.getDescription());
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setFont(Font.font("System", 14));
         descriptionLabel.getStyleClass().add("alert-description");
-        
-        Label categoryLabel = new Label("Category: " + community.getCategory());
+
+        // Category
+        Label categoryLabel = new Label("Category: " + community.getCategory().getValue());
+        categoryLabel.setFont(Font.font("System", 14));
         categoryLabel.getStyleClass().add("alert-description");
-        
-        Button joinButton = new Button("Request to Join");
+
+        // Join button
+        Button joinButton = new Button("🚀 Request to Join");
         joinButton.getStyleClass().add("join-button");
         joinButton.setOnAction(event -> {
-            // Implement join request logic here
-            alert.close();
+            if (userLogin.getId() < 0) {
+                showAlert(Alert.AlertType.ERROR, "Error", "You must be logged in to join a community.");
+                return;
+            }
+
+            // Call sendJoinRequest with userId and communityId
+            String result;
+            try {
+                result = joinRequestService.sendJoinRequest(userLogin.getId(),community.getId());
+                showAlert(Alert.AlertType.INFORMATION, "Join Request", result);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            dialog.close();
         });
-        
-        content.getChildren().addAll(descriptionLabel, categoryLabel, joinButton);
-        alert.getDialogPane().setContent(content);
+
+        content.getChildren().addAll(imageView, nameLabel, descriptionLabel, categoryLabel, joinButton);
+
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+
+        // Load custom CSS
+        try {
+            String cssPath = getClass().getResource("/assets/style/CommunityList.css").toExternalForm();
+            dialog.getDialogPane().getStylesheets().add(cssPath);
+        } catch (NullPointerException e) {
+            System.err.println("CSS file not found: CommunityList.css");
+        }
+
+        dialog.showAndWait();
+    }
+
+    // Helper method to show alerts
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
         alert.showAndWait();
     }
+
+
+
 
     @FXML
     private void goToProfile() {
