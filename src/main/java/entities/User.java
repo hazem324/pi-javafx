@@ -132,10 +132,24 @@ public class User {
         this.roles = roles != null ? new ArrayList<>(roles) : new ArrayList<>();
     }
 
+    public String getTwoFactorToken() {
+        return twoFactorToken;
+    }
 
-    public String getTwoFactorToken() { return twoFactorToken; }
-    public void setTwoFactorToken(String twoFactorToken) { this.twoFactorToken = twoFactorToken; }
+    public void setTwoFactorToken(String twoFactorToken) {
+        this.twoFactorToken = twoFactorToken;
+    }
 
-    public LocalDateTime getTwoFactorTokenExpiry() { return twoFactorTokenExpiry; }
-    public void setTwoFactorTokenExpiry(LocalDateTime twoFactorTokenExpiry) { this.twoFactorTokenExpiry = twoFactorTokenExpiry; }
+    public LocalDateTime getTwoFactorTokenExpiry() {
+        return twoFactorTokenExpiry;
+    }
+
+    public void setTwoFactorTokenExpiry(LocalDateTime twoFactorTokenExpiry) {
+        this.twoFactorTokenExpiry = twoFactorTokenExpiry;
+    }
+
+    // Added method to combine firstName and lastName as a username
+    public String getUsername() {
+        return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+    }
 }

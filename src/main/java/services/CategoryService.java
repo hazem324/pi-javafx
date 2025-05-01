@@ -44,23 +44,43 @@ public class CategoryService implements Service<Category> {
 
     @Override
     public List<Category> recuperer() throws SQLException {
-        List<Category> categories = new ArrayList<>();
-        String sql = "SELECT * FROM category";
-        Statement st = cnx.createStatement();
-        ResultSet rs = st.executeQuery(sql);
+        return getCategories(null);
+    }
 
-        while (rs.next()) {
-            Category c = new Category();
-            c.setId(rs.getInt("id"));
-            c.setName(rs.getString("name"));
-            c.setDescription(rs.getString("description"));
-            categories.add(c);
+    // Fetch categories with search
+    public List<Category> getCategories(String searchName) throws SQLException {
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT * FROM category WHERE 1=1";
+        List<String> conditions = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
+
+        if (searchName != null && !searchName.trim().isEmpty()) {
+            conditions.add("name LIKE ?");
+            parameters.add("%" + searchName.trim() + "%");
         }
 
+        if (!conditions.isEmpty()) {
+            sql += " AND " + String.join(" AND ", conditions);
+        }
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i + 1, parameters.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Category c = new Category();
+                    c.setId(rs.getInt("id"));
+                    c.setName(rs.getString("name"));
+                    c.setDescription(rs.getString("description"));
+                    categories.add(c);
+                }
+            }
+        }
         return categories;
     }
 
-    // Nouvelle méthode pour vérifier si une catégorie existe déjà
+    // Check if a category with the given name already exists
     public boolean categoryExists(String name) throws SQLException {
         String sql = "SELECT COUNT(*) FROM category WHERE name = ?";
         PreparedStatement ps = cnx.prepareStatement(sql);

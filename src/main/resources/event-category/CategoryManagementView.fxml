@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 
-<VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" styleClass="management-pane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CategoryManagementController">
+<VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" styleClass="management-pane" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CategoryManagementController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -38,16 +38,22 @@
                 <HBox spacing="15.0" alignment="CENTER_LEFT">
                     <children>
                         <TextField fx:id="nameField" promptText="Category Name" prefWidth="200.0" styleClass="text-input" />
-                        <TextArea fx:id="descriptionField" promptText="Category Description" prefWidth="400.0" prefHeight="100.0" styleClass="text-input" />
+                        <TextArea fx:id="descriptionField" promptText="Category Description" prefWidth="300.0" prefHeight="100.0" styleClass="text-input" />
                         <Button fx:id="addButton" onAction="#addCategory" text="Add Category" styleClass="action-button" />
                     </children>
                 </HBox>
             </children>
         </VBox>
+        <!-- Search -->
+        <HBox spacing="15.0" alignment="CENTER_LEFT">
+            <children>
+                <TextField fx:id="searchField" promptText="Search by Name" prefWidth="200.0" styleClass="text-input" onAction="#searchCategories" />
+            </children>
+        </HBox>
         <!-- Category Table -->
-        <TableView fx:id="categoryTable" prefHeight="600.0" styleClass="data-table">
+        <TableView fx:id="categoryTable" prefHeight="800.0" styleClass="data-table">
             <columns>
-                <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name" styleClass="data-column-name" />
+                <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Name" styleClass="data-column-name" />
                 <TableColumn fx:id="descriptionColumn" prefWidth="300.0" text="Description" styleClass="data-column-name" />
                 <TableColumn fx:id="actionColumn" prefWidth="200.0" text="Actions" styleClass="data-column-actions" />
             </columns>
