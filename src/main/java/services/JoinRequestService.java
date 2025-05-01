@@ -61,27 +61,11 @@ public class JoinRequestService {
         }
     }
 
-    // // Clear existing join requests for a user and specific communities
-    // public void clearJoinRequests(int userId, int[] communityIds) throws SQLException {
-    //     String deleteSql = "DELETE FROM join_request WHERE user_id = ? AND community_id IN (?,?,?,?)";
-    //     try (PreparedStatement ps = cnx.prepareStatement(deleteSql)) {
-    //         ps.setInt(1, userId);
-    //         ps.setInt(2, communityIds[0]);
-    //         ps.setInt(3, communityIds[1]);
-    //         ps.setInt(4, communityIds[2]);
-    //         ps.setInt(5, communityIds[3]);
-    //         int rowsAffected = ps.executeUpdate();
-    //         System.out.println("Cleared " + rowsAffected + " existing join requests for userId=" + userId);
-    //     } catch (SQLException e) {
-    //         throw new SQLException("Error clearing join requests: " + e.getMessage());
-    //     }
-    // }
-
-    // Get all join requests with user name, community name, join date, and status
+    // Get all join requests with user full name, community name, join date, and status
     public List<JoinRequestDTO> getJoinRequests() throws SQLException {
         List<JoinRequestDTO> requests = new ArrayList<>();
         String sql = "SELECT jr.id, jr.user_id, jr.community_id, jr.join_date, jr.status, " +
-                     "u.first_name AS username, c.name AS community_name " +
+                     "CONCAT(u.first_name, ' ', u.last_name) AS username, c.name AS community_name " +
                      "FROM join_request jr " +
                      "JOIN user u ON jr.user_id = u.id " +
                      "JOIN community c ON jr.community_id = c.id";
@@ -90,7 +74,10 @@ public class JoinRequestService {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 JoinRequestDTO dto = new JoinRequestDTO();
-                dto.setUserName(rs.getString("username"));
+                dto.setId(rs.getInt("id"));
+                dto.setUserId(rs.getInt("user_id"));
+                dto.setCommunityId(rs.getInt("community_id"));
+                dto.setUserName(rs.getString("username")); // Now contains full name
                 dto.setCommunityName(rs.getString("community_name"));
                 dto.setJoinDate(rs.getTimestamp("join_date").toLocalDateTime());
                 dto.setStatus(rs.getString("status"));
@@ -103,11 +90,11 @@ public class JoinRequestService {
         return requests;
     }
 
-    // Get join requests filtered by status
+    // Get join requests filtered by status with user full name
     public List<JoinRequestDTO> getJoinRequestsByStatus(String status) throws SQLException {
         List<JoinRequestDTO> requests = new ArrayList<>();
         String sql = "SELECT jr.id, jr.user_id, jr.community_id, jr.join_date, jr.status, " +
-                     "u.first_name AS username, c.name AS community_name " +
+                     "CONCAT(u.first_name, ' ', u.last_name) AS username, c.name AS community_name " +
                      "FROM join_request jr " +
                      "JOIN user u ON jr.user_id = u.id " +
                      "JOIN community c ON jr.community_id = c.id " +
@@ -118,7 +105,10 @@ public class JoinRequestService {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     JoinRequestDTO dto = new JoinRequestDTO();
-                    dto.setUserName(rs.getString("username"));
+                    dto.setId(rs.getInt("id"));
+                    dto.setUserId(rs.getInt("user_id"));
+                    dto.setCommunityId(rs.getInt("community_id"));
+                    dto.setUserName(rs.getString("username")); // Now contains full name
                     dto.setCommunityName(rs.getString("community_name"));
                     dto.setJoinDate(rs.getTimestamp("join_date").toLocalDateTime());
                     dto.setStatus(rs.getString("status"));
@@ -132,7 +122,7 @@ public class JoinRequestService {
         return requests;
     }
 
-    // udate request status
+    // Update request status
     public void updateRequestStatus(int requestId, String newStatus) throws SQLException {
         String updateSql = "UPDATE join_request SET status = ? WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(updateSql)) {
@@ -142,8 +132,8 @@ public class JoinRequestService {
         }
     }
     
-     // get request status 
-     public String getRequestStatus(int requestId) throws SQLException {
+    // Get request status 
+    public String getRequestStatus(int requestId) throws SQLException {
         String sql = "SELECT status FROM join_request WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setInt(1, requestId);
@@ -155,7 +145,6 @@ public class JoinRequestService {
         }
         return null;
     }
-
 
     // Accept a join request
     public String acceptRequest(int requestId, int userId, int communityId) throws SQLException {
@@ -204,5 +193,31 @@ public class JoinRequestService {
         updateRequestStatus(requestId, "rejected");
     
         return "Join request rejected successfully.";
+    }
+
+    // remove user form community 
+    public String removeUserFromCommunity(int userId, int communityId) throws SQLException {
+        
+        System.out.println("Attempting to remove user: user_id=" + userId + ", community_id=" + communityId);
+
+        String deleteSql = "DELETE FROM community_members WHERE user_id = ? AND community_id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(deleteSql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, communityId);
+            int rowsAffected = ps.executeUpdate();
+            
+            // Debugging: Log the result
+            System.out.println("Rows affected: " + rowsAffected);
+            
+            if (rowsAffected > 0) {
+                return "User removed from community successfully.";
+            } else {
+                return "User not found in community.";
+            }
+        } catch (SQLException e) {
+            // Debugging: Log the exception
+            System.err.println("SQLException: " + e.getMessage());
+            throw new SQLException("Error removing user from community: " + e.getMessage());
+        }
     }
 }

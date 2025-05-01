@@ -395,6 +395,16 @@
     -fx-translate-y: -1;
 }
 
+/* Accept button (green background) */
+.action-button:not(.reject-button):not(.remove-button) {
+    -fx-background-color: #28a745; /* Green */
+}
+
+/* Reject button (red background) */
+.reject-button {
+    -fx-background-color: #dc3545; /* Red */
+}
+
 .delete-button {
     -fx-background-color: #d32f2f;
     -fx-text-fill: #ffffff;
