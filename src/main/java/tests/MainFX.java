@@ -14,8 +14,11 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        primaryStage = stage;
-        chargerVue("/CartView.fxml");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/CartView.fxml"));
+        Parent root = loader.load();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Test Panier avec Code Promo");
+        stage.show();
     }
 
     public static void chargerVue(String fxmlPath) throws IOException, IOException {
