@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.CartController">
 
-    <top>
-        <Label text="Panier"
-               BorderPane.alignment="CENTER"
-               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0AAE61;">
-            <padding>
-                <Insets top="20" bottom="20"/>
-            </padding>
-        </Label>
-    </top>
-
-
     <center>
-        <VBox spacing="10" >
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-            <TableView fx:id="cartTable" prefHeight="300" prefWidth="600">
+        <VBox spacing="15" prefHeight="400" alignment="TOP_CENTER">
+            <!-- TableView panier -->
+            <TableView fx:id="cartTable" prefHeight="200" prefWidth="600">
                 <columns>
-                    <TableColumn text="Produit" fx:id="colProduct" prefWidth="150"/>
-                    <TableColumn text="Prix (TND)" fx:id="colPrice" prefWidth="100"/>
-                    <TableColumn text="Quantité" fx:id="colQuantity" prefWidth="150"/>
-                    <TableColumn text="Total Produit" fx:id="colTotal" prefWidth="100"/>
-                    <TableColumn text="Actions" fx:id="colActions" prefWidth="99"/>
+                    <TableColumn fx:id="colProduct" text="Produit" prefWidth="150"/>
+                    <TableColumn fx:id="colPrice" text="Prix (TND)" prefWidth="100"/>
+                    <TableColumn fx:id="colQuantity" text="Quantité" prefWidth="100"/>
+                    <TableColumn fx:id="colTotal" text="Total Produit" prefWidth="100"/>
+                    <TableColumn fx:id="colActions" text="Actions" prefWidth="150"/>
                 </columns>
             </TableView>
 
+<<<<<<< HEAD
             <AnchorPane fx:id="couponBoxContainer" prefHeight="100" />
 
             <HBox spacing="15" alignment="CENTER_RIGHT">
                 <Label text="Total général :" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                 <Label fx:id="totalLabel" text="0.00 TND" style="-fx-text-fill: #0AAE61; -fx-font-size: 16px;" />
+=======
+            <!-- Total général -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="Total général :" />
+                <Label fx:id="totalLabel" text="0.00 TND" style="-fx-text-fill: green;"/>
+            </HBox>
+
+            <!-- Code promo -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Code promo :" />
+                <TextField fx:id="couponField" promptText="ex: ABC123" prefWidth="150"/>
+                <Button fx:id="applyCouponButton" text="Appliquer"/>
+                <Label fx:id="couponMessageLabel" text="" style="-fx-text-fill: green;" />
+>>>>>>> 883efa75746e56c179df011441aca9294b738776
             </HBox>
         </VBox>
     </center>
 
     <bottom>
+<<<<<<< HEAD
         <HBox spacing="20" alignment="CENTER" >
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
@@ -62,3 +63,14 @@
         </HBox>
     </bottom>
 </BorderPane>
+=======
+        <HBox spacing="15" alignment="CENTER">
+            <Button text="Valider ma commande" onAction="#onValider" />
+            <Button text="Vider le panier" onAction="#onVider" />
+            <Button text="Voir mes commandes" onAction="#onAfficherCommandes" />
+            <Button text="Continuer vos achats" onAction="#onContinuer" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
+>>>>>>> 883efa75746e56c179df011441aca9294b738776
