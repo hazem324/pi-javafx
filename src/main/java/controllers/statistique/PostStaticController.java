@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.Node;
 import services.PostStatsService;
 import models.UserPostStats;
+import models.statique.CommunityPostStats;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -67,7 +68,7 @@ public class PostStaticController {
 
             // Note: Community pie chart data is commented out in the service.
             // If you uncomment and use getCommunityPostStats(), you can populate communityPieChart similarly:
-            /*
+            
             List<CommunityPostStats> communityStats = postStatsService.getCommunityPostStats();
             for (CommunityPostStats stat : communityStats) {
                 PieChart.Data data = new PieChart.Data(stat.getCommunityName(), stat.getPostCount());
@@ -75,7 +76,7 @@ public class PostStaticController {
             }
             communityPieChart.setPrefSize(500, 500);
             communityPieChart.setMinSize(500, 500);
-            */
+            
 
             // Add hover effects for user pie chart
             for (PieChart.Data data : userPieChart.getData()) {

@@ -72,7 +72,7 @@ public class AdminDashboardController {
 
     @FXML
     public void showRequest(ActionEvent actionEvent){
-
+         loadView("/community/RequestManagement.fxml");
     }
 
     @FXML

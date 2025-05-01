@@ -1,5 +1,6 @@
 package services;
 
+import models.statique.CommunityPostStats;
 import models.UserPostStats;
 import utils.MyDatabase;
 
@@ -42,23 +43,28 @@ public class PostStatsService {
         return 0;
     }
 
-    // // Get post counts per community
-    // public List<CommunityPostStats> getCommunityPostStats() throws SQLException {
-    //     List<CommunityPostStats> stats = new ArrayList<>();
-    //     String sql = "SELECT c.name AS community_name, COUNT(p.id) AS post_count " +
-    //                  "FROM communities c LEFT JOIN posts p ON c.id = p.community_id " +
-    //                  "GROUP BY c.id, c.name";
-    //     try (PreparedStatement ps = cnx.prepareStatement(sql);
-    //          ResultSet rs = ps.executeQuery()) {
-    //         while (rs.next()) {
-    //             CommunityPostStats stat = new CommunityPostStats();
-    //             stat.setCommunityName(rs.getString("community_name"));
-    //             stat.setPostCount(rs.getInt("post_count"));
-    //             stats.add(stat);
-    //         }
-    //     }
-    //     return stats;
-    // }
+    // Get post counts per community
+    public List<CommunityPostStats> getCommunityPostStats() throws SQLException {
+    List<CommunityPostStats> stats = new ArrayList<>();
+    String sql = "SELECT c.name AS community_name, COUNT(p.id) AS post_count " +
+                 "FROM community c LEFT JOIN post p ON c.id = p.community_id " +
+                 "GROUP BY c.id, c.name";
+    
+    try (PreparedStatement ps = cnx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            CommunityPostStats stat = new CommunityPostStats();
+            stat.setCommunityName(rs.getString("community_name"));
+            stat.setPostCount(rs.getInt("post_count"));
+            stats.add(stat);
+        }
+    } catch (SQLException e) {
+        // Log the error and rethrow to be handled by the caller
+        System.err.println("Error fetching community post stats: " + e.getMessage());
+        throw e;
+    }
+    return stats;
+}
 
     // Get post counts per user
     public List<UserPostStats> getUserPostStats() throws SQLException {
