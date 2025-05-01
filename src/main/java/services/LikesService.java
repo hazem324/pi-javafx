@@ -118,6 +118,43 @@ public class LikesService implements IService<Likes> {
         }
     }
 
+    // New method to remove a like by postId and userId
+    public void removeLike(int postId, String userId) throws SQLException {
+        // Start a transaction
+        cnx.setAutoCommit(false);
+        try {
+            // 1. Delete the like
+            String deleteSql = "DELETE FROM likes WHERE post_id = ? AND user_id = ?";
+            try (PreparedStatement ps = cnx.prepareStatement(deleteSql)) {
+                ps.setInt(1, postId);
+                ps.setString(2, userId);
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("Like not found for post_id " + postId + " and user_id " + userId);
+                }
+            }
+
+            // 2. Decrement the likes count in the posts table
+            String updateSql = "UPDATE post SET likes = likes - 1 WHERE id = ?";
+            try (PreparedStatement ps = cnx.prepareStatement(updateSql)) {
+                ps.setInt(1, postId);
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("Post with id " + postId + " not found");
+                }
+            }
+
+            // Commit the transaction
+            cnx.commit();
+        } catch (SQLException e) {
+            // Rollback the transaction on error
+            cnx.rollback();
+            throw e;
+        } finally {
+            cnx.setAutoCommit(true);
+        }
+    }
+
     @Override
     public List<Likes> recuperer() throws SQLException {
         List<Likes> likes = new ArrayList<>();

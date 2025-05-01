@@ -2,41 +2,16 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controllers.community.CommunityPostsController"
-      stylesheets="@../assets/style/CommunityPosts.css"
-      styleClass="community-posts-page">
-
-    <!-- Top Bar -->
-    <HBox styleClass="top-bar" VBox.vgrow="NEVER">
-        <HBox HBox.hgrow="ALWAYS">
-            <Text fx:id="communityName" styleClass="page-title"/>
-        </HBox>
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <ImageView fx:id="userAvatar" fitWidth="30" fitHeight="30" preserveRatio="true"/>
-            <Text fx:id="userName" styleClass="user-name"/>
-            <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
-        </HBox>
-    </HBox>
-
-    <HBox spacing="0" VBox.vgrow="ALWAYS">
-        <!-- Left Sidebar -->
-        <VBox styleClass="side-nav" prefWidth="250">
-            <Button text="Profil" onAction="#goToProfile" styleClass="nav-button"/>
-            <Button text="Home" onAction="#goToHome" styleClass="nav-button"/>
-            <Button text="Liste des Communautés" onAction="#showAllCommunities" styleClass="nav-button"/>
-            <Button text="Mes Communautés" onAction="#showMyCommunities" styleClass="nav-button"/>
-            <Button text="Logout" onAction="#handleLogout" styleClass="nav-button"/>
-        </VBox>
-
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0"
+            styleClass="community-posts-page" stylesheets="@/assets/style/CommunityPosts.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.community.CommunityPostsController">
+    <center>
         <!-- Main Content Area -->
-        <ScrollPane HBox.hgrow="ALWAYS" styleClass="content-scroll">
+        <ScrollPane prefHeight="600.0" prefWidth="800.0" styleClass="content-scroll" HBox.hgrow="ALWAYS">
             <VBox styleClass="content-container">
                 <!-- New Post Form -->
                 <VBox styleClass="new-post-container">
@@ -49,11 +24,11 @@
                     <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="200" preserveRatio="true" visible="false"/>
                 </VBox>
 
-                <!-- Posts Timeline -->
+                
                 <VBox fx:id="postsContainer" styleClass="timeline-container">
-                    <!-- Posts will be added dynamically -->
+                   
                 </VBox>
             </VBox>
         </ScrollPane>
-    </HBox>
-</VBox> 
+    </center>
+</BorderPane>

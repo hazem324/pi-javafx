@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" 
+styleClass="my-community-list-page" stylesheets="@/assets/style/MyCommunityList.css"
+ xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="controllers.community.MyCommunityController">
+    <center>
+        <!-- Main Content Area -->
+        <AnchorPane>
+            <ScrollPane prefHeight="600.0" prefWidth="1074.0" styleClass="content-scroll" style="-fx-padding: 10px;" HBox.hgrow="ALWAYS">
+                <content>
+                    <GridPane fx:id="MYcommunityGrid" hgap="20" vgap="20" alignment="TOP_CENTER" styleClass="community-grid" />
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+    </center>
+</BorderPane>

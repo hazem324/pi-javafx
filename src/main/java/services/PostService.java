@@ -4,7 +4,7 @@ import interfaces.IService;
 import models.Community;
 import models.Post;
 import models.PostComment;
-import models.User;
+import entities.*;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -99,8 +99,9 @@ public class PostService implements IService<Post> {
                 "FROM post p " +
                 "LEFT JOIN community c ON p.community_id = c.id " +
                 "LEFT JOIN user u ON p.user_id = u.id " +
-                (communityId > 0 ? "WHERE p.community_id = ?" : "");
-
+                (communityId > 0 ? "WHERE p.community_id = ? " : "") +
+                "ORDER BY p.creation_date DESC";
+    
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             if (communityId > 0) {
                 ps.setInt(1, communityId);
@@ -110,35 +111,35 @@ public class PostService implements IService<Post> {
                     Post post = new Post();
                     post.setId(rs.getInt("id"));
                     post.setContent(rs.getString("content"));
-                    post.setPostImg(rs.getString("post_img")); // Fixed line
+                    post.setPostImg(rs.getString("post_img"));
                     Timestamp creationTs = rs.getTimestamp("creation_date");
                     post.setCreationDate(creationTs != null ? creationTs.toLocalDateTime() : null);
                     Timestamp modificationTs = rs.getTimestamp("modification_date");
                     post.setModificationDate(modificationTs != null ? modificationTs.toLocalDateTime() : null);
                     post.setLikes(rs.getObject("likes") != null ? rs.getInt("likes") : 0);
-
+    
                     // Set Community
                     Community community = new Community();
                     community.setId(rs.getInt("community_id"));
                     community.setName(rs.getString("community_name"));
                     post.setCommunity(community);
-
+    
                     // Set Author
                     User user = new User();
                     user.setId(rs.getInt("user_id"));
                     user.setFirstName(rs.getString("first_name"));
                     user.setLastName(rs.getString("last_name"));
                     post.setUser(user);
-
                     // Fetch comments
                     post.setPostComments(getCommentsByPostId(post.getId()));
-
+    
                     posts.add(post);
                 }
             }
         }
         return posts;
     }
+    
 
     public List<PostSummary> getPostAuthorContentCommunity() throws SQLException {
         List<PostSummary> summaries = new ArrayList<>();
@@ -247,5 +248,64 @@ public class PostService implements IService<Post> {
             }
         }
         return comments;
+    }
+
+    // New method to get a post by ID
+    public Post getPostById(int id) throws SQLException {
+        String sql = "SELECT p.id, p.content, p.post_img, p.creation_date, p.modification_date, p.likes, " +
+                "p.community_id, p.user_id, c.name AS community_name, u.first_name, u.last_name " +
+                "FROM post p " +
+                "LEFT JOIN community c ON p.community_id = c.id " +
+                "LEFT JOIN user u ON p.user_id = u.id " +
+                "WHERE p.id = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setContent(rs.getString("content"));
+                    post.setPostImg(rs.getString("post_img"));
+                    Timestamp creationTs = rs.getTimestamp("creation_date");
+                    post.setCreationDate(creationTs != null ? creationTs.toLocalDateTime() : null);
+                    Timestamp modificationTs = rs.getTimestamp("modification_date");
+                    post.setModificationDate(modificationTs != null ? modificationTs.toLocalDateTime() : null);
+                    post.setLikes(rs.getObject("likes") != null ? rs.getInt("likes") : 0);
+
+                    // Set Community
+                    Community community = new Community();
+                    community.setId(rs.getInt("community_id"));
+                    community.setName(rs.getString("community_name"));
+                    post.setCommunity(community);
+
+                    // Set Author
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setFirstName(rs.getString("first_name"));
+                    user.setLastName(rs.getString("last_name"));
+                    post.setUser(user);
+
+                    // Fetch comments
+                    post.setPostComments(getCommentsByPostId(post.getId()));
+
+                    return post;
+                }
+            }
+        }
+        return null;
+    }
+
+    // New method to get the latest post ID
+    public int getLatestPostId() throws SQLException {
+        String sql = "SELECT id FROM post ORDER BY id DESC LIMIT 1";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        }
+        throw new SQLException("No posts found in the database");
     }
 }

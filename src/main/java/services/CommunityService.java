@@ -6,8 +6,6 @@ import models.Community;
 import utils.MyDatabase;
 
 import java.sql.*;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +108,39 @@ public class CommunityService implements IService<Community> {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public List<Community> getUserCommunity(int userId) {
+        List<Community> communities = new ArrayList<>();
+        String sql = "SELECT c.id, c.name, c.description, c.banner, c.creation_date, c.category " +
+                     "FROM community c " +
+                     "INNER JOIN community_members cm ON c.id = cm.community_id " +
+                     "WHERE cm.user_id = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    String banner = rs.getString("banner");
+                    Timestamp ts = rs.getTimestamp("creation_date");
+                    LocalDateTime creationDate = ts != null ? ts.toLocalDateTime() : null;
+                    String categoryStr = rs.getString("category");
+                    CategoryGrp category = CategoryGrp.valueOf(categoryStr); // Ensure DB string matches enum
+
+                    Community community = new Community(name, description, banner, creationDate, category);
+                    community.setId(id);
+                    communities.add(community);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Replace with proper logging if needed
+        }
+
+        return communities;
     }
 
 }
