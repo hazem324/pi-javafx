@@ -71,4 +71,28 @@ public class OrderService {
         }
         return -1;
     }
+
+    public void ajouterTracking(int orderId, String status) {
+        String req = "INSERT INTO tracking_event (order_id, status) VALUES (?, ?)";
+        try (PreparedStatement ps = MyDatabase.getInstance().getCnx().prepareStatement(req)) {
+            ps.setInt(1, orderId);
+            ps.setString(2, status);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erreur ajout tracking : " + e.getMessage());
+        }
+    }
+
+    public void updateOrderStatus(int orderId, String newStatus) {
+        String sql = "UPDATE `order` SET status = ? WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, newStatus);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

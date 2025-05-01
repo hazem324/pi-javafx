@@ -1,5 +1,9 @@
 package models;
 
+import services.ProductService;
+
+import java.sql.SQLException;
+
 public class Cart {
     private int id;
     private int userId;
@@ -37,4 +41,9 @@ public class Cart {
     public void setPrice(double price) { this.price = price; }
     public void setTotal(double total) { this.total = total; }
     public void setProductQuantity(int productQuantity) { this.productQuantity = productQuantity; }
+
+    public String getProductName() throws SQLException {
+        return new ProductService().getProductById(this.getProductId()).getProductName();
+    }
+
 }

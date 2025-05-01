@@ -4,20 +4,26 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import models.Cart;
 import models.Order;
 import models.Product;
-import services.CartService;
-import services.OrderService;
-import services.ProductService;
+import models.User;
+import services.*;
 import tests.MainFX;
 import utils.CartStorage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartController {
@@ -30,14 +36,40 @@ public class CartController {
     @FXML private TableColumn<Cart, Void> colActions;
     @FXML private Label totalLabel;
 
+    @FXML
+    private AnchorPane couponBoxContainer;
+
     private final CartService cartService = new CartService();
     private final ProductService productService = new ProductService();
+    private String appliedCouponCode = null;
+
+    private double total;
+    private double initialTotal;
+    @FXML
+    private Button validerBtn;
 
     @FXML
     public void initialize() {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainFX.class.getResource("/coupon_box.fxml"));
+            Parent couponBox = loader.load();
+            CouponController couponController = loader.getController();
+            couponController.setCartController(this);
+            couponBoxContainer.getChildren().setAll(couponBox);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         setupTable();
         loadCartItems();
     }
+
+    public void applyDiscount(double percent, String code) {
+        total = initialTotal * (1 - percent / 100);
+        totalLabel.setText("Total avec réduction : " + String.format("%.2f", total) + " TND");
+        appliedCouponCode = code;
+    }
+
 
     private void setupTable() {
         colProduct.setCellValueFactory(data -> {
@@ -48,8 +80,10 @@ public class CartController {
                 return new SimpleStringProperty("Produit inconnu");
             }
         });
+
         colPrice.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getPrice()).asObject());
         colQuantity.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getProductQuantity()).asObject());
+
         colQuantity.setCellFactory(param -> new TableCell<>() {
             private final Spinner<Integer> quantitySpinner = new Spinner<>();
             private final Button modifierBtn = new Button("Modifier");
@@ -68,6 +102,7 @@ public class CartController {
                             showAlert("La quantité doit être au minimum 1 !");
                             return;
                         }
+
                         Product p = new ProductService().getProductById(cart.getProductId());
                         if (newQty > p.getProductStock()) {
                             showAlert("Quantité demandée dépasse le stock disponible !");
@@ -112,6 +147,7 @@ public class CartController {
         });
 
         colTotal.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getTotal()).asObject());
+
         colActions.setCellFactory(param -> new TableCell<>() {
             private final Button supprimerBtn = new Button("Supprimer");
 
@@ -134,14 +170,14 @@ public class CartController {
                 setGraphic(empty ? null : supprimerBtn);
             }
         });
-
     }
 
     private void loadCartItems() {
         try {
             List<Cart> panier = CartStorage.panier;
             cartTable.getItems().setAll(panier);
-            double total = panier.stream().mapToDouble(Cart::getTotal).sum();
+            initialTotal = panier.stream().mapToDouble(Cart::getTotal).sum();
+            total = initialTotal;
             totalLabel.setText(String.format("%.2f TND", total));
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,24 +191,49 @@ public class CartController {
                 new Alert(Alert.AlertType.WARNING, "Votre panier est vide !").show();
                 return;
             }
+
+            // ✅ Récupérer l'utilisateur connecté (ex. ID=1 temporaire)
+            User utilisateur = new UserService().getUserById(1);
+
+            double total = CartStorage.panier.stream().mapToDouble(Cart::getTotal).sum();
+
+            // ✅ Création de la commande
             OrderService orderService = new OrderService();
             CartService cartService = new CartService();
 
             Order order = new Order();
-            order.setUserId(1);
-            order.setCreationDate(java.time.LocalDateTime.now().toString());
+            order.setUserId(utilisateur.getId());
+            order.setCreationDate(LocalDateTime.now().toString());
             order.setStatus("en attente");
-            order.setTotalPrice(CartStorage.panier.stream().mapToDouble(Cart::getTotal).sum());
+            order.setTotalPrice(total);
 
             int orderId = orderService.ajouterEtRetournerId(order);
 
+            // Copier les produits du panier avant clear()
+            List<Cart> copiePanier = new ArrayList<>();
             for (Cart c : CartStorage.panier) {
-                c.setOrderId(orderId);
-                cartService.ajouter(c);
+                Cart copie = new Cart();
+                copie.setProductId(c.getProductId());
+                copie.setProductQuantity(c.getProductQuantity());
+                copie.setPrice(c.getPrice());
+                copie.setTotal(c.getTotal());
+                copie.setUserId(utilisateur.getId());
+                copie.setOrderId(orderId);
+                cartService.ajouter(copie);
+                copiePanier.add(copie);
             }
-
             CartStorage.panier.clear();
-            MainFX.chargerVue("/ConfirmationCommande.fxml");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConfirmationCommande.fxml"));
+            Parent root = loader.load();
+
+            ConfirmationCommandeController controller = loader.getController();
+            String nomComplet = utilisateur.getFirstName() + " " + utilisateur.getLastName();
+            controller.setCommandeData(orderId, nomComplet, utilisateur.getEmail());
+
+            Stage stage = (Stage) cartTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Confirmation de commande");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -203,6 +264,7 @@ public class CartController {
             e.printStackTrace();
         }
     }
+
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Quantité invalide");
@@ -210,5 +272,20 @@ public class CartController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void cancelDiscount() {
+        total = initialTotal;
+        totalLabel.setText(String.format("%.2f TND", total));
+    }
+
+    @FXML
+    private void onSuivreCommande() {
+        try {
+            MainFX.chargerVue("/TrackingView.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

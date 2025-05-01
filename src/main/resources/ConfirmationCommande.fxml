@@ -21,12 +21,24 @@
            style="-fx-font-size: 14px; -fx-text-fill: #555;"/>
 
     <HBox alignment="CENTER" spacing="15">
-        <Button text="Retour aux produits"
+
+        <Button fx:id="btnRetourProduits"
+                text="Retour aux produits"
                 onAction="#onRetourProduits"
                 style="-fx-background-color: #0AAE61; -fx-text-fill: white;"/>
 
-        <Button text="Voir mes commandes"
+        <Button fx:id="btnVoirCommandes"
+                text="Voir mes commandes"
                 onAction="#onVoirCommandes"
                 style="-fx-background-color: #3498DB; -fx-text-fill: white;"/>
+
+        <Button text="Télécharger la facture (PDF)"
+                onAction="#handleGenererPDF"
+                layoutX="400" layoutY="250" prefWidth="220"/>
+
+        <Button text="Envoyer facture par mail"
+                onAction="#onEnvoyerEmail" />
+
     </HBox>
+
 </VBox>

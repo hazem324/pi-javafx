@@ -28,7 +28,8 @@
         <columns>
             <TableColumn fx:id="colId" prefWidth="50" text="ID" />
             <TableColumn fx:id="colDate" prefWidth="180" text="Date de Création" />
-            <TableColumn fx:id="colStatut" prefWidth="120" text="Statut" />
+            <TableColumn fx:id="colStatut" prefWidth="150" text="Statut" />
+            <TableColumn fx:id="colChangerStatut" prefWidth="220" text="Changer Statut" />
             <TableColumn fx:id="colTotal" prefWidth="130" text="Total Prix (TND)" />
             <TableColumn fx:id="colActions" prefWidth="100" text="Actions" />
             <TableColumn fx:id="colDetails" prefWidth="100" text="Voir détails" />

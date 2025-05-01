@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.CouponController"
+      spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Code promo :" />
+        <TextField fx:id="couponField" promptText="Entrez votre code" onKeyReleased="#onTypingCoupon"/>
+        <Button fx:id="applyBtn" text="Appliquer" onAction="#applyCoupon"/>
+        <Button fx:id="cancelBtn" text="Annuler" onAction="#cancelCoupon" visible="false"/>
+    </HBox>
+
+    <Label fx:id="messageLabel"/>
+</VBox>

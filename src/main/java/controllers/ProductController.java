@@ -201,14 +201,20 @@ public class ProductController {
                 CartStorage.panier.add(item);
             }
 
-
-
             try {
-                MainFX.chargerVue("/CartView.fxml");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/CartView.fxml"));
+                Parent root = loader.load();
+
+                // Utilise un composant existant pour obtenir le stage courant
+                Stage stage = (Stage) productGrid.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Mon panier");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
 
         buttons.getChildren().addAll(quantityBox, editButton, deleteButton, addToCartButton);
         card.getChildren().addAll(imageView, nameLabel, descLabel, categoryLabel, priceLabel, stockLabel, buttons);
@@ -216,7 +222,7 @@ public class ProductController {
     }
 
 
-private void ajouterAuPanier(Product p) {
+    private void ajouterAuPanier(Product p) {
         try {
             MainFX.chargerVue("/CartView.fxml");
         } catch (IOException e) {
@@ -460,4 +466,13 @@ private void ajouterAuPanier(Product p) {
             e.printStackTrace();
         }
     }
+
+    public void reloadProducts() {
+        try {
+            refreshProductList();
+        } catch (Exception e) {
+            System.out.println("Erreur rechargement produits : " + e.getMessage());
+        }
+    }
+
 }
