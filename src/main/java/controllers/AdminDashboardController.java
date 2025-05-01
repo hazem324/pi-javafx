@@ -24,6 +24,7 @@ public class AdminDashboardController {
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
     @FXML private Button productCategoriesButton;
+    @FXML private Button securitySettingsButton;
     @FXML private Button logoutButton;
     @FXML private Label adminLabel;
     @FXML private VBox center;
@@ -77,6 +78,7 @@ public class AdminDashboardController {
     public void showCategories(ActionEvent actionEvent) {
         loadView("/event-category/CategoryManagementView.fxml");
     }
+
     @FXML
     public void showProductCategories(ActionEvent actionEvent) {
         System.out.println("showProductCategories called");
@@ -98,6 +100,27 @@ public class AdminDashboardController {
             showError("Failed to load product category management view: " + e.getMessage());
         }
     }
+
+    @FXML
+    public void showSecuritySettings(ActionEvent actionEvent) {
+        try {
+            java.net.URL resourceUrl = getClass().getResource("/SecuritySettings.fxml");
+            if (resourceUrl == null) {
+                throw new IllegalStateException("Resource not found: /SecuritySettings.fxml");
+            }
+            System.out.println("Loading resource: " + resourceUrl);
+            FXMLLoader loader = new FXMLLoader(resourceUrl);
+            Parent root = loader.load();
+            SecuritySettingsController controller = loader.getController();
+            controller.setDashboardController(this);
+            dashboardPane.setCenter(root);
+            System.out.println("Security settings view set to dashboardPane. Scene: " + (dashboardPane.getScene() != null ? "Attached" : "Not attached"));
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            showError("Failed to load security settings view: " + e.getMessage());
+        }
+    }
+
     @FXML
     public void logout(ActionEvent actionEvent) {
         try {

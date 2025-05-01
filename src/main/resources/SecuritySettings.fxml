@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.CheckBox?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.image.Image?>
+        <?import javafx.scene.image.ImageView?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.layout.StackPane?>
+        <?import javafx.scene.layout.HBox?>
+        <?import java.lang.String?>
+
+<StackPane style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SecuritySettingsController">
+    <children>
+        <VBox alignment="CENTER" spacing="25" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 20; -fx-border-color: rgba(38, 166, 154, 0.3); -fx-border-width: 1; -fx-border-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5); -fx-padding: 40; -fx-max-width: 450;">
+            <!-- Security Icon -->
+            <ImageView fx:id="securityIcon">
+                <image>
+                    <Image url="@/images/security-icon.png" />
+                </image>
+                <fitWidth>200</fitWidth>
+                <fitHeight>200</fitHeight>
+            </ImageView>
+            <!-- Title with Gradient Text -->
+            <Label text="Security Settings" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI', sans-serif; -fx-text-fill: linear-gradient(to right, #26a69a, #4fc3f7);" />
+            <!-- Email 2FA CheckBox with Icon -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView>
+                    <image>
+                        <Image url="@/images/2fa.png" />
+                    </image>
+                    <fitWidth>35</fitWidth>
+                    <fitHeight>35</fitHeight>
+                </ImageView>
+                <CheckBox fx:id="email2FACheckBox" text="Enable Email-Based 2FA" style="-fx-font-size: 16px; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;" styleClass="modern-checkbox" />
+            </HBox>
+            <!-- TOTP CheckBox with Icon -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView>
+                    <image>
+                        <Image url="@/images/google-auth.png" />
+                    </image>
+                    <fitWidth>24</fitWidth>
+                    <fitHeight>24</fitHeight>
+                </ImageView>
+                <CheckBox fx:id="totp2FACheckBox" text="Enable TOTP-Based 2FA (Google Authenticator)" style="-fx-font-size: 16px; -fx-text-fill: #333333; -fx-font-family: 'Segoe UI', sans-serif;" styleClass="modern-checkbox" />
+            </HBox>
+        </VBox>
+    </children>
+    <stylesheets>
+        <String fx:value="/css/security-settings.css" />
+    </stylesheets>
+</StackPane>

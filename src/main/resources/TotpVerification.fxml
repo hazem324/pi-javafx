@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.Button?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.control.TextField?>
+        <?import javafx.scene.image.Image?>
+        <?import javafx.scene.image.ImageView?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.layout.StackPane?>
+        <?import java.lang.String?>
+
+<StackPane style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TotpVerificationController">
+    <children>
+        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: linear-gradient(to bottom right, #26a69a, #4fc3f7); -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 5, 5); -fx-padding: 40; -fx-max-width: 400;">
+            <!-- Two-Factor Icon -->
+            <ImageView fx:id="twoFactorIcon">
+                <image>
+                    <Image url="@/images/two-factor.png" />
+                </image>
+                <fitWidth>250</fitWidth>
+                <fitHeight>250</fitHeight>
+            </ImageView>
+            <!-- Title -->
+            <Label text="Two-Factor Authentication" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;" />
+            <!-- Subtitle -->
+            <Label text="Enter the code from your authenticator app to continue" style="-fx-font-size: 14px; -fx-text-fill: #e0f7fa; -fx-font-family: 'Segoe UI', sans-serif; -fx-wrap-text: true; -fx-text-alignment: center; -fx-max-width: 300;" />
+            <!-- Authentication Code Label -->
+            <Label text="Authentication Code" style="-fx-font-size: 14px; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;" />
+            <!-- TextField for TOTP Code -->
+            <TextField fx:id="totpCodeTF" promptText="123456" style="-fx-background-color: #ffffff; -fx-border-color: #d3d3d3; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-font-size: 16px; -fx-padding: 10; -fx-font-family: 'Segoe UI', sans-serif; -fx-pref-width: 300;" styleClass="totp-textfield" />
+            <!-- Login Button -->
+            <Button text="Login" onAction="#verifyTotpCode" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10 120; -fx-font-family: 'Segoe UI', sans-serif;" styleClass="totp-button" />
+        </VBox>
+    </children>
+    <stylesheets>
+        <String fx:value="/css/totp-verification.css" />
+    </stylesheets>
+</StackPane>

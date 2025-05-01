@@ -201,4 +201,14 @@ public class UserService implements Service<User> {
         Random random = new Random();
         return String.format("%06d", random.nextInt(1000000)); // 6-digit token
     }
+
+    // New method to update is_verified
+    public void updateVerificationStatus(int userId, boolean isVerified) throws SQLException {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/culturespacedb", "root", "");
+             PreparedStatement stmt = conn.prepareStatement("UPDATE user SET is_verified = ? WHERE id = ?")) {
+            stmt.setBoolean(1, isVerified);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
 }

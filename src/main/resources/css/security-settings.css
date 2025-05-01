@@ -1,0 +1,36 @@
+
+.modern-checkbox {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-cursor: hand;
+}
+
+.modern-checkbox .box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #26a69a;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.modern-checkbox:hover .box {
+    -fx-background-color: #e0f7fa;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.modern-checkbox:selected .box {
+    -fx-background-color: #26a69a;
+}
+
+.modern-checkbox:selected .mark {
+    -fx-background-color: #ffffff;
+}
+
+.hbox:hover {
+    -fx-opacity: 0.9;
+    -fx-transition: opacity 0.2s ease-in-out;
+}
