@@ -1,36 +1,89 @@
-
-.modern-checkbox {
-    -fx-font-size: 16px;
-    -fx-text-fill: #333333;
-    -fx-cursor: hand;
+/* GLOBAL FONT */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
 }
 
-.modern-checkbox .box {
+/* ICON STYLING */
+.icon-shadow {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0.3, 0, 4);
+}
+
+/* TITLE TEXT */
+.option-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #37474f;
+}
+
+/* SUBTEXT */
+.option-desc {
+    -fx-font-size: 12px;
+    -fx-text-fill: #78909c;
+}
+
+/* CARD ROW CONTAINER */
+.option-row {
+    -fx-background-color: rgba(255,255,255,0.7);
+    -fx-padding: 12 16;
+    -fx-spacing: 10;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 191, 165, 0.1), 10, 0.2, 0, 3);
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 100%;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.option-row:hover {
+    -fx-background-color: rgba(224, 247, 250, 0.7);
+    -fx-effect: dropshadow(gaussian, rgba(0, 191, 165, 0.3), 12, 0.4, 0, 4);
+}
+
+/* TOGGLE SWITCH (modern checkbox) */
+.toggle-switch {
+    -fx-padding: 0;
+}
+
+/* Switch Track */
+.toggle-switch .box {
+    -fx-background-color: #cfd8dc;
+    -fx-background-radius: 15;
+    -fx-border-color: transparent;
+    -fx-padding: 3;
+    -fx-min-width: 45;
+    -fx-min-height: 22;
+    -fx-max-width: 45;
+    -fx-max-height: 22;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 3, 0.3, 0, 1);
+    -fx-cursor: hand;
+    -fx-translate-x: 0;
+    -fx-transition: background-color 0.2s ease-in-out;
+}
+
+.toggle-switch:selected .box {
+    -fx-background-color: #00bfa5;
+}
+
+/* Switch Slider Dot */
+.toggle-switch .mark {
+    -fx-shape: "M0 0"; /* Removes default tick shape */
     -fx-background-color: #ffffff;
-    -fx-border-color: #26a69a;
-    -fx-border-width: 2;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
+    -fx-background-radius: 50%;
+    -fx-min-width: 16;
+    -fx-min-height: 16;
+    -fx-max-width: 16;
+    -fx-max-height: 16;
+    -fx-translate-x: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0.3, 0, 1);
     -fx-scale-x: 1;
     -fx-scale-y: 1;
+    -fx-opacity: 1;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-transition: translate-x 0.25s ease-in-out;
 }
 
-.modern-checkbox:hover .box {
-    -fx-background-color: #e0f7fa;
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-transition: all 0.2s ease-in-out;
-}
-
-.modern-checkbox:selected .box {
-    -fx-background-color: #26a69a;
-}
-
-.modern-checkbox:selected .mark {
-    -fx-background-color: #ffffff;
-}
-
-.hbox:hover {
-    -fx-opacity: 0.9;
-    -fx-transition: opacity 0.2s ease-in-out;
+.toggle-switch:selected .mark {
+    -fx-translate-x: 23; /* Moves the slider to right */
 }

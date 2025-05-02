@@ -11,12 +11,17 @@ import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 import services.EmailService;
 import services.UserService;
@@ -33,12 +38,40 @@ import java.util.regex.Pattern;
 import jakarta.mail.MessagingException;
 
 public class LoginController {
+
     @FXML private TextField emailTF;
     @FXML private PasswordField passwordTF;
+    @FXML private ImageView logoView;
+    @FXML private Hyperlink forgotPasswordLink;
 
     private final UserService userService = new UserService();
     private final EmailService emailService = new EmailService();
     private final GoogleAuthenticator gAuth = new GoogleAuthenticator();
+
+    @FXML
+    public void initialize() {
+        System.out.println("LoginController initialized");
+        // Add hover event handlers for the logo
+        if (logoView != null) {
+            logoView.setOnMouseEntered(event -> {
+                logoView.setScaleX(1.1);
+                logoView.setScaleY(1.1);
+            });
+            logoView.setOnMouseExited(event -> {
+                logoView.setScaleX(1.0);
+                logoView.setScaleY(1.0);
+            });
+        }
+        // Add hover event handlers for the forgot password link
+        if (forgotPasswordLink != null) {
+            forgotPasswordLink.setOnMouseEntered(event -> {
+                forgotPasswordLink.setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff; -fx-font-family: 'Roboto'; -fx-font-weight: bold; -fx-underline: true; -fx-effect: dropshadow(gaussian, #ffffff, 8, 0, 0, 0);");
+            });
+            forgotPasswordLink.setOnMouseExited(event -> {
+                forgotPasswordLink.setStyle("-fx-font-size: 16px; -fx-text-fill: #ffffff; -fx-font-family: 'Roboto'; -fx-font-weight: bold; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, #ffffff, 5, 0, 0, 0);");
+            });
+        }
+    }
 
     @FXML
     private void login(ActionEvent actionEvent) {
@@ -46,25 +79,25 @@ public class LoginController {
         String password = passwordTF.getText();
 
         // Reset field styles
-        emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
-        passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+        resetFieldStyle(emailTF);
+        resetFieldStyle(passwordTF);
 
         // Validation
         if (email.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your email!");
-            emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+            setErrorStyle(emailTF);
             return;
         }
 
         if (!isValidEmail(email)) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter a valid email (e.g., user@domain.com)!");
-            emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+            setErrorStyle(emailTF);
             return;
         }
 
         if (password.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your password!");
-            passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+            setErrorStyle(passwordTF);
             return;
         }
 
@@ -76,133 +109,137 @@ public class LoginController {
                     showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
                     return;
                 }
-                if (BCrypt.checkpw(password, user.getPassword())) {
-                    // Store user in SessionManager
-                    SessionManager.getInstance().setCurrentUser(user);
 
-                    // Initialize SecurityConfig based on user's is_verified status
-                    SecurityConfig securityConfig = SecurityConfig.getInstance();
-                    securityConfig.initializeBasedOnUserPreference(user.isVerified());
+                String hashedPassword = user.getPassword();
+                System.out.println("Stored hashed password for user " + email + ": " + hashedPassword);
+                if (hashedPassword != null && hashedPassword.startsWith("$2a$")) {
+                    if (BCrypt.checkpw(password, hashedPassword)) {
+                        // Store user in SessionManager
+                        SessionManager.getInstance().setCurrentUser(user);
 
-                    if (user.getRoles().contains("ROLE_ADMIN")) {
-                        boolean email2FAEnabled = securityConfig.isEmail2FAEnabled();
-                        boolean totp2FAEnabled = securityConfig.isTotp2FAEnabled();
+                        // Initialize SecurityConfig based on user's is_verified status
+                        SecurityConfig securityConfig = SecurityConfig.getInstance();
+                        securityConfig.initializeBasedOnUserPreference(user.isVerified());
 
-                        // If both 2FA methods are disabled, skip to dashboard
-                        if (!email2FAEnabled && !totp2FAEnabled) {
-                            navigateToDashboard(user);
-                            return;
-                        }
+                        if (user.getRoles().contains("ROLE_ADMIN")) {
+                            boolean email2FAEnabled = securityConfig.isEmail2FAEnabled();
+                            boolean totp2FAEnabled = securityConfig.isTotp2FAEnabled();
 
-                        // Check if user has TOTP set up using is_verified
-                        boolean hasTotpSetup = user.isVerified() && TotpSecretStorage.getSecret(user.getId()) != null;
-
-                        // Use is_verified to determine preferred security method
-                        if (user.isVerified() && totp2FAEnabled) {
-                            // User has chosen TOTP (is_verified = 1) and TOTP is enabled
-                            if (!hasTotpSetup) {
-                                // Navigate to TOTP setup
-                                navigateToTotpSetup(user);
-                            } else {
-                                // Navigate to TOTP verification
-                                navigateToTotpVerification(user);
-                            }
-                        } else if (email2FAEnabled) {
-                            // Either user hasn't chosen TOTP (is_verified = 0) or TOTP is disabled, use email 2FA if enabled
-                            // Generate and send 2FA token for admin
-                            String token = userService.generateTwoFactorToken();
-                            LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
-                            userService.updateTwoFactorToken(user.getId(), token, expiry);
-                            try {
-                                emailService.sendTwoFactorEmail(user.getEmail(), token);
-                            } catch (MessagingException e) {
-                                showAlert(Alert.AlertType.ERROR, "Error", "Failed to send 2FA email: " + e.getMessage());
+                            if (!email2FAEnabled && !totp2FAEnabled) {
+                                navigateToDashboard(user);
                                 return;
                             }
 
-                            // Navigate to 2FA view for admin
-                            navigateToEmail2FA(user);
-                        } else {
-                            // Neither TOTP nor email 2FA is enabled or applicable, go to dashboard
+                            boolean hasTotpSetup = user.isVerified() && TotpSecretStorage.getSecret(user.getId()) != null;
+
+                            if (user.isVerified() && totp2FAEnabled) {
+                                if (!hasTotpSetup) {
+                                    navigateToTotpSetup(user);
+                                } else {
+                                    navigateToTotpVerification(user);
+                                }
+                            } else if (email2FAEnabled) {
+                                String token = userService.generateTwoFactorToken();
+                                LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
+                                userService.updateTwoFactorToken(user.getId(), token, expiry);
+                                try {
+                                    emailService.sendTwoFactorEmail(user.getEmail(), token);
+                                    navigateToEmail2FA(user);
+                                } catch (MessagingException e) {
+                                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to send 2FA email: " + e.getMessage());
+                                    return;
+                                }
+                            } else {
+                                navigateToDashboard(user);
+                            }
+                        } else if (user.getRoles().contains("ROLE_STUDENT")) {
                             navigateToDashboard(user);
+                        } else {
+                            showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access this application.");
                         }
-                    } else if (user.getRoles().contains("ROLE_STUDENT")) {
-                        // Navigate to student dashboard
-                        navigateToDashboard(user);
                     } else {
-                        showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access this application.");
+                        showAlert(Alert.AlertType.ERROR, "Error", "Invalid password. Please try again!");
+                        setErrorStyle(passwordTF);
                     }
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Invalid password. Please try again!");
-                    passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+                    showAlert(Alert.AlertType.ERROR, "Error", "Stored password format is invalid. Please reset your password.");
+                    setErrorStyle(emailTF);
+                    setErrorStyle(passwordTF);
                 }
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "User not found. Please check your email or sign up!");
-                emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+                setErrorStyle(emailTF);
             }
         } catch (SQLException | IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Error during login: " + e.getMessage());
-            emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+            setErrorStyle(emailTF);
         }
+    }
+
+    @FXML
+    private void forgotPassword() throws Exception {
+        Stage stage = (Stage) emailTF.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ForgotPassword.fxml"));
+        stage.setScene(new Scene(loader.load()));
     }
 
     @FXML
     private void switchToSignup(ActionEvent actionEvent) {
         try {
+            Stage stage = (Stage) emailTF.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Signup.fxml"));
-            Parent root = loader.load();
-            emailTF.getScene().setRoot(root);
+            stage.setScene(new Scene(loader.load()));
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load signup page: " + e.getMessage());
         }
     }
 
     private void navigateToTotpSetup(User user) throws IOException, SQLException {
-        // Generate TOTP secret
         GoogleAuthenticatorKey key = gAuth.createCredentials();
         String secretKey = key.getKey();
-
-        // Save secret to local storage
         TotpSecretStorage.saveSecret(user.getId(), secretKey);
-
-        // Set is_verified to true (1)
         userService.updateVerificationStatus(user.getId(), true);
 
-        // Navigate to TOTP setup view
+        Stage stage = (Stage) emailTF.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/TotpSetup.fxml"));
-        Parent root = loader.load();
+        Scene scene = new Scene(loader.load());
         TotpSetupController controller = loader.getController();
         controller.setUser(user);
         controller.setSecretKey(secretKey);
-        emailTF.getScene().setRoot(root);
+        stage.setScene(scene);
     }
 
     private void navigateToTotpVerification(User user) throws IOException {
+        Stage stage = (Stage) emailTF.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/TotpVerification.fxml"));
-        Parent root = loader.load();
+        Scene scene = new Scene(loader.load());
         TotpVerificationController controller = loader.getController();
         controller.setUser(user);
-        emailTF.getScene().setRoot(root);
+        stage.setScene(scene);
     }
 
     private void navigateToEmail2FA(User user) throws IOException {
+        Stage stage = (Stage) emailTF.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/TwoFactorAuth.fxml"));
-        Parent root = loader.load();
+        Scene scene = new Scene(loader.load());
         TwoFactorAuthController controller = loader.getController();
         controller.setUser(user);
-        emailTF.getScene().setRoot(root);
+        stage.setScene(scene);
     }
 
     private void navigateToDashboard(User user) throws IOException {
+        Stage stage = (Stage) emailTF.getScene().getWindow();
+        FXMLLoader loader;
         if (user.getRoles().contains("ROLE_ADMIN")) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
-            Parent root = loader.load();
-            emailTF.getScene().setRoot(root);
+            loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
         } else if (user.getRoles().contains("ROLE_STUDENT")) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
-            Parent root = loader.load();
-            emailTF.getScene().setRoot(root);
+            loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Access Denied", "Invalid role for dashboard access.");
+            return;
         }
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
     }
 
     private boolean isValidEmail(String email) {
@@ -211,21 +248,29 @@ public class LoginController {
         return pattern.matcher(email).matches();
     }
 
+    private void resetFieldStyle(TextField field) {
+        field.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    }
+
+    private void setErrorStyle(TextField field) {
+        field.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    }
+
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
-
         alert.getDialogPane().setStyle("-fx-font-family: 'System'; -fx-font-size: 14px;");
-        if (type == Alert.AlertType.INFORMATION) {
-            alert.getDialogPane().lookupButton(ButtonType.OK).setStyle("-fx-background-color: #90EE90; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;");
-        } else if (type == Alert.AlertType.WARNING) {
-            alert.getDialogPane().lookupButton(ButtonType.OK).setStyle("-fx-background-color: #ffa500; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;");
-        } else if (type == Alert.AlertType.ERROR) {
-            alert.getDialogPane().lookupButton(ButtonType.OK).setStyle("-fx-background-color: #ff6b6b; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;");
+        Node okButton = alert.getDialogPane().lookupButton(ButtonType.OK);
+        if (okButton != null) {
+            okButton.setStyle(switch (type) {
+                case INFORMATION -> "-fx-background-color: #90EE90; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;";
+                case WARNING -> "-fx-background-color: #ffa500; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;";
+                case ERROR -> "-fx-background-color: #ff6b6b; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-background-radius: 5;";
+                default -> "";
+            });
         }
-
         alert.showAndWait();
     }
 
