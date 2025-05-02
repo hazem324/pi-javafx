@@ -68,7 +68,11 @@ public class ProductCategoryController {
                     }
                 }
             });
-            refreshTable();
+            try {
+                refreshTable();
+            } catch (SQLException e) {
+                showAlert("Error", "Failed to load categories: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
         if (nameField != null && categoryTable == null) {
             // Form view: no additional initialization needed
@@ -148,7 +152,7 @@ public class ProductCategoryController {
                 showAlert("Success", "Category updated successfully!", Alert.AlertType.INFORMATION);
             }
             showListView();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             showAlert("Error", "Failed to save category: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -158,7 +162,7 @@ public class ProductCategoryController {
             service.deleteCategory(category.getId());
             showAlert("Success", "Category deleted successfully!", Alert.AlertType.INFORMATION);
             refreshTable();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             showAlert("Error", "Failed to delete category: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -172,7 +176,7 @@ public class ProductCategoryController {
         descriptionField.setText(category.getDescription());
     }
 
-    private void refreshTable() {
+    private void refreshTable() throws SQLException {
         categoryList.setAll(service.getAllCategories());
         categoryTable.setItems(categoryList);
     }
