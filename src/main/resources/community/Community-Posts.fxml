@@ -4,29 +4,78 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0"
-            styleClass="community-posts-page" stylesheets="@/assets/style/CommunityPosts.css"
+            styleClass="community-posts-page" stylesheets="@/assets/style/community-styles.css"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.community.CommunityPostsController">
     <center>
-        <!-- Main Content Area -->
-        <ScrollPane prefHeight="600.0" prefWidth="800.0" styleClass="content-scroll" HBox.hgrow="ALWAYS">
-            <VBox styleClass="content-container">
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox styleClass="content-container" spacing="20">
                 <!-- New Post Form -->
                 <VBox styleClass="new-post-container">
                     <Text text="Ajouter une nouvelle publication" styleClass="section-title"/>
-                    <TextArea fx:id="postContent" styleClass="post-textarea" promptText="Quoi de neuf ?"/>
+                    <TextArea fx:id="postContent" styleClass="post-textarea" promptText="Quoi de neuf ?" prefRowCount="3"/>
                     <HBox spacing="10" styleClass="post-actions">
-                        <Button text="Ajouter une image" onAction="#handleImageUpload" styleClass="image-button"/>
-                        <Button text="Publier" onAction="#handlePostSubmit" styleClass="submit-button"/>
+                        <Button text="Ajouter une image" onAction="#handleImageUpload" styleClass="button"/>
+                        <Button text="Publier" onAction="#handlePostSubmit" styleClass="button"/>
                     </HBox>
-                    <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="200" preserveRatio="true" visible="false"/>
+                    <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="200" preserveRatio="true" visible="false" styleClass="image-view"/>
                 </VBox>
 
-                
-                <VBox fx:id="postsContainer" styleClass="timeline-container">
-                   
+                <!-- Posts Timeline -->
+                <VBox fx:id="postsContainer" styleClass="timeline-container" spacing="15">
+                    <!-- Post Template -->
+                    <VBox styleClass="post-card">
+                        <HBox styleClass="post-header">
+                            <Text styleClass="post-author" text="Author Name"/>
+                            <Text styleClass="post-time" text="2 hours ago"/>
+                        </HBox>
+                        <Text styleClass="post-content" text="Post content goes here..."/>
+                        <ImageView styleClass="post-image" fitWidth="400" fitHeight="300" preserveRatio="true"/>
+                        <HBox styleClass="post-footer">
+                            <Button styleClass="like-button">
+                                <graphic>
+                                    <HBox spacing="5" alignment="CENTER_LEFT">
+                                        <FontIcon iconLiteral="fas-heart" styleClass="ikonli-font-icon"/>
+                                        <Text text="Like"/>
+                                    </HBox>
+                                </graphic>
+                            </Button>
+                            <Button styleClass="button">
+                                <graphic>
+                                    <HBox spacing="5" alignment="CENTER_LEFT">
+                                        <FontIcon iconLiteral="fas-comment" styleClass="ikonli-font-icon"/>
+                                        <Text text="Comment"/>
+                                    </HBox>
+                                </graphic>
+                            </Button>
+                        </HBox>
+                        
+                        <!-- Comments Section -->
+                        <VBox styleClass="comments-section">
+                            <!-- Comment Template -->
+                            <VBox styleClass="comment-container">
+                                <HBox styleClass="comment-header">
+                                    <Text styleClass="comment-author" text="Commenter Name"/>
+                                    <Text styleClass="comment-time" text="1 hour ago"/>
+                                </HBox>
+                                <Text styleClass="comment-content" text="Comment content goes here..."/>
+                                <HBox styleClass="comment-actions">
+                                    <Button styleClass="like-button">
+                                        <graphic>
+                                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                                <FontIcon iconLiteral="fas-heart" styleClass="ikonli-font-icon"/>
+                                                <Text text="Like"/>
+                                            </HBox>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                    </VBox>
                 </VBox>
             </VBox>
         </ScrollPane>

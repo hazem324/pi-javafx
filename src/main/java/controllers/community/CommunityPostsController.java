@@ -93,7 +93,7 @@ public class CommunityPostsController {
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("comment-author-image");
-        String avatarPath = "/assets/img_avatar.png";
+        String avatarPath = "@/assets/img_avatar.png";
         java.net.URL avatarUrl = getClass().getResource(avatarPath);
         if (avatarUrl != null) {
             authorImage.setImage(new Image(avatarUrl.toExternalForm()));
@@ -171,7 +171,7 @@ public class CommunityPostsController {
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("post-author-image");
-        String avatarPath = "/assets/img_avatar.png";
+        String avatarPath = "@/assets/img_avatar.png";
         java.net.URL authorImageUrl = getClass().getResource(avatarPath);
         if (authorImageUrl != null) {
             authorImage.setImage(new Image(authorImageUrl.toExternalForm()));
@@ -233,9 +233,9 @@ public class CommunityPostsController {
         likeButton.getStyleClass().add("action-button");
         // Set the button color based on like status
         if (hasLiked) {
-            likeButton.setStyle("-fx-background-color: #E6F9E6;"); // Light green if liked
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green if liked
         } else {
-            likeButton.setStyle("-fx-background-color: #E6F9E6;"); // Default light green
+            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green if not liked
         }
         likeButton.setOnAction(event -> {
             try {
@@ -277,10 +277,12 @@ public class CommunityPostsController {
             Likes like = new Likes(post.getId(), String.valueOf(currentUser.getId()));
             likesService.ajouter(like);
             likeButton.setText("Like (" + (post.getLikes() + 1) + ")");
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green
         } else {
             // User has already liked the post, so remove the like
             likesService.removeLike(post.getId(), String.valueOf(currentUser.getId()));
             likeButton.setText("Like (" + (post.getLikes() - 1) + ")");
+            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green
         }
         // Refresh only this post node
         int index = postsContainer.getChildren().indexOf(postNode);

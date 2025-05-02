@@ -5,20 +5,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" 
-styleClass="community-list-page" stylesheets="@/assets/style/CommunityList.css"
- xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
-fx:controller="controllers.community.CommunityListController">
+            styleClass="community-list-page" stylesheets="@/assets/style/community-styles.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.community.CommunityListController">
+    <top>
+        <Text text="Communautés" styleClass="section-title" style="-fx-padding: 20;"/>
+    </top>
     <center>
-        <!-- Main Content Area -->
-        <AnchorPane>
-            <ScrollPane prefHeight="600.0" prefWidth="1074.0" styleClass="content-scroll" HBox.hgrow="ALWAYS">
-                <GridPane fx:id="communitiesGrid" prefHeight="598.0" prefWidth="894.0" styleClass="communities-grid">
-                    <!-- Grid items will be added dynamically -->
-                </GridPane>
-            </ScrollPane>
-        </AnchorPane>
-
-</center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <GridPane fx:id="communitiesGrid" styleClass="communities-grid" hgap="20" vgap="20">
+                <!-- Grid items will be added dynamically -->
+            </GridPane>
+        </ScrollPane>
+    </center>
 </BorderPane>

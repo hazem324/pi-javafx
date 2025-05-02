@@ -87,6 +87,23 @@ public class PostService implements IService<Post> {
         }
     }
 
+
+    // public void supprimer(int id) throws SQLException {
+    //     // First delete all comments linked to the post
+    //     String deleteCommentsSql = "DELETE FROM post_comment WHERE post_id = ?";
+    //     try (PreparedStatement psComments = cnx.prepareStatement(deleteCommentsSql)) {
+    //         psComments.setInt(1, id);
+    //         psComments.executeUpdate();
+    //     }
+    
+    //     // Then delete the post itself
+    //     String deletePostSql = "DELETE FROM post WHERE id = ?";
+    //     try (PreparedStatement psPost = cnx.prepareStatement(deletePostSql)) {
+    //         psPost.setInt(1, id);
+    //         psPost.executeUpdate();
+    //     }
+    // }
+
     @Override
     public List<Post> recuperer() throws SQLException {
         return getPostsByCommunityId(0); // Fetch all posts if community ID is 0

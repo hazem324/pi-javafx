@@ -62,6 +62,20 @@ public class CommunityService implements IService<Community> {
         ps.executeUpdate();
     }
 
+    // public void supprimer(int id) throws SQLException {
+    //     // First delete posts related to this community
+    //     String deletePostsSql = "DELETE FROM post WHERE community_id = ?";
+    //     PreparedStatement ps1 = cnx.prepareStatement(deletePostsSql);
+    //     ps1.setInt(1, id);
+    //     ps1.executeUpdate();
+    
+    //     // Then delete the community
+    //     String deleteCommunitySql = "DELETE FROM community WHERE id = ?";
+    //     PreparedStatement ps2 = cnx.prepareStatement(deleteCommunitySql);
+    //     ps2.setInt(1, id);
+    //     ps2.executeUpdate();
+    // }
+
     @Override
     public List<Community> recuperer() {
         List<Community> communities = new ArrayList<>();
