@@ -11,10 +11,10 @@ import org.json.JSONObject;
 
 public class DynamicPricingService {
 
-    private static final String GEMINI_API_KEY = "AIzaSyBTENlXLi53lN1bBmUs7VZITAm7SUulRmE"; // Replace with your API key
+    private static final String GEMINI_API_KEY = "AIzaSyBTENlXLi53lN1bBmUs7VZITAm7SUulRmE";
     private static final String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=" + GEMINI_API_KEY;
     private final HttpClient httpClient;
-    private static final double DEFAULT_PRICE_ADJUSTMENT = 10.0; // Default adjustment if API fails or returns 0.0
+    private static final double DEFAULT_PRICE_ADJUSTMENT = 10.0; // Default adjustment if API fails
     private static final double MINIMUM_DYNAMIC_PRICE = 10.0; // Minimum dynamic price
 
     public DynamicPricingService() {

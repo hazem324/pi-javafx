@@ -35,6 +35,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProductController {
@@ -56,8 +57,7 @@ public class ProductController {
     private TextField filterPriceMaxField;
     private ComboBox<String> filterAvailabilityComboBox;
     private ComboBox<String> filterDiscountComboBox;
-    private ComboBox<String> sortFieldComboBox;
-    private ComboBox<String> sortDirectionComboBox;
+    private ComboBox<String> filterVoteComboBox; // Vote filter
     private Stage filterPopupStage;
 
     // Form view components
@@ -217,15 +217,11 @@ public class ProductController {
         filterDiscountComboBox.setValue("all");
         filterDiscountComboBox.setStyle("-fx-pref-width: 150; -fx-background-radius: 5;");
 
-        sortFieldComboBox = new ComboBox<>();
-        sortFieldComboBox.setItems(FXCollections.observableArrayList("productName", "productPrice", "createdAt", "discount", "voteScore"));
-        sortFieldComboBox.setValue("voteScore"); // Default sort by voteScore
-        sortFieldComboBox.setStyle("-fx-pref-width: 150; -fx-background-radius: 5;");
-
-        sortDirectionComboBox = new ComboBox<>();
-        sortDirectionComboBox.setItems(FXCollections.observableArrayList("ASC", "DESC"));
-        sortDirectionComboBox.setValue("DESC");
-        sortDirectionComboBox.setStyle("-fx-pref-width: 100; -fx-background-radius: 5;");
+        // Vote filter
+        filterVoteComboBox = new ComboBox<>();
+        filterVoteComboBox.setItems(FXCollections.observableArrayList("all", "above 0", "above 10", "above 50"));
+        filterVoteComboBox.setValue("all");
+        filterVoteComboBox.setStyle("-fx-pref-width: 150; -fx-background-radius: 5;");
     }
 
     @FXML
@@ -289,12 +285,12 @@ public class ProductController {
         discountLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2c3e50;");
         discountBox.getChildren().addAll(discountLabel, filterDiscountComboBox);
 
-        // Sort filter
-        HBox sortBox = new HBox(10);
-        sortBox.setAlignment(Pos.CENTER_LEFT);
-        Label sortLabel = new Label("Sort By:");
-        sortLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2c3e50;");
-        sortBox.getChildren().addAll(sortLabel, sortFieldComboBox, sortDirectionComboBox);
+        // Vote filter
+        HBox voteBox = new HBox(10);
+        voteBox.setAlignment(Pos.CENTER_LEFT);
+        Label voteLabel = new Label("Votes:");
+        voteLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2c3e50;");
+        voteBox.getChildren().addAll(voteLabel, filterVoteComboBox);
 
         // Buttons
         HBox buttonBox = new HBox(10);
@@ -313,7 +309,7 @@ public class ProductController {
         });
         buttonBox.getChildren().addAll(applyButton, clearButton);
 
-        filterVBox.getChildren().addAll(nameBox, dateBox, categoryBox, priceBox, availabilityBox, discountBox, sortBox, buttonBox);
+        filterVBox.getChildren().addAll(nameBox, dateBox, categoryBox, priceBox, availabilityBox, discountBox, voteBox, buttonBox);
 
         Scene scene = new Scene(filterVBox);
         filterPopupStage.setScene(scene);
@@ -346,12 +342,27 @@ public class ProductController {
                 : null;
         String availability = filterAvailabilityComboBox != null ? filterAvailabilityComboBox.getValue() : "all";
         String discountFilter = filterDiscountComboBox != null ? filterDiscountComboBox.getValue() : "all";
-        String sortField = sortFieldComboBox != null ? sortFieldComboBox.getValue() : "voteScore"; // Default to voteScore
-        String sortDirection = sortDirectionComboBox != null ? sortDirectionComboBox.getValue() : "DESC";
+        String voteFilter = filterVoteComboBox != null ? filterVoteComboBox.getValue() : "all";
 
+        // Fetch all products from the service
         productList.setAll(productService.searchProducts(
-                name, dateFrom, dateTo, categoryId, priceMin, priceMax, availability, discountFilter, sortField, sortDirection
+                name, dateFrom, dateTo, categoryId, priceMin, priceMax, availability, discountFilter, null, null
         ));
+
+        // Apply vote filter
+        if ("above 0".equals(voteFilter)) {
+            productList.removeIf(p -> p.getVoteScore() <= 0);
+        } else if ("above 10".equals(voteFilter)) {
+            productList.removeIf(p -> p.getVoteScore() <= 10);
+        } else if ("above 50".equals(voteFilter)) {
+            productList.removeIf(p -> p.getVoteScore() <= 50);
+        }
+
+        // Sort by vote score (descending), then by discount (descending)
+        productList.sort(Comparator
+                .comparingInt(Product::getVoteScore)
+                .thenComparingDouble(Product::getDiscount)
+                .reversed());
 
         if (productGrid != null) {
             productGrid.getChildren().clear();
@@ -392,8 +403,7 @@ public class ProductController {
         if (filterPriceMaxField != null) filterPriceMaxField.clear();
         if (filterAvailabilityComboBox != null) filterAvailabilityComboBox.setValue("all");
         if (filterDiscountComboBox != null) filterDiscountComboBox.setValue("all");
-        if (sortFieldComboBox != null) sortFieldComboBox.setValue("voteScore"); // Reset to voteScore
-        if (sortDirectionComboBox != null) sortDirectionComboBox.setValue("DESC");
+        if (filterVoteComboBox != null) filterVoteComboBox.setValue("all");
 
         try {
             refreshProductList();
@@ -666,8 +676,7 @@ public class ProductController {
         currencyComboBox.setValue(p.getCurrency() != null ? p.getCurrency() : "TND");
         discountField.setText(String.valueOf(p.getDiscount()));
         useDynamicPricingCheckBox.setSelected(p.isUseDynamicPricing());
-        // Ensure priceField is disabled if dynamic pricing is enabled
-        priceField.setDisable(p.isUseDynamicPricing());
+        // Removed priceField.setDisable since it's bound to useDynamicPricingCheckBox.selectedProperty()
     }
 
     @FXML
