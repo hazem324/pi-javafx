@@ -57,7 +57,7 @@
                 </columns>
             </TableView>
 
-            <Button text="Retour au panier" onAction="#onRetourPanier"
+            <Button text="Retour à l'accueil" onAction="#onRetourAcceuil"
                     style="-fx-background-color: #0AAE61; -fx-text-fill: white;" />
         </VBox>
     </center>

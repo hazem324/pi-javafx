@@ -1,5 +1,6 @@
 package controllers.marketplace;
 
+import controllers.HomeController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +27,7 @@ public class ConfirmationCommandeController {
     @FXML
     private Button btnVoirCommandes;
     @FXML
-    private Button btnRetourProduits;
+    private Button btnRetourHome;
 
     public void setCommandeData(int orderId, String nomClient, String emailClient) {
         this.orderId = orderId;
@@ -35,27 +36,30 @@ public class ConfirmationCommandeController {
     }
 
     @FXML
-    private void onRetourProduits() {
+    private void onRetourHome() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Product_List.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePage.fxml"));
             Parent root = loader.load();
 
-            ProductController controller = loader.getController();
-            controller.reloadProducts();
+            // Récupérer le contrôleur de la page d'accueil
+            controllers.HomePageController controller = loader.getController();
 
-            Stage stage = (Stage) btnRetourProduits.getScene().getWindow();
+            Stage stage = (Stage) btnRetourHome.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Produits disponibles");
+            stage.setTitle("Accueil");
+            stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
-            showError("Erreur lors du retour aux produits : " + e.getMessage());
+            showError("Erreur lors du retour à l'accueil : " + e.getMessage());
         }
     }
+
 
     @FXML
     private void onVoirCommandes() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherCommandes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/TrackingView.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) btnVoirCommandes.getScene().getWindow();

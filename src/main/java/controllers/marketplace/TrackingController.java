@@ -41,12 +41,12 @@ public class TrackingController {
             List<String> orderedStages = List.of("en_attente", "preparation", "expedition", "en_route", "livree");
 
             if (statusList.isEmpty()) {
-                // 🟢 Aucune étape enregistrée → cocher uniquement "en_attente"
+                //  Aucune étape enregistrée cocher uniquement "en_attente"
                 setProgressFor("en_attente", 1);
                 return;
             }
 
-            // 🟢 On récupère la dernière étape atteinte
+            // On récupère la dernière étape atteinte
             String lastStatus = statusList.get(statusList.size() - 1);
 
             for (String stage : orderedStages) {
@@ -83,9 +83,9 @@ public class TrackingController {
     }
 
     @FXML
-    private void onRetourPanier() {
+    private void onRetourAcceuil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/CartView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePage.fxml"));
             Parent root = loader.load();
             bp.setCenter(root);
 

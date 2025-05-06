@@ -16,6 +16,7 @@ import entities.*;
 import services.*;
 import test.MainFX;
 import utils.CartStorage;
+import utils.SessionManager;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -41,13 +42,29 @@ public class CartController {
 
     private double total;
     private double initialTotal;
-
+    @FXML
+    private HBox couponContainer;
     @FXML
     public void initialize() {
         setupTable();
         loadCartItems();
-        // Coupon box is now loaded via FXML include, no manual loading needed
+        loadCouponBox();
     }
+    private void loadCouponBox() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketPlace/coupon_box.fxml"));
+            Parent couponBox = loader.load();
+
+            CouponController controller = loader.getController();
+            controller.setCartController(this);
+
+            couponContainer.getChildren().clear();
+            couponContainer.getChildren().add(couponBox);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void applyDiscount(double percent, String code) {
         total = initialTotal * (1 - percent / 100);
@@ -176,7 +193,12 @@ public class CartController {
                 return;
             }
 
-            User utilisateur = new UserService().getUserById(1);
+            User utilisateur = SessionManager.getCurrentUser();
+            if (utilisateur == null) {
+                new Alert(Alert.AlertType.ERROR, "Aucun utilisateur connecté.").show();
+                return;
+            }
+
 
             double total = CartStorage.panier.stream().mapToDouble(Cart::getTotal).sum();
 
@@ -203,21 +225,27 @@ public class CartController {
                 cartService.ajouter(copie);
                 copiePanier.add(copie);
             }
+
             if (appliedCouponCode != null) {
                 new CouponService().markAsUsed(appliedCouponCode);
             }
 
             CartStorage.panier.clear();
 
-
+            //  Appel correct avec injection du contrôleur
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketPlace/ConfirmationCommande.fxml"));
             Parent root = loader.load();
+            ConfirmationCommandeController controller = loader.getController();
+            controller.setCommandeData(orderId, utilisateur.getFirstName(), utilisateur.getEmail());
+
             bp.setCenter(root);
+
         } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Erreur lors de la validation !").show();
         }
     }
+
 
     @FXML
     private void onVider() {

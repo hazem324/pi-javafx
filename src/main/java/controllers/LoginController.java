@@ -16,7 +16,9 @@ import utils.SessionManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
+import jakarta.mail.MessagingException;
 
 public class LoginController {
     @FXML
@@ -111,30 +113,30 @@ public class LoginController {
     private void login(ActionEvent actionEvent) {
         String email = emailTF.getText().trim();
         String password = passwordTF.getText();
-    
+
         // Réinitialiser le style des champs
         emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
-    
+
         // Validation des champs
         if (email.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your email!");
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
             return;
         }
-    
+
         if (!isValidEmail(email)) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter a valid email (e.g., user@domain.com)!");
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
             return;
         }
-    
+
         if (password.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your password!");
             passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
             return;
         }
-    
+
         // Traitement de la connexion
         try {
             User user = userService.findByEmail(email);
@@ -143,10 +145,10 @@ public class LoginController {
                     showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
                     return;
                 }
-    
+
                 if (BCrypt.checkpw(password, user.getPassword())) {
                     SessionManager.getInstance().setCurrentUser(user);
-    
+
                     if (user.getRoles().contains("ROLE_ADMIN")) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/adminDashboard.fxml"));
                         Parent root = loader.load();
@@ -171,7 +173,7 @@ public class LoginController {
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         }
     }
-    
+
 
     @FXML
     private void switchToSignup(ActionEvent actionEvent) {

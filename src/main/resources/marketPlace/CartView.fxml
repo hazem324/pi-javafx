@@ -26,8 +26,10 @@
                 </columns>
             </TableView>
 
-            <!-- Replace AnchorPane with fx:include for coupon_box.fxml -->
-            <fx:include fx:id="couponBox" source="coupon_box.fxml" />
+            <!-- Replace AnchorPane with fx:include for coupon_box.fxml
+            <fx:include fx:id="couponBox" source="coupon_box.fxml" />-->
+            <HBox fx:id="couponContainer" spacing="10" />
+
 
             <HBox spacing="15" alignment="CENTER_RIGHT">
                 <Label text="Total général :" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
