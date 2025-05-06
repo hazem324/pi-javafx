@@ -5,16 +5,14 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane 
-            fx:id="bp"
-            prefHeight="600.0"
-            prefWidth="800.0"
-xmlns:fx="http://javafx.com/fxml" 
-fx:controller="controllers.marketplace.CartController">
-
-    
+    fx:id="bp"
+    prefHeight="600.0"
+    prefWidth="800.0"
+    xmlns:fx="http://javafx.com/fxml" 
+    fx:controller="controllers.marketplace.CartController">
 
     <center>
-        <VBox spacing="10" >
+        <VBox spacing="10">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
@@ -28,25 +26,25 @@ fx:controller="controllers.marketplace.CartController">
                 </columns>
             </TableView>
 
+            <!-- Replace AnchorPane with fx:include for coupon_box.fxml -->
+            <fx:include fx:id="couponBox" source="coupon_box.fxml" />
+
             <HBox spacing="15" alignment="CENTER_RIGHT">
                 <Label text="Total général :" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
                 <Label fx:id="totalLabel" text="0.00 TND" style="-fx-text-fill: #0AAE61; -fx-font-size: 16px;" />
             </HBox>
 
-            <HBox spacing="20" alignment="CENTER" >
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-            <Button text="Valider ma commande" style="-fx-background-color: #0AAE61; -fx-text-fill: white;" onAction="#onValider" />
-            <Button text="Vider le panier" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" onAction="#onVider" />
-            <Button text="Voir mes commandes" onAction="#onAfficherCommandes"
-                    style="-fx-background-color: #3498DB; -fx-text-fill: white;" />
-            <Button text="Continuer vos achats" onAction="#onContinuer" />
-
-        </HBox>
-        
+            <HBox spacing="20" alignment="CENTER">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Button text="Valider ma commande" style="-fx-background-color: #0AAE61; -fx-text-fill: white;" onAction="#onValider" />
+                <Button text="Vider le panier" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" onAction="#onVider" />
+                <Button text="Continuer vos achats" onAction="#onContinuer" />
+                <Button text="Suivre ma commande"
+                    onAction="#onSuivreCommande"
+                    style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+            </HBox>
         </VBox>
     </center>
-
-   
 </BorderPane>

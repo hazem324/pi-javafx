@@ -24,7 +24,7 @@
             <Button styleClass="nav-button" text="Liste des Communautés"  onMouseClicked="#AccederAuAllCommunities" />
             <Button styleClass="nav-button" text="Mes Communautés" onMouseClicked="#AccederAuMyCommunities" />
             <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
-            <Button styleClass="nav-button" text="Votre Panier" onMouseClicked="#AccederAuPanier" />
+            <Button styleClass="nav-button" text="Mon Panier" onMouseClicked="#AccederAuPanier" />
             <Button styleClass="nav-button" text="Logout" />
         </VBox>
 

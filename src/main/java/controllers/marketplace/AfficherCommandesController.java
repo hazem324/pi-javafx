@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import models.Cart;
 import models.Order;
 import services.CartService;
@@ -22,6 +23,7 @@ public class AfficherCommandesController {
     @FXML private TableColumn<Order, Integer> colId;
     @FXML private TableColumn<Order, String> colDate;
     @FXML private TableColumn<Order, String> colStatut;
+    @FXML private TableColumn<Order, Void> colChangerStatut;
     @FXML private TableColumn<Order, Double> colTotal;
     @FXML private TableColumn<Order, Void> colActions;
     @FXML private TableColumn<Order, Void> colDetails;
@@ -32,33 +34,37 @@ public class AfficherCommandesController {
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        colStatut.setCellFactory(column -> new TableCell<>() {
-            private final ComboBox<String> comboBox = new ComboBox<>(
-                    FXCollections.observableArrayList("en attente", "en cours", "livrée")
-            );
+        colChangerStatut.setCellFactory(param -> new TableCell<>() {
+            private final ComboBox<String> statusBox = new ComboBox<>();
+            private final Button btn = new Button("Valider");
+            private final HBox container = new HBox(5, statusBox, btn);
 
             {
-                comboBox.setOnAction(e -> {
+                statusBox.getItems().addAll("en_attente", "preparation", "expedition", "en_route", "livree");
+                btn.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white;");
+
+                btn.setOnAction(e -> {
                     Order order = getTableView().getItems().get(getIndex());
-                    String nouveauStatut = comboBox.getValue();
-                    try {
-                        new OrderService().modifierstatus(order.getId(), nouveauStatut);
-                        order.setStatus(nouveauStatut);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
+                    String newStatus = statusBox.getValue();
+                    if (newStatus != null && !newStatus.isEmpty()) {
+                        OrderService os = new OrderService();
+                        os.ajouterTracking(order.getId(), newStatus);       // ajoute dans tracking_event
+                        os.updateOrderStatus(order.getId(), newStatus);     // met à jour table order
+
+                        order.setStatus(newStatus);                         // met à jour dans l'objet Order
+                        getTableView().refresh();                           // rafraîchir l'affichage
+
+                        System.out.println("Statut mis à jour pour commande #" + order.getId());
                     }
                 });
+
+
             }
 
             @Override
-            protected void updateItem(String statut, boolean empty) {
-                super.updateItem(statut, empty);
-                if (empty || statut == null) {
-                    setGraphic(null);
-                } else {
-                    comboBox.setValue(statut);
-                    setGraphic(comboBox);
-                }
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : container);
             }
         });
         colStatut.setCellValueFactory(new PropertyValueFactory<>("status"));

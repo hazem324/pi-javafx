@@ -26,6 +26,7 @@ public class AdminDashboardController {
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
     @FXML private Button productCategoriesButton;
+    @FXML private Button commendListButton;
     @FXML private Button logoutButton;
     @FXML private Label adminLabel;
     @FXML private VBox center;
@@ -110,6 +111,12 @@ public class AdminDashboardController {
             showError("Failed to load product category management view: " + e.getMessage());
         }
     }
+    
+    @FXML
+    public void showCommendList(ActionEvent actionEvent){
+        loadView("/marketPlace/AfficherCommandes.fxml");
+    }
+    
     @FXML
     public void logout(ActionEvent actionEvent) {
         try {

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+
+<BorderPane fx:id="bp"
+            prefHeight="600.0"
+            prefWidth="800.0"
+            xmlns="http://javafx.com/javafx" 
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.marketplace.TrackingController">
+    
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+            <Label text="Suivi de votre commande"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="ID Commande :" />
+                <TextField fx:id="orderIdField" promptText="ex: 20" />
+                <Button text="Afficher" onAction="#afficherTracking" />
+            </HBox>
+
+            <!-- Les étapes avec des indicateurs circulaires -->
+            <HBox spacing="30" alignment="CENTER">
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="En attente" />
+                    <ProgressIndicator fx:id="pi1" progress="0" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="Préparée" />
+                    <ProgressIndicator fx:id="pi2" progress="0" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="Expédiée" />
+                    <ProgressIndicator fx:id="pi3" progress="0" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="En route" />
+                    <ProgressIndicator fx:id="pi4" progress="0" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="Livrée" />
+                    <ProgressIndicator fx:id="pi5" progress="0" />
+                </VBox>
+            </HBox>
+
+            <Label text="Détails du suivi"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+            <TableView fx:id="eventTable" prefHeight="150" maxWidth="500">
+                <columns>
+                    <TableColumn fx:id="colDate" text="Date" prefWidth="200"/>
+                    <TableColumn fx:id="colStatut" text="Statut" prefWidth="300"/>
+                </columns>
+            </TableView>
+
+            <Button text="Retour au panier" onAction="#onRetourPanier"
+                    style="-fx-background-color: #0AAE61; -fx-text-fill: white;" />
+        </VBox>
+    </center>
+</BorderPane>
