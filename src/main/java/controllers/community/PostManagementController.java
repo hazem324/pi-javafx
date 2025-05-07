@@ -1,4 +1,4 @@
-package controllers;
+package controllers.community;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import models.Community;
 import models.Post;
-import models.User;
+import entities.*;
 import services.CommunityService;
 import services.PostService;
 

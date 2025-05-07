@@ -1,5 +1,6 @@
-package controllers;
+package controllers.community;
 
+import entities.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -7,33 +8,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import java.net.URL;
-
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import java.sql.SQLException;
 import models.Community;
 import models.Post;
 import models.PostComment;
-import models.User;
+import models.Likes;
 import services.CommunityService;
 import services.PostService;
+import services.LikesService;
+import utils.SessionManager;
 
-import java.io.File;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 public class CommunityPostsController {
-    @FXML
-    private Text communityName;
-    @FXML
-    private Text userName;
-    @FXML
-    private ImageView userAvatar;
+
     @FXML
     private TextArea postContent;
     @FXML
@@ -43,37 +33,52 @@ public class CommunityPostsController {
 
     private final CommunityService communityService = new CommunityService();
     private final PostService postService = new PostService();
+    private final LikesService likesService = new LikesService();
     private Community currentCommunity;
-    private File selectedImageFile;
     private String imageUrl;
-    private final int USER_ID = 1; // Hardcoded user ID
-    private final int COMMUNITY_ID = 1; // Hardcoded community ID
+    private int communityId;
+    private User currentUser;
 
     @FXML
-    public void initialize() throws SQLException {
-        loadUserInfo();
-        loadCommunityInfo();
-        loadPosts();
+    public void initialize() {
+        // Get the logged-in user
+        currentUser = SessionManager.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("No user logged in!");
+            showAlert("Error", "Please log in to view community posts.");
+        }
     }
 
-    private void loadUserInfo() {
-        // Hardcode user info for user ID 1
-        userName.setText("User One"); // Replace with actual user name or fetch from DB if needed
-        // Optionally load user avatar (hardcoded or from DB)
-        userAvatar.setImage(new Image("file:src/main/resources/images/default-avatar.png")); // Adjust path
+    // Setter for communityId
+    public void setCommunityId(int communityId) {
+        this.communityId = communityId;
+    }
+
+    // Method to start the controller after communityId is set
+    public void start() throws SQLException {
+        if (currentUser == null) {
+            return; // Already handled in initialize
+        }
+        loadCommunityInfo();
+        if (currentCommunity != null) { // Only load posts if community is valid
+            loadPosts();
+        }
     }
 
     private void loadCommunityInfo() {
-        currentCommunity = communityService.getCommunityById(COMMUNITY_ID);
-        if (currentCommunity != null) {
-            communityName.setText("Publications de la Communauté - " + currentCommunity.getName());
-        } else {
-            communityName.setText("Publications de la Communauté - Unknown");
+        if (communityId <= 0) {
+            showAlert("Error", "Invalid community ID: " + communityId);
+            return;
+        }
+
+        currentCommunity = communityService.getCommunityById(communityId);
+        if (currentCommunity == null) {
+            showAlert("Warning", "Community not found for ID: " + communityId);
         }
     }
 
     private void loadPosts() throws SQLException {
-        List<Post> posts = postService.getPostsByCommunityId(COMMUNITY_ID);
+        List<Post> posts = postService.getPostsByCommunityId(communityId);
         postsContainer.getChildren().clear();
 
         for (Post post : posts) {
@@ -82,14 +87,20 @@ public class CommunityPostsController {
         }
     }
 
-
     private HBox createCommentNode(PostComment comment) {
         HBox commentNode = new HBox(10);
         commentNode.getStyleClass().add("comment");
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("comment-author-image");
-        authorImage.setImage(new Image("file:src/main/resources/images/default-avatar.png")); // Adjust path
+        String avatarPath = "@/assets/img_avatar.png";
+        java.net.URL avatarUrl = getClass().getResource(avatarPath);
+        if (avatarUrl != null) {
+            authorImage.setImage(new Image(avatarUrl.toExternalForm()));
+        } else {
+            authorImage.setImage(new Image("https://via.placeholder.com/50"));
+            System.err.println("Comment author avatar not found: " + avatarPath);
+        }
 
         VBox commentContent = new VBox(5);
         Text authorName = new Text(comment.getUser().getFirstName());
@@ -107,30 +118,22 @@ public class CommunityPostsController {
 
     @FXML
     private void handleImageUpload() {
-        // Create a TextInputDialog to prompt the user for an image URL
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Upload Image URL");
         dialog.setHeaderText("Enter the URL of the image");
         dialog.setContentText("Image URL:");
 
-        // Show the dialog and wait for the user's input
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(url -> {
             try {
-                // Validate the URL by attempting to load the image
-                Image image = new Image(url, true); // true means load asynchronously
-                // Check if the image loaded successfully
+                Image image = new Image(url, true);
                 if (image.isError()) {
                     showAlert("Error", "Failed to load image from URL: " + image.getException().getMessage());
                     return;
                 }
-                // Set the image in the preview
                 postImagePreview.setImage(image);
                 postImagePreview.setVisible(true);
-                // Store the URL instead of a File object
-                selectedImageFile = null; // Clear any previous file reference
-                // Update the post submission logic to use the URL directly
-                this.imageUrl = url; // Add a new field to store the URL
+                this.imageUrl = url;
             } catch (Exception e) {
                 showAlert("Error", "Invalid image URL: " + e.getMessage());
             }
@@ -145,13 +148,14 @@ public class CommunityPostsController {
             return;
         }
 
-        String imagePath = imageUrl; // Use the URL directly
+        String imagePath = imageUrl;
         try {
-            postService.addPostToCommunity(content, imagePath, COMMUNITY_ID, USER_ID);
+            postService.addPostToCommunity(content, imagePath, communityId, currentUser.getId());
             postContent.clear();
             postImagePreview.setVisible(false);
-            imageUrl = null; // Clear the URL after submission
-            loadPosts();
+            imageUrl = null;
+            VBox newPostNode = createPostNode(postService.getPostById(postService.getLatestPostId()));
+            postsContainer.getChildren().add(0, newPostNode); // Add new post at the top
         } catch (SQLException e) {
             showAlert("Error", "Failed to create post: " + e.getMessage());
         }
@@ -160,25 +164,20 @@ public class CommunityPostsController {
     private VBox createPostNode(Post post) {
         VBox postNode = new VBox(15);
         postNode.getStyleClass().add("timeline-post");
-        postNode.setId("post-" + post.getId()); // Set ID for lookup
+        postNode.setId("post-" + post.getId());
 
-        // Post Header
         HBox header = new HBox(10);
         header.getStyleClass().add("post-header");
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("post-author-image");
-
-        // Load author image safely
-        String authorImagePath = "/assets/logo.jpg";
-        java.net.URL authorImageUrl = getClass().getResource(authorImagePath);
+        String avatarPath = "@/assets/img_avatar.png";
+        java.net.URL authorImageUrl = getClass().getResource(avatarPath);
         if (authorImageUrl != null) {
-            Image image = new Image(authorImageUrl.toExternalForm());
-            authorImage.setImage(image);
+            authorImage.setImage(new Image(authorImageUrl.toExternalForm()));
         } else {
-            System.err.println("Author image resource not found: " + authorImagePath);
-            Image defaultImage = new Image("https://via.placeholder.com/50");
-            authorImage.setImage(defaultImage);
+            authorImage.setImage(new Image("https://via.placeholder.com/50"));
+            System.err.println("Post author avatar not found: " + avatarPath);
         }
 
         Text authorName = new Text(post.getUser().getFirstName());
@@ -189,32 +188,29 @@ public class CommunityPostsController {
 
         header.getChildren().addAll(authorImage, authorName, postDate);
 
-        // Post Content
         Text content = new Text(post.getContent());
         content.getStyleClass().add("post-content");
         content.setWrappingWidth(600);
 
-        // Post Image if exists (safe loading)
         ImageView postImage = null;
         if (post.getPostImg() != null && !post.getPostImg().isEmpty()) {
             try {
                 String postImgPath = post.getPostImg();
                 Image image;
-
                 if (postImgPath.startsWith("http://") || postImgPath.startsWith("https://")) {
-                    // Load from external URL
-                    image = new Image(postImgPath);
+                    image = new Image(postImgPath, true);
+                    if (image.isError()) {
+                        throw new IllegalArgumentException("Failed to load image: " + image.getException().getMessage());
+                    }
                 } else {
-                    // Load from local resource
-                    URL resourceUrl = getClass().getResource(postImgPath.startsWith("/") ? postImgPath : "/" + postImgPath);
+                    java.net.URL resourceUrl = getClass().getResource(postImgPath.startsWith("/") ? postImgPath : "/" + postImgPath);
                     if (resourceUrl != null) {
                         image = new Image(resourceUrl.toExternalForm());
                     } else {
-                        System.err.println("Post image not found: " + postImgPath);
                         image = new Image("https://via.placeholder.com/300x200");
+                        System.err.println("Post image resource not found: " + postImgPath);
                     }
                 }
-
                 postImage = new ImageView(image);
                 postImage.getStyleClass().add("post-image");
             } catch (Exception e) {
@@ -222,27 +218,39 @@ public class CommunityPostsController {
             }
         }
 
-        // Post Actions
         HBox actionsBar = new HBox(15);
         actionsBar.getStyleClass().add("post-actions-bar");
 
+        // Check if the current user has liked the post
+        boolean hasLiked = false;
+        try {
+            hasLiked = likesService.hasLiked(post.getId(), String.valueOf(currentUser.getId()));
+        } catch (SQLException e) {
+            showAlert("Error", "Failed to check like status: " + e.getMessage());
+        }
+
         Button likeButton = new Button("Like (" + post.getLikes() + ")");
         likeButton.getStyleClass().add("action-button");
+        // Set the button color based on like status
+        if (hasLiked) {
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green if liked
+        } else {
+            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green if not liked
+        }
         likeButton.setOnAction(event -> {
             try {
-                handleLike(post);
+                handleLike(post, likeButton, postNode);
             } catch (SQLException e) {
-                showAlert("Error", "Failed to like post: " + e.getMessage());
+                showAlert("Error", "Failed to like/unlike post: " + e.getMessage());
             }
         });
 
         Button commentButton = new Button("Comment");
         commentButton.getStyleClass().add("action-button");
-        commentButton.setOnAction(event -> showCommentInput(post));
+        commentButton.setOnAction(event -> showCommentInput(post, postNode));
 
         actionsBar.getChildren().addAll(likeButton, commentButton);
 
-        // Comments Section
         VBox commentsSection = new VBox(10);
         commentsSection.getStyleClass().add("comments-section");
 
@@ -251,7 +259,6 @@ public class CommunityPostsController {
             commentsSection.getChildren().add(commentNode);
         }
 
-        // Assemble everything
         postNode.getChildren().add(header);
         postNode.getChildren().add(content);
         if (postImage != null) {
@@ -263,14 +270,28 @@ public class CommunityPostsController {
         return postNode;
     }
 
-
-    private void handleLike(Post post) throws SQLException {
-        if (postService.likePost(post.getId())) {
-            loadPosts();
+    private void handleLike(Post post, Button likeButton, VBox postNode) throws SQLException {
+        boolean hasLiked = likesService.hasLiked(post.getId(), String.valueOf(currentUser.getId()));
+        if (!hasLiked) {
+            // User hasn't liked the post yet, so add a like
+            Likes like = new Likes(post.getId(), String.valueOf(currentUser.getId()));
+            likesService.ajouter(like);
+            likeButton.setText("Like (" + (post.getLikes() + 1) + ")");
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green
+        } else {
+            // User has already liked the post, so remove the like
+            likesService.removeLike(post.getId(), String.valueOf(currentUser.getId()));
+            likeButton.setText("Like (" + (post.getLikes() - 1) + ")");
+            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green
+        }
+        // Refresh only this post node
+        int index = postsContainer.getChildren().indexOf(postNode);
+        if (index >= 0) {
+            postsContainer.getChildren().set(index, createPostNode(postService.getPostById(post.getId())));
         }
     }
 
-    private void showCommentInput(Post post) {
+    private void showCommentInput(Post post, VBox postNode) {
         TextArea commentInput = new TextArea();
         commentInput.getStyleClass().add("comment-input");
         commentInput.setPromptText("Write a comment...");
@@ -283,16 +304,14 @@ public class CommunityPostsController {
                 PostComment comment = new PostComment();
                 comment.setPcommentContent(commentContent);
                 comment.setPost(post);
-                comment.setUser(new User()); // Set minimal user info
-                comment.getUser().setId(USER_ID);
-                comment.getUser().setFirstName("User One"); // Adjust as needed
+                comment.setUser(currentUser);
 
                 if (postService.addComment(comment)) {
-                    try {
-                        loadPosts();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    // Add the new comment node and refresh the comments section
+                    HBox newCommentNode = createCommentNode(comment);
+                    VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
+                    commentsSection.getChildren().add(newCommentNode);
+                    commentInput.clear();
                 }
             }
         });
@@ -301,11 +320,8 @@ public class CommunityPostsController {
         commentInputContainer.getStyleClass().add("comment-input-container");
         commentInputContainer.getChildren().addAll(commentInput, submitButton);
 
-        VBox postNode = (VBox) postsContainer.lookup("#post-" + post.getId());
-        if (postNode != null) {
-            VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
-            commentsSection.getChildren().add(commentInputContainer);
-        }
+        VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
+        commentsSection.getChildren().add(commentInputContainer);
     }
 
     private void showAlert(String title, String content) {
@@ -314,60 +330,5 @@ public class CommunityPostsController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-    @FXML
-    private void goToProfile() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/profile/Profile.fxml"));
-            Stage stage = (Stage) postsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void goToHome() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/home/HomePage.fxml"));
-            Stage stage = (Stage) postsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void showAllCommunities() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/community/Community-Liste-Page.fxml"));
-            Stage stage = (Stage) postsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void showMyCommunities() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/community/MyCommunities.fxml"));
-            Stage stage = (Stage) postsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleLogout() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/auth/Login.fxml"));
-            Stage stage = (Stage) postsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

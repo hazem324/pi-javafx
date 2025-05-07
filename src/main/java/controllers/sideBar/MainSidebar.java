@@ -1,16 +1,16 @@
 package controllers.sideBar;
 
-import controllers.CommunityListController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
 
 import java.io.IOException;
+
+import controllers.community.CommunityListController;
 
 public class MainSidebar {
 
@@ -33,7 +33,8 @@ public class MainSidebar {
         loadPage("/community/Community-Liste-Page");
     }
 
-    public void AccederAuMyCommunities(ActionEvent actionEvent) {
+    public void AccederAuMyCommunities(javafx.scene.input.MouseEvent mouseEvent) {
+        loadPage("/community/MyCommunitys");
     }
 
     public void AccederAuMarketPlace(javafx.scene.input.MouseEvent mouseEvent) {

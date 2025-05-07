@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        <?import javafx.geometry.Insets?>
-        <?import javafx.scene.control.Button?>
-        <?import javafx.scene.control.Label?>
-        <?import javafx.scene.layout.BorderPane?>
-        <?import javafx.scene.layout.HBox?>
-        <?import javafx.scene.layout.VBox?>
-        <?import javafx.scene.text.Font?>
-        <?import java.net.URL?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+
 
 <BorderPane prefHeight="1080.0" prefWidth="1920.0" fx:id="dashboardPane" style="-fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
     <left>
-        <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);" spacing="10.0">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
-            </padding>
-            <children>
-                <Label text="Admin Panel" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', sans-serif;">
-                    <font>
-                        <Font name="Segoe UI Bold" size="26.0" />
-                    </font>
+        <ScrollPane fitToWidth="true" prefWidth="280.0" style="-fx-background-color: transparent;">
+            <content>
+                <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);" spacing="10.0">
                     <padding>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
                     </padding>
+
                 </Label>
                 <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="profileButton" onAction="#showProfile" text="Profile" styleClass="sidebar-button" prefWidth="Infinity" />
@@ -30,11 +28,13 @@
                 <Button fx:id="eventsButton" onAction="#showEvents" text="Events" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="categoriesButton" onAction="#showCategories" text="Categories" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="productCategoriesButton" onAction="#showProductCategories" text="Product Category" styleClass="sidebar-button" prefWidth="Infinity" />
+                   <Button fx:id="commendListButton" onAction="#showCommendList" text="Liste des commandes" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="securitySettingsButton" onAction="#showSecuritySettings" text="Security Settings" styleClass="sidebar-button" prefWidth="Infinity" />
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>
         </VBox>
+
     </left>
     <center>
         <VBox prefHeight="1080.0" prefWidth="1640.0" spacing="0">

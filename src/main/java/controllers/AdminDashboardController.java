@@ -20,11 +20,15 @@ public class AdminDashboardController {
     @FXML private Button usersButton;
     @FXML private Button profileButton;
     @FXML private Button communitiesButton;
+    @FXML private Button requestButton;
+    @FXML private Button communitiesStatButton;
     @FXML private Button postsButton;
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
     @FXML private Button productCategoriesButton;
     @FXML private Button securitySettingsButton;
+    @FXML private Button commendListButton;
+
     @FXML private Button logoutButton;
     @FXML private Label adminLabel;
     @FXML private VBox center;
@@ -65,6 +69,16 @@ public class AdminDashboardController {
     }
 
     @FXML
+    public void showCommunitiesStat(ActionEvent actionEvent){
+         loadView("/static/post_static.fxml");
+    }
+
+    @FXML
+    public void showRequest(ActionEvent actionEvent){
+         loadView("/community/RequestManagement.fxml");
+    }
+
+    @FXML
     public void showPosts(ActionEvent actionEvent) {
         loadView("/community/PostManagementView.fxml");
     }
@@ -101,6 +115,7 @@ public class AdminDashboardController {
         }
     }
 
+
     @FXML
     public void showSecuritySettings(ActionEvent actionEvent) {
         try {
@@ -120,6 +135,13 @@ public class AdminDashboardController {
             showError("Failed to load security settings view: " + e.getMessage());
         }
     }
+
+    
+    @FXML
+    public void showCommendList(ActionEvent actionEvent){
+        loadView("/marketPlace/AfficherCommandes.fxml");
+    }
+    
 
     @FXML
     public void logout(ActionEvent actionEvent) {

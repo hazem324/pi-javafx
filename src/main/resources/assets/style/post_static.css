@@ -1,97 +1,160 @@
+/* Root */
 .root {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #f4f4f9;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
+/* Sidebar */
 .sidebar {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #00897b;
     -fx-padding: 10;
     -fx-spacing: 10;
     -fx-pref-width: 200;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 4, 4);
 }
 
+/* Sidebar Button */
 .sidebar-button {
     -fx-pref-width: 180;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e0e0e0;
-    -fx-border-radius: 5;
-    -fx-padding: 10;
-    -fx-font-size: 14;
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-alignment: CENTER;
 }
 
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Navbar */
 .navbar {
     -fx-background-color: #ffffff;
     -fx-padding: 10;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 0 1 0;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5);
 }
 
+/* Navbar Title */
 .navbar-title {
-    -fx-font-size: 20;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
 }
 
+/* Main Content */
 .main-content {
     -fx-padding: 20;
 }
 
+/* Cards Grid */
 .cards-grid {
     -fx-padding: 10;
 }
 
+/* Card */
 .card {
-    -fx-background-color: #f8f9fa;
-    -fx-background-radius: 10;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
     -fx-padding: 20;
     -fx-alignment: center-left;
+    -fx-opacity: 0;
+    -fx-animation: fadeIn 0.5s ease-in forwards;
 }
 
+/* Card Icon */
 .card-icon {
     -fx-font-size: 40;
 }
 
+/* Card Label */
 .card-label {
-    -fx-font-size: 14;
-    -fx-text-fill: #6c757d;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
 }
 
+/* Card Value */
 .card-value {
-    -fx-font-size: 18;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
 }
 
+/* Charts Grid */
 .charts-grid {
     -fx-padding: 10;
 }
 
+/* Chart Container */
 .chart-container {
-    -fx-background-color: #f8f9fa;
-    -fx-background-radius: 10;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
     -fx-padding: 20;
-    /* Removed -fx-pref-height to allow dynamic sizing */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
 }
 
+/* Chart Title */
 .chart-title {
-    -fx-font-size: 16;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
     -fx-padding: 0 0 10 0;
 }
 
+/* Footer */
 .footer {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #ffffff;
     -fx-padding: 10;
     -fx-alignment: center;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 5, 5);
 }
 
+/* Footer Text */
 .footer-text {
-    -fx-font-size: 12;
-    -fx-text-fill: #6c757d;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
 }
 
+/* Chart Tooltip */
 .chart-tooltip {
     -fx-background-color: #333333;
     -fx-text-fill: #ffffff;
-    -fx-font-size: 12;
+    -fx-font-family: 'Segoe UI', 'Roboto', sans-serif;
+    -fx-font-size: 12px;
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-opacity: 0.9;
+}
+
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-padding: 20;
+    -fx-alignment: center-left;
+    -fx-opacity: 1;
+}
+
+.cards-grid {
+    -fx-padding: 20;
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.scroll-pane {
+    -fx-background-color: #f4f4f9;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
 }

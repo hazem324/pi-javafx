@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -23,9 +22,9 @@
             <Button styleClass="nav-button" text="Profil" />
             <Button styleClass="nav-button" text="Home" />
             <Button styleClass="nav-button" text="Liste des Communautés"  onMouseClicked="#AccederAuAllCommunities" />
-            <Button styleClass="nav-button" text="Mes Communautés" />
+            <Button styleClass="nav-button" text="Mes Communautés" onMouseClicked="#AccederAuMyCommunities" />
             <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
-            <Button styleClass="nav-button" text="Ma Panier" onMouseClicked="#AccederAuPanier" />
+            <Button styleClass="nav-button" text="Mon Panier" onMouseClicked="#AccederAuPanier" />
             <Button styleClass="nav-button" text="Logout" />
         </VBox>
 

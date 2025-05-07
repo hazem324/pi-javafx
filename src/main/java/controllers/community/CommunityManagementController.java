@@ -1,4 +1,4 @@
-package controllers;
+package controllers.community;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
