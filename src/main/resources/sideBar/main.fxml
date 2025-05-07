@@ -12,26 +12,27 @@
             prefHeight="600.0"
             prefWidth="800.0"
             stylesheets="@/assets/style/CommunityList.css"
-            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns="http://javafx.com/javafx/22.0.1"
             xmlns:fx="http://javafx.com/fxml/1">
     <left>
-
-
         <!-- Left Sidebar -->
         <VBox prefHeight="600.0" prefWidth="250" styleClass="side-nav">
             <Button styleClass="nav-button" text="Profil" />
             <Button styleClass="nav-button" text="Home" />
+              <Button styleClass="nav-button" text="Liste des Communautés" onMouseClicked="#AccederAuAllCommunities" />
+            <Button styleClass="nav-button" text="Mes Communautés" />
+            <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
+            <Button styleClass="nav-button" text="Ma Panier" onMouseClicked="#AccederAuPanier" />
+            <Button styleClass="nav-button" text="Events" onMouseClicked="#AccederAuEvents" />
             <Button styleClass="nav-button" text="Liste des Communautés"  onMouseClicked="#AccederAuAllCommunities" />
             <Button styleClass="nav-button" text="Mes Communautés" onMouseClicked="#AccederAuMyCommunities" />
             <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
             <Button styleClass="nav-button" text="Mon Panier" onMouseClicked="#AccederAuPanier" />
+
             <Button styleClass="nav-button" text="Logout" />
         </VBox>
-
-
     </left>
     <top>
-
         <HBox styleClass="top-bar" BorderPane.alignment="CENTER">
             <HBox HBox.hgrow="ALWAYS">
                 <Text styleClass="page-title" text="Communities" />

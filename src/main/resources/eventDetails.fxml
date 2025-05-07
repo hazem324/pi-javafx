@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<?import java.lang.String?>
+<VBox spacing="0" style="-fx-background-color: #e6f0fa;"
+      xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.EventDetailsController">
+    <stylesheets>
+        <String fx:value="css/EventDetails.css" />
+    </stylesheets>
+    <!-- Hero Section with Background Image -->
+    <StackPane prefHeight="300" style="-fx-background-color: #1e3a8a;">
+        <ImageView fx:id="eventImage" fitWidth="800" fitHeight="300" preserveRatio="false">
+            <StackPane.margin>
+                <Insets top="0" bottom="0" left="0" right="0" />
+            </StackPane.margin>
+            <effect>
+                <javafx.scene.effect.GaussianBlur radius="20" />
+            </effect>
+        </ImageView>
+        <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);" />
+        <Text fx:id="titleLabel" style="-fx-font-size: 48px; -fx-font-weight: bold; -fx-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 2, 2);" />
+    </StackPane>
+
+    <!-- Event Details Section -->
+    <VBox spacing="20" style="-fx-background-color: #e6f0fa; -fx-padding: 30;">
+        <!-- Description -->
+        <VBox spacing="5">
+            <Label text="Description" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e3a8a;" />
+            <Label fx:id="descriptionLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333; -fx-wrap-text: true;" />
+        </VBox>
+
+        <!-- Event Info Grid -->
+        <HBox spacing="40">
+            <VBox spacing="10">
+                <Label text="Event Dates" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1e3a8a;" />
+                <Label fx:id="dateLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
+                <Label fx:id="endDateLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" visible="false" />
+            </VBox>
+            <VBox spacing="10">
+                <Label text="Details" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1e3a8a;" />
+                <Label fx:id="locationLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
+                <Label fx:id="statusLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
+            </VBox>
+            <VBox spacing="10">
+                <Label text="Additional Info" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1e3a8a;" />
+                <Label fx:id="categoryLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
+                <Label fx:id="placesLabel" style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
+            </VBox>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="20">
+            <Button text="Back" onAction="#goBack" style="-fx-background-color: #ff4d4d; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px; -fx-padding: 10 30 10 30; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);">
+                <styleClass>
+                    <String fx:value="back-button" />
+                </styleClass>
+                <VBox.margin>
+                    <Insets top="20" bottom="10" left="0" />
+                </VBox.margin>
+            </Button>
+            <Button text="Register" onAction="#registerForEvent" style="-fx-background-color: #1e3a8a; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px; -fx-padding: 10 30 10 30; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);">
+                <styleClass>
+                    <String fx:value="register-button" />
+                </styleClass>
+                <VBox.margin>
+                    <Insets top="20" bottom="10" left="0" />
+                </VBox.margin>
+            </Button>
+        </HBox>
+    </VBox>
+</VBox>

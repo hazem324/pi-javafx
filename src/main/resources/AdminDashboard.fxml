@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1920.0" fx:id="dashboardPane" style="-fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" fx:id="dashboardPane" style="-fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
     <left>
         <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);" spacing="10.0">
             <padding>
@@ -29,6 +29,7 @@
                 <Button fx:id="postsButton" onAction="#showPosts" text="Posts" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="eventsButton" onAction="#showEvents" text="Events" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="categoriesButton" onAction="#showCategories" text="Categories" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="chartsButton" onAction="#showCharts" text="Charts" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="productCategoriesButton" onAction="#showProductCategories" text="Product Category" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="commendListButton" onAction="#showCommendList" text="Liste des commandes" styleClass="sidebar-button" prefWidth="Infinity" />
 

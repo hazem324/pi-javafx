@@ -46,6 +46,10 @@ public class EventManagementController {
     @FXML private TextField imageField;
     @FXML private Button chooseImageButton;
     @FXML private Button addButton;
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> statusFilterComboBox;
+    @FXML private DatePicker fromDatePicker;
+    @FXML private DatePicker toDatePicker;
 
     private final EventService eventService = new EventService();
     private final CategoryService categoryService = new CategoryService();
@@ -53,9 +57,13 @@ public class EventManagementController {
 
     @FXML
     public void initialize() {
-        // Populate status ComboBox
+        // Populate status ComboBox for adding events
         statusComboBox.getItems().addAll("active", "canceled", "completed");
         statusComboBox.setValue("active");
+
+        // Populate filter ComboBox
+        statusFilterComboBox.getItems().addAll("All", "active", "canceled", "completed");
+        statusFilterComboBox.setValue("All");
 
         // Populate category ComboBox
         try {
@@ -131,11 +139,33 @@ public class EventManagementController {
 
     private void loadEvents() {
         try {
-            List<Event> events = eventService.recuperer();
+            String searchTitle = searchField != null ? searchField.getText() : null;
+            String statusFilter = statusFilterComboBox != null ? statusFilterComboBox.getValue() : "All";
+            LocalDate fromDate = fromDatePicker != null ? fromDatePicker.getValue() : null;
+            LocalDate toDate = toDatePicker != null ? toDatePicker.getValue() : null;
+
+            // Validate date range
+            if (fromDate != null && toDate != null && toDate.isBefore(fromDate)) {
+                showAlert(Alert.AlertType.ERROR, "Error", "To Date must be after From Date.");
+                toDatePicker.setValue(null); // Reset invalid To Date
+                toDate = null;
+            }
+
+            List<Event> events = eventService.getEvents(searchTitle, statusFilter, fromDate, toDate);
             eventTable.getItems().setAll(events);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load events: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void searchEvents() {
+        loadEvents();
+    }
+
+    @FXML
+    private void filterEvents() {
+        loadEvents();
     }
 
     @FXML

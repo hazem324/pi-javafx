@@ -1,0 +1,55 @@
+.event-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-padding: 15;
+    -fx-alignment: center;
+}
+
+.event-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
+    -fx-cursor: hand;
+}
+
+.event-image {
+    -fx-background-radius: 10;
+}
+
+.event-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+}
+
+.event-info {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+.button-info {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 12px;
+    -fx-padding: 5 10 5 10;
+}
+
+.button-info:hover {
+    -fx-background-color: #45a049;
+}
+
+.button-register {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 12px;
+    -fx-padding: 5 10 5 10;
+}
+
+.button-register:hover {
+    -fx-background-color: #1e88e5;
+}

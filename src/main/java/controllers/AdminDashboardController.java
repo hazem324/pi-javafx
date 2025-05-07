@@ -25,6 +25,7 @@ public class AdminDashboardController {
     @FXML private Button postsButton;
     @FXML private Button eventsButton;
     @FXML private Button categoriesButton;
+    @FXML private Button chartsButton;
     @FXML private Button productCategoriesButton;
     @FXML private Button securitySettingsButton;
     @FXML private Button commendListButton;
@@ -93,6 +94,21 @@ public class AdminDashboardController {
         loadView("/event-category/CategoryManagementView.fxml");
     }
 
+
+    @FXML
+    public void showCharts(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/eventStats.fxml"));
+            Parent root = loader.load();
+            EventStatsController statsController = loader.getController();
+            statsController.setDashboardController(this);
+            dashboardPane.setCenter(root);
+        } catch (IOException e) {
+            showError("Failed to load charts view: " + e.getMessage());
+        }
+    }
+
+
     @FXML
     public void showProductCategories(ActionEvent actionEvent) {
         System.out.println("showProductCategories called");
@@ -114,6 +130,7 @@ public class AdminDashboardController {
             showError("Failed to load product category management view: " + e.getMessage());
         }
     }
+
 
 
     @FXML
@@ -142,6 +159,7 @@ public class AdminDashboardController {
         loadView("/marketPlace/AfficherCommandes.fxml");
     }
     
+
 
     @FXML
     public void logout(ActionEvent actionEvent) {

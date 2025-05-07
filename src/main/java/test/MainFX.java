@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class MainFX extends Application {
 
-    
-    // Étape 1 : Déclarer un stage statique
     public static Stage primaryStage;
 
     public static void main(String[] args) {
@@ -53,7 +51,7 @@ public class MainFX extends Application {
         }
     }
 
-    // Étape 3 : Ajouter la méthode chargerVue
+
     public static void chargerVue(String fxmlPath) throws IOException {
         FXMLLoader loader = new FXMLLoader(MainFX.class.getResource(fxmlPath));
         Parent root = loader.load();

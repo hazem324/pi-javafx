@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 
-<VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" styleClass="management-pane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventManagementController">
+<VBox prefHeight="1080.0" prefWidth="1640.0" spacing="20.0" styleClass="management-pane" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventManagementController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -62,6 +62,15 @@
                 </HBox>
             </children>
         </VBox>
+        <!-- Search and Filter -->
+        <HBox spacing="15.0" alignment="CENTER_LEFT">
+            <children>
+                <TextField fx:id="searchField" promptText="Search by Title" prefWidth="200.0" styleClass="text-input" onAction="#searchEvents" />
+                <ComboBox fx:id="statusFilterComboBox" promptText="Filter by Status" prefWidth="150.0" styleClass="combo-box" onAction="#filterEvents" />
+                <DatePicker fx:id="fromDatePicker" promptText="From Date" prefWidth="150.0" styleClass="date-picker" onAction="#filterEvents" />
+                <DatePicker fx:id="toDatePicker" promptText="To Date" prefWidth="150.0" styleClass="date-picker" onAction="#filterEvents" />
+            </children>
+        </HBox>
         <!-- Event Table -->
         <TableView fx:id="eventTable" prefHeight="800.0" styleClass="data-table">
             <columns>
