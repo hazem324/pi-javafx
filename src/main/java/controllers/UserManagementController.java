@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UserManagementController {
 
@@ -59,13 +60,14 @@ public class UserManagementController {
     @FXML private HBox paginationContainer;
     @FXML private Button exportExcelButton;
     @FXML private Button exportPdfButton;
+    @FXML private TextField searchFilter;
 
     private int totalUserCount = 0;
     private int currentPage = 0;
     private final int USERS_PER_PAGE = 10;
     private List<User> allUsers;
-    private final UserService userService = new UserService();
     private final ObservableList<User> usersOnPage = FXCollections.observableArrayList();
+    private final UserService userService = new UserService();
 
 
     @FXML
@@ -75,6 +77,34 @@ public class UserManagementController {
         loadAllUsers();
         updatePagination();
         usersTable.setItems(usersOnPage);
+
+        // Add clear button to search field
+        addClearButtonToSearchField();
+
+        // Add listener for real-time filtering
+        searchFilter.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+    }
+
+    private void addClearButtonToSearchField() {
+        // Find the HBox containing the searchFilter and ImageView
+        HBox parentHBox = (HBox) searchFilter.getParent();
+        if (parentHBox != null) {
+            Button clearButton = new Button("✖");
+            clearButton.getStyleClass().add("clear-button");
+            clearButton.setVisible(false);
+
+            // Show/hide clear button based on text presence
+            searchFilter.textProperty().addListener((obs, oldVal, newVal) -> {
+                clearButton.setVisible(!newVal.isEmpty());
+            });
+
+            // Clear the text field when the button is clicked
+            clearButton.setOnAction(event -> searchFilter.clear());
+
+            // Add the clear button to the right side of the HBox
+            parentHBox.getChildren().add(clearButton);
+            HBox.setMargin(clearButton, new javafx.geometry.Insets(0, 10, 0, 0));
+        }
     }
 
     private void setupTableColumns() {
@@ -151,7 +181,7 @@ public class UserManagementController {
             allUsers = userService.recuperer();
             totalUserCount = allUsers.size();
             loadStats();
-            showUsersOnPage(currentPage);
+            applyFilters();
         } catch (SQLException e) {
             showError("Failed to load users: " + e.getMessage());
         }
@@ -167,6 +197,33 @@ public class UserManagementController {
             totalUsersLabel.setText("Total Users: N/A");
             activeUsersLabel.setText("Active Users: N/A");
         }
+    }
+
+    private void applyFilters() {
+        String searchTerm = searchFilter.getText().toLowerCase().trim();
+
+        List<User> filteredUsers = allUsers.stream()
+                .filter(user -> searchTerm.isEmpty() ||
+                        user.getEmail().toLowerCase().contains(searchTerm) ||
+                        user.getFirstName().toLowerCase().contains(searchTerm) ||
+                        user.getLastName().toLowerCase().contains(searchTerm) ||
+                        String.join(", ", user.getRoles()).toLowerCase().contains(searchTerm) ||
+                        matchesStatus(user.isBlocked(), searchTerm))
+                .collect(Collectors.toList());
+
+        totalUserCount = filteredUsers.size();
+        loadStats();
+        currentPage = 0; // Reset to first page on filter change
+        showUsersOnPage(currentPage);
+        updatePagination();
+    }
+
+    private boolean matchesStatus(boolean isBlocked, String searchTerm) {
+        // Check both text and numeric representations of status
+        String statusText = isBlocked ? "blocked" : "active";
+        int statusValue = isBlocked ? 1 : 0;
+        return statusText.contains(searchTerm) ||
+                String.valueOf(statusValue).contains(searchTerm);
     }
 
     private void updatePagination() {
@@ -240,11 +297,33 @@ public class UserManagementController {
     private void showUsersOnPage(int page) {
         usersOnPage.clear();
         int start = page * USERS_PER_PAGE;
-        int end = Math.min(start + USERS_PER_PAGE, allUsers.size());
-        if (start <= allUsers.size()) {
-            usersOnPage.addAll(allUsers.subList(start, end));
+        int end = Math.min(start + USERS_PER_PAGE, totalUserCount);
+        if (start < totalUserCount) {
+            List<User> filteredUsers = applyFiltersToList(allUsers);
+            usersOnPage.addAll(filteredUsers.subList(start, end));
         }
     }
+
+    private List<User> applyFiltersToList(List<User> users) {
+        String searchTerm = searchFilter.getText().toLowerCase().trim();
+
+        return users.stream()
+                .filter(user -> searchTerm.isEmpty() ||
+                        user.getEmail().toLowerCase().contains(searchTerm) ||
+                        user.getFirstName().toLowerCase().contains(searchTerm) ||
+                        user.getLastName().toLowerCase().contains(searchTerm) ||
+                        String.join(", ", user.getRoles()).toLowerCase().contains(searchTerm) ||
+                        matchesStatus(user.isBlocked(), searchTerm))
+                .collect(Collectors.toList());
+    }
+
+//    private boolean matchesStatus(boolean isBlocked, String searchTerm) {
+//        // Check both text and numeric representations of status
+//        String statusText = isBlocked ? "blocked" : "active";
+//        int statusValue = isBlocked ? 1 : 0;
+//        return statusText.contains(searchTerm) ||
+//                String.valueOf(statusValue).contains(searchTerm);
+//    }
 
     @FXML
     public void addUser(ActionEvent actionEvent) {
@@ -348,7 +427,8 @@ public class UserManagementController {
 
                 // Data rows
                 int rowNum = 1;
-                for (User user : allUsers) {
+                List<User> exportUsers = applyFiltersToList(allUsers);
+                for (User user : exportUsers) {
                     Row row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(user.getId());
                     row.createCell(1).setCellValue(user.getFirstName());
@@ -449,7 +529,8 @@ public class UserManagementController {
 
                 // Data rows
                 boolean alternate = false;
-                for (User user : allUsers) {
+                List<User> exportUsers = applyFiltersToList(allUsers);
+                for (User user : exportUsers) {
                     table.addCell(new Cell()
                             .add(new Paragraph(String.valueOf(user.getId())).setFontSize(10))
                             .setBackgroundColor(alternate ? new com.itextpdf.kernel.colors.DeviceRgb(245, 245, 245) : ColorConstants.WHITE)
