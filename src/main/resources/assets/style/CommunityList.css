@@ -96,21 +96,94 @@
 .alert-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
-}
-
-.alert-description {
-    -fx-font-size: 14px;
-    -fx-fill: #666666;
-}
-
-.join-button {
-    -fx-background-color: #2ecc71;
-    -fx-text-fill: white;
-    -fx-padding: 8px 20px;
-    -fx-background-radius: 5px;
+    -fx-text-fill: #2c3e50;
 }
 
 .join-button:hover {
     -fx-background-color: #27ae60;
 } 
+
+
+.alert-description {
+    -fx-text-fill: #555;
+}
+
+.join-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 8;
+}
+
+
+
+
+
+
+
+/* Styling for the Alert dialog pane */
+.dialog-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+/* Title label styling */
+.alert-title {
+    -fx-text-fill: #1a1a1a;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* Description and category label styling */
+.alert-description {
+    -fx-text-fill: #4a4a4a;
+    -fx-line-spacing: 2px;
+    -fx-alignment: center-left;
+    -fx-max-width: 300px;
+}
+
+/* Join button styling */
+.join-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.join-button:hover {
+    -fx-background-color: #0056b3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.join-button:pressed {
+    -fx-background-color: #003d80;
+}
+
+/* ImageView styling for smooth edges */
+.image-view {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+/* VBox content container */
+.vbox {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-spacing: 15px;
+}
+
+/* Remove default dialog pane content padding */
+.dialog-pane > .content {
+    -fx-padding: 0;
+}

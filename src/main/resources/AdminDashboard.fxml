@@ -31,6 +31,9 @@
                 <Button fx:id="categoriesButton" onAction="#showCategories" text="Categories" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="chartsButton" onAction="#showCharts" text="Charts" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="productCategoriesButton" onAction="#showProductCategories" text="Product Category" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="commendListButton" onAction="#showCommendList" text="Liste des commandes" styleClass="sidebar-button" prefWidth="Infinity" />
+
+                <Button fx:id="securitySettingsButton" onAction="#showSecuritySettings" text="Security Settings" styleClass="sidebar-button" prefWidth="Infinity" />
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>

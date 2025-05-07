@@ -1,227 +1,175 @@
+/* General Page Styling */
 .community-posts-page {
     -fx-background-color: #f5f5f5;
 }
 
-/* Top Bar Styles */
+/* Top Bar */
 .top-bar {
     -fx-background-color: #ffffff;
-    -fx-padding: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
 }
 
-.page-title {
-    -fx-font-size: 24px;
+.community-title {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
+    -fx-text-fill: #333333;
 }
 
 .user-name {
     -fx-font-size: 14px;
-    -fx-fill: #666666;
+    -fx-text-fill: #555555;
 }
 
-.logout-button {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
-    -fx-padding: 5px 15px;
-    -fx-background-radius: 5px;
-}
-
-.logout-button:hover {
-    -fx-background-color: #c0392b;
-}
-
-/* Sidebar Styles */
-.side-nav {
-    -fx-background-color: #2c3e50;
-    -fx-padding: 20px 0;
-}
-
-.nav-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 15px 20px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-cursor: hand;
-}
-
-.nav-button:hover {
-    -fx-background-color: #34495e;
-}
-
-/* Content Area Styles */
+/* Content Scroll */
 .content-scroll {
     -fx-background-color: transparent;
-    -fx-padding: 20px;
 }
 
 .content-container {
-    -fx-spacing: 20px;
     -fx-padding: 20px;
+    -fx-spacing: 20px;
 }
 
-/* New Post Form Styles */
+/* New Post Container */
 .new-post-container {
-    -fx-background-color: white;
-    -fx-background-radius: 10px;
-    -fx-padding: 20px;
-    -fx-spacing: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-background-color: #ffffff;
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
 }
 
 .section-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
+    -fx-text-fill: #333333;
 }
 
 .post-textarea {
-    -fx-background-color: #f2f3f4;
+    -fx-pref-height: 100px;
+    -fx-pref-width: 600px;
     -fx-background-radius: 5px;
-    -fx-padding: 10px;
-    -fx-font-size: 14px;
+    -fx-border-color: #cccccc;
 }
 
-.post-actions {
-    -fx-alignment: CENTER_RIGHT;
+.post-actions .image-button,
+.post-actions .submit-button {
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 5px;
 }
 
 .image-button {
-    -fx-background-color: #3498db;
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
-    -fx-padding: 8px 15px;
-    -fx-background-radius: 5px;
 }
 
 .submit-button {
-    -fx-background-color: #2ecc71;
+    -fx-background-color: #2196F3;
     -fx-text-fill: white;
-    -fx-padding: 8px 20px;
-    -fx-background-radius: 5px;
 }
 
-/* Timeline Styles */
+/* Timeline Container */
 .timeline-container {
-    -fx-spacing: 20px;
+    -fx-spacing: 15px;
 }
 
 .timeline-post {
-    -fx-background-color: white;
-    -fx-background-radius: 10px;
-    -fx-padding: 20px;
-    -fx-spacing: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
-}
-
-.post-header {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10px;
     -fx-spacing: 10px;
-    -fx-alignment: CENTER_LEFT;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
 }
 
-.post-author-image {
-    -fx-fit-width: 40px;
-    -fx-fit-height: 40px;
-    -fx-preserve-ratio: true;
-    -fx-clip: circle;
+.post-header .post-author-image {
+    -fx-background-radius: 50%;
 }
 
 .post-author-name {
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
+    -fx-text-fill: #333333;
 }
 
 .post-date {
     -fx-font-size: 12px;
-    -fx-fill: #666666;
+    -fx-text-fill: #777777;
 }
 
 .post-content {
     -fx-font-size: 14px;
-    -fx-fill: #333333;
-    -fx-wrap-text: true;
-}
-
-.post-image {
-    -fx-fit-width: 300px;
-    -fx-fit-height: 300px;
-    -fx-preserve-ratio: true;
-}
-
-.post-actions-bar {
-    -fx-padding: 10px 0;
-    -fx-border-color: #e2e7eb;
-    -fx-border-width: 1px 0 0 0;
-}
-
-.action-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #666666;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-}
-
-.action-button:hover {
     -fx-text-fill: #333333;
 }
 
-/* Comments Section Styles */
+.post-image {
+    -fx-background-radius: 5px;
+}
+
+.post-actions-bar .action-button {
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 5px;
+    -fx-text-fill: black;
+}
+
+/* Like Button Style */
+.post-actions-bar .action-button:like {
+    -fx-background-color: #E6F9E6;
+}
+.post-actions-bar .action-button:like:hover {
+    -fx-background-color: #CDE8CD; /* Slightly darker on hover */
+}
+
+/* Comment Button Style */
+.post-actions-bar .action-button:comment {
+    -fx-background-color: #D0EFFF;
+}
+.post-actions-bar .action-button:comment:hover {
+    -fx-background-color: #B3D8F0; /* Slightly darker on hover */
+}
+
 .comments-section {
-    -fx-background-color: #f9f9f9;
-    -fx-background-radius: 0 0 10px 10px;
-    -fx-padding: 15px;
-    -fx-spacing: 15px;
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
 }
 
 .comment {
-    -fx-spacing: 10px;
-}
-
-.comment-header {
-    -fx-spacing: 10px;
-    -fx-alignment: CENTER_LEFT;
+    -fx-background-color: #f9f9f9;
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
 }
 
 .comment-author-image {
-    -fx-fit-width: 30px;
-    -fx-fit-height: 30px;
-    -fx-preserve-ratio: true;
-    -fx-clip: circle;
+    -fx-background-radius: 50%;
 }
 
 .comment-author-name {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
+    -fx-text-fill: #333333;
 }
 
 .comment-content {
-    -fx-font-size: 13px;
-    -fx-fill: #575d63;
-    -fx-wrap-text: true;
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
 }
 
 .comment-input-container {
     -fx-spacing: 10px;
-    -fx-alignment: CENTER_LEFT;
 }
 
 .comment-input {
-    -fx-background-color: #f2f3f4;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 500px;
     -fx-background-radius: 5px;
-    -fx-padding: 10px;
-    -fx-font-size: 13px;
+    -fx-border-color: #cccccc;
 }
 
 .comment-submit-button {
-    -fx-background-color: #2d353c;
-    -fx-text-fill: white;
-    -fx-padding: 8px 15px;
+    -fx-padding: 5px 15px;
     -fx-background-radius: 5px;
-    -fx-font-size: 13px;
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
 }
-
-.comment-submit-button:hover {
-    -fx-background-color: #242a30;
-} 

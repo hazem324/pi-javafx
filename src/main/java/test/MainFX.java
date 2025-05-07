@@ -7,21 +7,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 
 public class MainFX extends Application {
 
-
     public static Stage primaryStage;
 
     public static void main(String[] args) {
+       
         System.out.println("Launching application...");
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-        try {
+
+       try {
+            // Test getUserCommunity(1)  
             System.out.println("Loading FXML...");
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.Button?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.image.ImageView?>
+        <?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TotpSetupController">
+    <Label text="Setup Two-Factor Authentication" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Label text="Scan this QR code with Google Authenticator or a similar app:" style="-fx-font-size: 14px;"/>
+    <ImageView fx:id="qrCodeImage" fitWidth="200" fitHeight="200"/>
+    <Button text="I've Scanned the QR Code" onAction="#onSetupComplete" style="-fx-background-color: #28a745; -fx-text-fill: white;"/>
+</VBox>

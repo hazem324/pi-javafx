@@ -1,0 +1,32 @@
+
+.totp-textfield {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.totp-textfield:hover {
+    -fx-border-color: #28a745;
+}
+
+.totp-textfield:focused {
+    -fx-border-color: #28a745;
+    -fx-border-width: 2;
+    -fx-background-color: #f5f5f5;
+}
+
+.totp-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.totp-button:hover {
+    -fx-background-color: #218838;
+    -fx-cursor: hand;
+}
+
+.totp-button:pressed {
+    -fx-background-color: #1e7e34;
+}

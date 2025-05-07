@@ -1,0 +1,39 @@
+.my-community-list-page {
+    -fx-background-color: #f5f5f5;
+}
+
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+}
+
+.community-grid {
+    -fx-padding: 20;
+    -fx-background-color: transparent;
+}
+
+.community-card {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.community-card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: #f8f8f8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 4);
+}
+
+.community-card ImageView {
+    -fx-background-radius: 5;
+}
+
+.community-card Label {
+    -fx-text-alignment: center;
+}
