@@ -5,7 +5,7 @@
     -fx-border-radius: 15;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
     -fx-opacity: 0;
-    -fx-animation: fadeIn 0.5s ease-in forwards;
+    /* Removed @-fx-keyframes as it's not supported; use JavaFX animation instead */
 }
 
 .two-factor .header-text {
@@ -86,11 +86,6 @@
     -fx-scale-y: 1.05;
 }
 
-@-fx-keyframes fadeIn {
-    from { -fx-opacity: 0; -fx-translate-y: 10; }
-    to { -fx-opacity: 1; -fx-translate-y: 0; }
-}
-
 /* Existing Styles (unchanged, moved below to reduce override risk) */
 #loginCard {
     -fx-background-size: cover;
@@ -161,7 +156,26 @@
     -fx-translate-y: -2;
 }
 
+#commendListButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
 
+#commendListButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
 
 #securitySettingsButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
@@ -183,8 +197,9 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
     -fx-translate-y: -2;
 }
+
 #communitiesButton {
-    -fx-background-color: linear-gradient(to right, #00897b,  #4db6ac);
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -204,8 +219,8 @@
     -fx-translate-y: -2;
 }
 
-#requestButton{
-    -fx-background-color: linear-gradient(to right, #00897b,  #4db6ac);
+#requestButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -217,7 +232,7 @@
     -fx-translate-y: 0;
 }
 
-#requestButton:hover{
+#requestButton:hover {
     -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
@@ -225,8 +240,8 @@
     -fx-translate-y: -2;
 }
 
-#communitiesStatButton{
-    -fx-background-color: linear-gradient(to right, #00897b,  #4db6ac);
+#communitiesStatButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -238,19 +253,16 @@
     -fx-translate-y: 0;
 }
 
-
-#communitiesStatButton:hover{
+#communitiesStatButton:hover {
     -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
     -fx-translate-y: -2;
 }
-
-
 
 #productCategoriesButton {
-    -fx-background-color: linear-gradient(to right, #00897b,  #4db6ac);
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
     -fx-font-family: 'Segoe UI', sans-serif;
@@ -418,7 +430,7 @@
 }
 
 /* Accept button (green background) */
-.action-button:not(.reject-button):not(.remove-button) {
+.action-button.accept-button {
     -fx-background-color: #28a745; /* Green */
 }
 
@@ -699,21 +711,19 @@
     -fx-padding: 20;
 }
 
-
-
-   .modern-search-field {
-       -fx-background-color: #ffffff;
-       -fx-background-radius: 12;
-       -fx-border-radius: 12;
-       -fx-border-color: linear-gradient(to right, #00c4b4, #7b68ee);
-       -fx-border-width: 2;
-       -fx-font-family: 'Segoe UI', sans-serif;
-       -fx-font-size: 16px;
-       -fx-padding: 10 35 10 10; /* Space for clear button on the right */
-       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
-       -fx-prompt-text-fill: #a0a0a0;
-       -fx-text-fill: #333333;
-   }
+.modern-search-field {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: linear-gradient(to right, #00c4b4, #7b68ee);
+    -fx-border-width: 2;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 16px;
+    -fx-padding: 10 35 10 10; /* Space for clear button on the right */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-prompt-text-fill: #a0a0a0;
+    -fx-text-fill: #333333;
+}
 
 .modern-search-field:hover {
     -fx-scale-x: 1.02;

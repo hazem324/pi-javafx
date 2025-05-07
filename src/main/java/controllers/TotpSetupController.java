@@ -32,7 +32,7 @@ public class TotpSetupController {
     }
 
     private void displayQrCode() {
-        String totpUri = String.format("otpauth://totp/CultureSpace:%s?secret=%s&issuer=YourApp", user.getEmail(), secretKey);
+        String totpUri = String.format("otpauth://totp/CultureSpace:%s?secret=%s&issuer=CultureSpace", user.getEmail(), secretKey);
         Image qrImage = generateQrCode(totpUri, 200, 200);
         if (qrImage != null) {
             qrCodeImage.setImage(qrImage);
