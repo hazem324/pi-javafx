@@ -1,0 +1,222 @@
+/* General BorderPane Styling */
+BorderPane {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+}
+
+/* VBox Styling */
+.cart-vbox {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-alignment: CENTER;
+}
+
+/* TableView Styling */
+.cart-table {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 2, 2);
+}
+
+.cart-table .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.cart-table .column-header .label {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 10;
+}
+
+.cart-table .table-cell {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-padding: 10;
+    -fx-alignment: CENTER;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.cart-table .table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.cart-table .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.cart-table .table-row-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.cart-table .table-row-cell:empty .table-cell {
+    -fx-text-fill: #666666;
+    -fx-font-style: italic;
+}
+
+/* HBox Styling for Coupon Container and Total */
+.coupon-container, .total-container, .button-container {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+    -fx-spacing: 15;
+}
+
+/* Coupon Field and Button */
+.coupon-label {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.coupon-field {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-padding: 5 10;
+}
+
+.apply-coupon-button {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #6c757d;
+    -fx-background-radius: 5;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+}
+
+.apply-coupon-button:hover {
+    -fx-background-color: #5A6268;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+.apply-coupon-button:pressed {
+    -fx-background-color: #4B5156;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Label Styling */
+.total-label {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.total-amount {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0AAE61;
+}
+
+/* Button Styling */
+.validate-button, .clear-button, .continue-button, .track-button {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+/* Specific Button Colors */
+.validate-button {
+    -fx-background-color: #0AAE61;
+}
+
+.clear-button {
+    -fx-background-color: #E74C3C;
+}
+
+.continue-button {
+    -fx-background-color: #3498DB;
+}
+
+.track-button {
+    -fx-background-color: #6c757d;
+}
+
+/* Hover Effects for Buttons */
+.validate-button:hover {
+    -fx-background-color: #089854;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+.clear-button:hover {
+    -fx-background-color: #C0392B;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+.continue-button:hover {
+    -fx-background-color: #2980B9;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+.track-button:hover {
+    -fx-background-color: #5A6268;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
+/* Pressed Effects for Buttons */
+.validate-button:pressed {
+    -fx-background-color: #067A46;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.clear-button:pressed {
+    -fx-background-color: #A93226;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.continue-button:pressed {
+    -fx-background-color: #2471A3;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.track-button:pressed {
+    -fx-background-color: #4B5156;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}

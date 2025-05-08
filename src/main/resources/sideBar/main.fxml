@@ -7,30 +7,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane fx:controller="controllers.sideBar.MainSidebar"
             fx:id="bp"
             prefHeight="600.0"
             prefWidth="800.0"
-            stylesheets="@/assets/style/CommunityList.css"
+            stylesheets="@/assets/style/sidebar.css"
             xmlns="http://javafx.com/javafx/22.0.1"
             xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <!-- Left Sidebar -->
+         <ScrollPane fitToWidth="true" prefWidth="280.0" style="-fx-background-color: transparent;">
         <VBox prefHeight="600.0" prefWidth="250" styleClass="side-nav">
             <Button styleClass="nav-button" text="Profil" />
             <Button styleClass="nav-button" text="Home" />
-              <Button styleClass="nav-button" text="Liste des Communautés" onMouseClicked="#AccederAuAllCommunities" />
-            <Button styleClass="nav-button" text="Mes Communautés" />
-            <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
-            <Button styleClass="nav-button" text="Ma Panier" onMouseClicked="#AccederAuPanier" />
-            <Button styleClass="nav-button" text="Events" onMouseClicked="#AccederAuEvents" />
-            <Button styleClass="nav-button" text="Liste des Communautés"  onMouseClicked="#AccederAuAllCommunities" />
+            <Button styleClass="nav-button" text="Liste des Communautés" onMouseClicked="#AccederAuAllCommunities" />
             <Button styleClass="nav-button" text="Mes Communautés" onMouseClicked="#AccederAuMyCommunities" />
+            <Button styleClass="nav-button" text="Events" onMouseClicked="#AccederAuEvents" />
             <Button styleClass="nav-button" text="MarketPlace" onMouseClicked="#AccederAuMarketPlace" />
             <Button styleClass="nav-button" text="Mon Panier" onMouseClicked="#AccederAuPanier" />
-
             <Button styleClass="nav-button" text="Logout" />
         </VBox>
+         </ScrollPane>
     </left>
     <top>
         <HBox styleClass="top-bar" BorderPane.alignment="CENTER">

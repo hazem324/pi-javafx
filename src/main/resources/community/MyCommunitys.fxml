@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" 
             styleClass="my-community-list-page" stylesheets="@/assets/style/community-styles.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"  
             fx:controller="controllers.community.MyCommunityController">
     <top>
         <Text text="Mes Communautés" styleClass="section-title" style="-fx-padding: 20;"/>

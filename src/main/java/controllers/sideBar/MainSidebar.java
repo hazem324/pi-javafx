@@ -1,14 +1,13 @@
 package controllers.sideBar;
 
 
-import controllers.CommunityListController;
 import controllers.EventDetailsController;
 import controllers.EventsController;
 import controllers.RegistrationDetailsController;
 import entities.Event; // Added import
 import entities.EventRegistration;
 import entities.User;
-
+import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -10,6 +10,7 @@
 
 <BorderPane prefHeight="1080.0" prefWidth="1920.0" fx:id="dashboardPane" style="-fx-background-color: linear-gradient(to bottom, #f4f6f8, #e0e0e0);" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboardController">
     <left>
+     <ScrollPane fitToWidth="true" prefWidth="280.0" style="-fx-background-color: transparent;">
         <VBox fx:id="sidebar" prefWidth="280.0" style="-fx-background-color: #00897b; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 2);" spacing="10.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
@@ -38,6 +39,7 @@
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>
         </VBox>
+         </ScrollPane>
     </left>
     <center>
         <VBox prefHeight="1080.0" prefWidth="1640.0" spacing="0">

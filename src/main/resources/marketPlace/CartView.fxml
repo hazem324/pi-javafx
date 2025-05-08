@@ -2,21 +2,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane 
     fx:id="bp"
     prefHeight="600.0"
     prefWidth="800.0"
+    stylesheets="@/assets/style/cartView.css"
     xmlns:fx="http://javafx.com/fxml" 
     fx:controller="controllers.marketplace.CartController">
 
     <center>
-        <VBox spacing="10">
+        <VBox styleClass="cart-vbox" spacing="10">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <TableView fx:id="cartTable" prefHeight="300" prefWidth="600">
+            <TableView fx:id="cartTable" prefHeight="300" prefWidth="600" styleClass="cart-table">
                 <columns>
                     <TableColumn text="Produit" fx:id="colProduct" prefWidth="150"/>
                     <TableColumn text="Prix (TND)" fx:id="colPrice" prefWidth="100"/>
@@ -26,26 +26,26 @@
                 </columns>
             </TableView>
 
-            <!-- Replace AnchorPane with fx:include for coupon_box.fxml
-            <fx:include fx:id="couponBox" source="coupon_box.fxml" />-->
-            <HBox fx:id="couponContainer" spacing="10" />
-
-
-            <HBox spacing="15" alignment="CENTER_RIGHT">
-                <Label text="Total général :" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                <Label fx:id="totalLabel" text="0.00 TND" style="-fx-text-fill: #0AAE61; -fx-font-size: 16px;" />
+            <!-- Coupon Container -->
+            <HBox fx:id="couponContainer" styleClass="coupon-container" spacing="10">
+                <Label text="Code promo :" styleClass="coupon-label" />
+                <TextField promptText="Entrez votre code" styleClass="coupon-field" />
+                <Button text="Appliquer" styleClass="apply-coupon-button" />
             </HBox>
 
-            <HBox spacing="20" alignment="CENTER">
+            <HBox styleClass="total-container" spacing="15" alignment="CENTER_RIGHT">
+                <Label text="Total général :" styleClass="total-label" />
+                <Label fx:id="totalLabel" text="0.00 TND" styleClass="total-amount" />
+            </HBox>
+
+            <HBox styleClass="button-container" spacing="20" alignment="CENTER">
                 <padding>
                     <Insets top="20" right="20" bottom="20" left="20"/>
                 </padding>
-                <Button text="Valider ma commande" style="-fx-background-color: #0AAE61; -fx-text-fill: white;" onAction="#onValider" />
-                <Button text="Vider le panier" style="-fx-background-color: #E74C3C; -fx-text-fill: white;" onAction="#onVider" />
-                <Button text="Continuer vos achats" onAction="#onContinuer" />
-                <Button text="Suivre ma commande"
-                    onAction="#onSuivreCommande"
-                    style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+                <Button text="Valider ma commande" styleClass="validate-button" onAction="#onValider" />
+                <Button text="Vider le panier" styleClass="clear-button" onAction="#onVider" />
+                <Button text="Continuer vos achats" styleClass="continue-button" onAction="#onContinuer" />
+                <Button text="Suivre ma commande" styleClass="track-button" onAction="#onSuivreCommande" />
             </HBox>
         </VBox>
     </center>
