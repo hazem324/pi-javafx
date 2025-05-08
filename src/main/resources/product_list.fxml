@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ProductController">
+    <VBox spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #e8f5e9, #c8e6c9);" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <children>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Featured Products" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Currency:" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                <ComboBox fx:id="globalCurrencyComboBox" style="-fx-pref-width: 100; -fx-background-radius: 5;"/>
+            </HBox>
+
+            <!-- Filter Button -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="showFiltersButton" text="Filters" onAction="#showFiltersPopup" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 20; -fx-background-radius: 12;">
+                    <!-- You can add an icon here if desired -->
+                </Button>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="addButton" text="Add Product" onAction="#showAddForm" style="-fx-background-color: #7ac400; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 20; -fx-background-radius: 12;"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+                <GridPane fx:id="productGrid" hgap="15" vgap="15" style="-fx-padding: 10;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                    </columnConstraints>
+                </GridPane>
+            </ScrollPane>
+        </children>
+    </VBox>
+</AnchorPane>
