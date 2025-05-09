@@ -1,12 +1,13 @@
 package controllers.sideBar;
 
-
 import controllers.EventDetailsController;
 import controllers.EventsController;
 import controllers.RegistrationDetailsController;
-import entities.Event; // Added import
+import entities.Event;
 import entities.EventRegistration;
 import entities.User;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,19 +16,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
-
-import java.io.IOException;
-
 import controllers.community.CommunityListController;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class MainSidebar {
 
-    @FXML
-    private BorderPane bp;
-    @FXML
-    private AnchorPane ap;
-    @FXML
-    private VBox userMenu;
+    @FXML private Button logoutButton;
+    @FXML private BorderPane bp;
+    @FXML private AnchorPane ap;
+    @FXML private VBox userMenu;
 
     private User loggedInUser;
 
@@ -40,36 +38,77 @@ public class MainSidebar {
         return loggedInUser;
     }
 
+    @FXML
     public void AccederAuProfil(ActionEvent actionEvent) {
+        System.out.println("Navigating to Profile");
+        loadPage("/profile/Profile");
     }
 
+    @FXML
     public void AccederAuHome(ActionEvent actionEvent) {
+        System.out.println("Navigating to Home");
+        loadPage("/home/HomePage");
     }
 
+    @FXML
     public void AccederAuAllCommunities(MouseEvent mouseEvent) {
+        System.out.println("Navigating to All Communities");
         loadPage("/community/Community-Liste-Page");
     }
 
-    public void AccederAuMyCommunities(javafx.scene.input.MouseEvent mouseEvent) {
+    @FXML
+    public void AccederAuMyCommunities(MouseEvent mouseEvent) {
+        System.out.println("Navigating to My Communities");
         loadPage("/community/MyCommunitys");
     }
 
+    @FXML
     public void AccederAuMarketPlace(MouseEvent mouseEvent) {
+        System.out.println("Navigating to Marketplace");
         loadPage("/marketPlace/product_list");
     }
 
+    @FXML
     public void AccederAuPanier(MouseEvent mouseEvent) {
+        System.out.println("Navigating to Cart");
         loadPage("/marketPlace/CartView");
     }
 
+    @FXML
     public void AccederAuEvents(MouseEvent mouseEvent) {
+        System.out.println("Navigating to Events");
         loadPage("/events");
     }
 
-    public void handleLogout(ActionEvent actionEvent) {
-        loggedInUser = null;
-        System.out.println("User logged out in MainSidebar.");
-        // Add navigation to login page if needed
+    @FXML
+    public void logout(ActionEvent actionEvent) {
+        try {
+            System.out.println("Logging out user: " + (loggedInUser != null ? loggedInUser.toString() : "null"));
+            if (logoutButton == null) {
+                showError("Logout button is not initialized. Please check FXML configuration.");
+                System.err.println("Error: logoutButton is null in MainSidebar.logout");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            if (stage == null) {
+                showError("Cannot access stage for logout. Scene or window is null.");
+                System.err.println("Error: Stage is null in MainSidebar.logout");
+                return;
+            }
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.setTitle("Login");
+            stage.show();
+        } catch (IOException e) {
+            showError("Failed to logout: " + e.getMessage());
+            System.err.println("IOException in MainSidebar.logout: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            showError("Failed to find FXML file: /Login.fxml \n" + e.getMessage());
+            System.err.println("IllegalStateException in MainSidebar.logout: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void loadPage(String page) {
@@ -79,11 +118,18 @@ public class MainSidebar {
             java.net.URL resource = getClass().getResource(fxmlPath);
             if (resource == null) {
                 System.err.println("Error: FXML file not found at " + fxmlPath);
+                showError("Page not found: " + page);
                 return;
             }
 
             FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
+
+            if (bp == null) {
+                showError("BorderPane is not initialized. Please check FXML configuration.");
+                System.err.println("Error: bp is null in MainSidebar.loadPage");
+                return;
+            }
 
             if (loader.getController() instanceof CommunityListController) {
                 CommunityListController communityListController = loader.getController();
@@ -101,11 +147,17 @@ public class MainSidebar {
             bp.setCenter(root);
         } catch (IOException e) {
             System.err.println("Failed to load page: " + page);
+            showError("Failed to load page: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public void loadPageWithRoot(Parent root) {
+        if (bp == null) {
+            showError("BorderPane is not initialized. Please check FXML configuration.");
+            System.err.println("Error: bp is null in MainSidebar.loadPageWithRoot");
+            return;
+        }
         bp.setCenter(root);
     }
 
@@ -116,6 +168,7 @@ public class MainSidebar {
             java.net.URL resource = getClass().getResource(fxmlPath);
             if (resource == null) {
                 System.err.println("Error: FXML file not found at " + fxmlPath);
+                showError("Registration details page not found");
                 return;
             }
 
@@ -129,11 +182,11 @@ public class MainSidebar {
             bp.setCenter(root);
         } catch (IOException e) {
             System.err.println("Failed to load registration details page");
+            showError("Failed to load registration details: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    // Added method to load event details page with a specific event
     public void loadEventDetails(Event event) {
         try {
             String fxmlPath = "/eventDetails.fxml";
@@ -141,6 +194,7 @@ public class MainSidebar {
             java.net.URL resource = getClass().getResource(fxmlPath);
             if (resource == null) {
                 System.err.println("Error: FXML file not found at " + fxmlPath);
+                showError("Event details page not found");
                 return;
             }
 
@@ -156,7 +210,20 @@ public class MainSidebar {
             bp.setCenter(root);
         } catch (IOException e) {
             System.err.println("Failed to load event details page");
+            showError("Failed to load event details: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void showError(String message) {
+        showAlert(Alert.AlertType.ERROR, "Error", message);
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
     }
 }

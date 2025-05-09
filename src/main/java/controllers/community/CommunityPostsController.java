@@ -24,12 +24,9 @@ import java.util.Optional;
 
 public class CommunityPostsController {
 
-    @FXML
-    private TextArea postContent;
-    @FXML
-    private ImageView postImagePreview;
-    @FXML
-    private VBox postsContainer;
+    @FXML private TextArea postContent;
+    @FXML private ImageView postImagePreview;
+    @FXML private VBox postsContainer;
 
     private final CommunityService communityService = new CommunityService();
     private final PostService postService = new PostService();
@@ -41,26 +38,22 @@ public class CommunityPostsController {
 
     @FXML
     public void initialize() {
-        // Get the logged-in user
         currentUser = SessionManager.getCurrentUser();
         if (currentUser == null) {
             System.out.println("No user logged in!");
             showAlert("Error", "Please log in to view community posts.");
         }
+        debugImageLoading("/assets/images/placeholder.jpg");
     }
 
-    // Setter for communityId
     public void setCommunityId(int communityId) {
         this.communityId = communityId;
     }
 
-    // Method to start the controller after communityId is set
     public void start() throws SQLException {
-        if (currentUser == null) {
-            return; // Already handled in initialize
-        }
+        if (currentUser == null) return;
         loadCommunityInfo();
-        if (currentCommunity != null) { // Only load posts if community is valid
+        if (currentCommunity != null) {
             loadPosts();
         }
     }
@@ -70,7 +63,6 @@ public class CommunityPostsController {
             showAlert("Error", "Invalid community ID: " + communityId);
             return;
         }
-
         currentCommunity = communityService.getCommunityById(communityId);
         if (currentCommunity == null) {
             showAlert("Warning", "Community not found for ID: " + communityId);
@@ -93,14 +85,10 @@ public class CommunityPostsController {
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("comment-author-image");
-        String avatarPath = "@/assets/img_avatar.png";
-        java.net.URL avatarUrl = getClass().getResource(avatarPath);
-        if (avatarUrl != null) {
-            authorImage.setImage(new Image(avatarUrl.toExternalForm()));
-        } else {
-            authorImage.setImage(new Image("https://via.placeholder.com/50"));
-            System.err.println("Comment author avatar not found: " + avatarPath);
-        }
+        authorImage.setFitWidth(50);
+        authorImage.setFitHeight(50);
+        String avatarPath = "/assets/images/placeholder.jpg";
+        loadImage(authorImage, avatarPath, "https://via.placeholder.com/50x50");
 
         VBox commentContent = new VBox(5);
         Text authorName = new Text(comment.getUser().getFirstName());
@@ -132,6 +120,8 @@ public class CommunityPostsController {
                     return;
                 }
                 postImagePreview.setImage(image);
+                postImagePreview.setFitWidth(400);
+                postImagePreview.setPreserveRatio(true);
                 postImagePreview.setVisible(true);
                 this.imageUrl = url;
             } catch (Exception e) {
@@ -148,14 +138,12 @@ public class CommunityPostsController {
             return;
         }
 
-        String imagePath = imageUrl;
         try {
-            postService.addPostToCommunity(content, imagePath, communityId, currentUser.getId());
+            postService.addPostToCommunity(content, imageUrl, communityId, currentUser.getId());
             postContent.clear();
             postImagePreview.setVisible(false);
             imageUrl = null;
-            VBox newPostNode = createPostNode(postService.getPostById(postService.getLatestPostId()));
-            postsContainer.getChildren().add(0, newPostNode); // Add new post at the top
+            loadPosts(); // Refresh the entire posts list
         } catch (SQLException e) {
             showAlert("Error", "Failed to create post: " + e.getMessage());
         }
@@ -171,14 +159,10 @@ public class CommunityPostsController {
 
         ImageView authorImage = new ImageView();
         authorImage.getStyleClass().add("post-author-image");
-        String avatarPath = "@/assets/img_avatar.png";
-        java.net.URL authorImageUrl = getClass().getResource(avatarPath);
-        if (authorImageUrl != null) {
-            authorImage.setImage(new Image(authorImageUrl.toExternalForm()));
-        } else {
-            authorImage.setImage(new Image("https://via.placeholder.com/50"));
-            System.err.println("Post author avatar not found: " + avatarPath);
-        }
+        authorImage.setFitWidth(50);
+        authorImage.setFitHeight(50);
+        String avatarPath = "/images/img_avatar.png";
+        loadImage(authorImage, avatarPath, "https://via.placeholder.com/50x50");
 
         Text authorName = new Text(post.getUser().getFirstName());
         authorName.getStyleClass().add("post-author-name");
@@ -192,36 +176,36 @@ public class CommunityPostsController {
         content.getStyleClass().add("post-content");
         content.setWrappingWidth(600);
 
+        // Handle post image
         ImageView postImage = null;
         if (post.getPostImg() != null && !post.getPostImg().isEmpty()) {
+            postImage = new ImageView();
+            postImage.getStyleClass().add("post-image");
+            postImage.setPreserveRatio(true);
+            postImage.setFitWidth(400);
+
             try {
-                String postImgPath = post.getPostImg();
-                Image image;
-                if (postImgPath.startsWith("http://") || postImgPath.startsWith("https://")) {
-                    image = new Image(postImgPath, true);
-                    if (image.isError()) {
-                        throw new IllegalArgumentException("Failed to load image: " + image.getException().getMessage());
-                    }
+                if (post.getPostImg().startsWith("http")) {
+                    postImage.setImage(new Image(post.getPostImg(), true));
                 } else {
-                    java.net.URL resourceUrl = getClass().getResource(postImgPath.startsWith("/") ? postImgPath : "/" + postImgPath);
+                    String localPath = post.getPostImg().startsWith("/") ?
+                            post.getPostImg() : "/" + post.getPostImg();
+                    java.net.URL resourceUrl = getClass().getResource(localPath);
                     if (resourceUrl != null) {
-                        image = new Image(resourceUrl.toExternalForm());
+                        postImage.setImage(new Image(resourceUrl.toExternalForm()));
                     } else {
-                        image = new Image("https://via.placeholder.com/300x200");
-                        System.err.println("Post image resource not found: " + postImgPath);
+                        loadImage(postImage, "/images/default-img.jpg", "https://via.placeholder.com/400x300");
                     }
                 }
-                postImage = new ImageView(image);
-                postImage.getStyleClass().add("post-image");
             } catch (Exception e) {
                 System.err.println("Error loading post image: " + e.getMessage());
+                loadImage(postImage, "/images/default-img.jpg", "https://via.placeholder.com/400x300");
             }
         }
 
         HBox actionsBar = new HBox(15);
         actionsBar.getStyleClass().add("post-actions-bar");
 
-        // Check if the current user has liked the post
         boolean hasLiked = false;
         try {
             hasLiked = likesService.hasLiked(post.getId(), String.valueOf(currentUser.getId()));
@@ -231,12 +215,10 @@ public class CommunityPostsController {
 
         Button likeButton = new Button("Like (" + post.getLikes() + ")");
         likeButton.getStyleClass().add("action-button");
-        // Set the button color based on like status
-        if (hasLiked) {
-            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green if liked
-        } else {
-            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green if not liked
-        }
+        likeButton.setStyle(hasLiked ?
+                "-fx-background-color: #4CAF50; -fx-text-fill: white;" :
+                "-fx-background-color: #E6F9E6; -fx-text-fill: black;");
+
         likeButton.setOnAction(event -> {
             try {
                 handleLike(post, likeButton, postNode);
@@ -270,21 +252,54 @@ public class CommunityPostsController {
         return postNode;
     }
 
+    private void loadImage(ImageView imageView, String resourcePath, String fallbackUrl) {
+        try {
+            java.net.URL resourceUrl = getClass().getResource(resourcePath);
+            if (resourceUrl != null) {
+                imageView.setImage(new Image(resourceUrl.toExternalForm()));
+            } else {
+                imageView.setImage(new Image(fallbackUrl));
+                System.err.println("Image not found at: " + resourcePath);
+            }
+        } catch (Exception e) {
+            imageView.setImage(new Image(fallbackUrl));
+            System.err.println("Error loading image: " + e.getMessage());
+        }
+    }
+
+    private void debugImageLoading(String path) {
+        try {
+            java.net.URL url = getClass().getResource(path);
+            if (url == null) {
+                System.err.println("Image not found at: " + path);
+                System.err.println("ClassLoader resources: " +
+                        getClass().getClassLoader().getResource(path));
+            } else {
+                System.out.println("Successfully loaded image from: " + url.toExternalForm());
+                Image testImage = new Image(url.toExternalForm());
+                if (testImage.isError()) {
+                    System.err.println("Image loading error: " + testImage.getException().getMessage());
+                } else {
+                    System.out.println("Image dimensions: " + testImage.getWidth() + "x" + testImage.getHeight());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Debug error: " + e.getMessage());
+        }
+    }
+
     private void handleLike(Post post, Button likeButton, VBox postNode) throws SQLException {
         boolean hasLiked = likesService.hasLiked(post.getId(), String.valueOf(currentUser.getId()));
         if (!hasLiked) {
-            // User hasn't liked the post yet, so add a like
             Likes like = new Likes(post.getId(), String.valueOf(currentUser.getId()));
             likesService.ajouter(like);
             likeButton.setText("Like (" + (post.getLikes() + 1) + ")");
-            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;"); // Darker green
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         } else {
-            // User has already liked the post, so remove the like
             likesService.removeLike(post.getId(), String.valueOf(currentUser.getId()));
             likeButton.setText("Like (" + (post.getLikes() - 1) + ")");
-            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;"); // Lighter green
+            likeButton.setStyle("-fx-background-color: #E6F9E6; -fx-text-fill: black;");
         }
-        // Refresh only this post node
         int index = postsContainer.getChildren().indexOf(postNode);
         if (index >= 0) {
             postsContainer.getChildren().set(index, createPostNode(postService.getPostById(post.getId())));
@@ -298,8 +313,12 @@ public class CommunityPostsController {
 
         Button submitButton = new Button("Comment");
         submitButton.getStyleClass().add("comment-submit-button");
+
+        // Get the comments section first
+        VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
+
         submitButton.setOnAction(event -> {
-            String commentContent = commentInput.getText();
+            String commentContent = commentInput.getText().trim();
             if (!commentContent.isEmpty()) {
                 PostComment comment = new PostComment();
                 comment.setPcommentContent(commentContent);
@@ -307,10 +326,8 @@ public class CommunityPostsController {
                 comment.setUser(currentUser);
 
                 if (postService.addComment(comment)) {
-                    // Add the new comment node and refresh the comments section
-                    HBox newCommentNode = createCommentNode(comment);
-                    VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
-                    commentsSection.getChildren().add(newCommentNode);
+                    // Add new comment to view
+                    commentsSection.getChildren().add(createCommentNode(comment));
                     commentInput.clear();
                 }
             }
@@ -320,7 +337,7 @@ public class CommunityPostsController {
         commentInputContainer.getStyleClass().add("comment-input-container");
         commentInputContainer.getChildren().addAll(commentInput, submitButton);
 
-        VBox commentsSection = (VBox) postNode.getChildren().get(postNode.getChildren().size() - 1);
+        // Add to the comments section
         commentsSection.getChildren().add(commentInputContainer);
     }
 

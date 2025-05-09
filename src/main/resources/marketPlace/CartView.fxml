@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane 
-    fx:id="bp"
-    prefHeight="600.0"
-    prefWidth="800.0"
-    stylesheets="@/assets/style/cartView.css"
-    xmlns:fx="http://javafx.com/fxml" 
-    fx:controller="controllers.marketplace.CartController">
+<BorderPane
+        fx:id="bp"
+        prefHeight="600.0"
+        prefWidth="800.0"
+        stylesheets="@/assets/style/cartView.css"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="controllers.marketplace.CartController">
 
     <center>
-        <VBox styleClass="cart-vbox" spacing="10">
+        <VBox styleClass="cart-vbox" spacing="20">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="25" right="25" bottom="25" left="25"/>
             </padding>
-            <TableView fx:id="cartTable" prefHeight="300" prefWidth="600" styleClass="cart-table">
+
+            <!-- Page Title -->
+            <Text text="Votre Panier" styleClass="page-title" />
+
+            <TableView fx:id="cartTable" prefHeight="350" prefWidth="650" styleClass="cart-table">
                 <columns>
-                    <TableColumn text="Produit" fx:id="colProduct" prefWidth="150"/>
+                    <TableColumn text="Produit" fx:id="colProduct" prefWidth="180"/>
                     <TableColumn text="Prix (TND)" fx:id="colPrice" prefWidth="100"/>
-                    <TableColumn text="Quantité" fx:id="colQuantity" prefWidth="150"/>
+                    <TableColumn text="Quantité" fx:id="colQuantity" prefWidth="180"/>
                     <TableColumn text="Total Produit" fx:id="colTotal" prefWidth="100"/>
-                    <TableColumn text="Actions" fx:id="colActions" prefWidth="99"/>
+                    <TableColumn text="Actions" fx:id="colActions" prefWidth="100"/>
                 </columns>
             </TableView>
 
             <!-- Coupon Container -->
-            <HBox fx:id="couponContainer" styleClass="coupon-container" spacing="10">
-                <Label text="Code promo :" styleClass="coupon-label" />
-                <TextField promptText="Entrez votre code" styleClass="coupon-field" />
-                <Button text="Appliquer" styleClass="apply-coupon-button" />
+            <HBox fx:id="couponContainer" styleClass="coupon-container" spacing="15">
+                <!-- Loaded dynamically from coupon_box.fxml -->
             </HBox>
 
-            <HBox styleClass="total-container" spacing="15" alignment="CENTER_RIGHT">
+            <!-- Total Container -->
+            <HBox styleClass="total-container" spacing="20" alignment="CENTER_RIGHT">
                 <Label text="Total général :" styleClass="total-label" />
                 <Label fx:id="totalLabel" text="0.00 TND" styleClass="total-amount" />
             </HBox>
 
-            <HBox styleClass="button-container" spacing="20" alignment="CENTER">
-                <padding>
-                    <Insets top="20" right="20" bottom="20" left="20"/>
-                </padding>
+            <!-- Button Container -->
+            <HBox styleClass="button-container" spacing="25" alignment="CENTER">
                 <Button text="Valider ma commande" styleClass="validate-button" onAction="#onValider" />
                 <Button text="Vider le panier" styleClass="clear-button" onAction="#onVider" />
                 <Button text="Continuer vos achats" styleClass="continue-button" onAction="#onContinuer" />

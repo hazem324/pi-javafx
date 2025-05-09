@@ -36,24 +36,24 @@ public class MyCommunityController {
 
     @FXML
     public void initialize() {
-        // Initialize CommunityService
         communityService = new CommunityService();
-
-        // Get the logged-in user
         userLogin = SessionManager.getCurrentUser();
 
-        // Check if user is logged in
         if (userLogin == null) {
             System.out.println("No user logged in!");
             showAlert("Error", "Please log in to view your communities.");
             return;
         }
 
-        // Fetch communities for the user
+        loadUserCommunities();
+    }
+
+    private void loadUserCommunities() {
         List<Community> communities = communityService.getUserCommunity(userLogin.getId());
         System.out.println("User ID: " + userLogin.getId() + ", Communities found: " + communities.size());
 
-        // Populate the GridPane with community cards
+        MYcommunityGrid.getChildren().clear();
+
         if (communities.isEmpty()) {
             Label noCommunitiesLabel = new Label("You are not a member of any communities yet.");
             noCommunitiesLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666;");
@@ -83,29 +83,7 @@ public class MyCommunityController {
 
         // Banner image
         ImageView bannerView = new ImageView();
-        String bannerUrl = community.getBanner();
-        try {
-            if (bannerUrl != null && !bannerUrl.trim().isEmpty() && 
-                (bannerUrl.startsWith("http://") || bannerUrl.startsWith("https://"))) {
-                Image bannerImage = new Image(bannerUrl, true);
-                if (bannerImage.isError()) {
-                    throw new IllegalArgumentException("Failed to load image: " + bannerImage.getException().getMessage());
-                }
-                bannerView.setImage(bannerImage);
-            } else {
-                throw new IllegalArgumentException("Invalid or empty banner URL");
-            }
-            bannerView.setFitWidth(180);
-            bannerView.setFitHeight(120);
-            bannerView.setPreserveRatio(true);
-            bannerView.setStyle("-fx-background-radius: 5;");
-        } catch (Exception e) {
-            // Fallback to placeholder URL
-            bannerView.setImage(new Image("https://via.placeholder.com/180x120"));
-            bannerView.setFitWidth(180);
-            bannerView.setFitHeight(120);
-            System.err.println("Failed to load banner for community " + community.getName() + ": " + e.getMessage());
-        }
+        loadCommunityBanner(bannerView, community.getBanner());
 
         // Community name
         Label nameLabel = new Label(community.getName());
@@ -116,38 +94,65 @@ public class MyCommunityController {
         Label categoryLabel = new Label("Category: " + community.getCategory().toString());
         categoryLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
-        // Add components to card
         card.getChildren().addAll(bannerView, nameLabel, categoryLabel);
-
-        // Add click event handler to navigate to community posts
-        card.setOnMouseClicked((MouseEvent event) -> {
-            if (community.getId() <= 0) {
-                showAlert("Error", "Invalid community ID: " + community.getId());
-                return;
-            }
-            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/community/Community-Posts.fxml"));
-                    Parent root = loader.load();
-                    bp.setCenter(root);
-                if (loader.getLocation() == null) {
-                    throw new IOException("FXML file not found at /community/Community-Posts.fxml");
-                }
-               
-                // Get the CommunityPostsController and set the community ID
-                CommunityPostsController controller = loader.getController();
-                controller.setCommunityId(community.getId());
-                controller.start(); // Call start to initialize after setting communityId
-
-                Stage stage = (Stage) MYcommunityGrid.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException | SQLException e) {
-                System.err.println("Failed to load Community-Posts.fxml: " + e.getMessage());
-                showAlert("Error", "Unable to load community posts page: " + e.getMessage());
-            }
-        });
+        card.setOnMouseClicked(event -> handleCommunityCardClick(event, community));
 
         return card;
+    }
+
+    private void loadCommunityBanner(ImageView imageView, String bannerUrl) {
+        try {
+            Image image;
+            if (bannerUrl != null && !bannerUrl.trim().isEmpty()) {
+                if (bannerUrl.startsWith("http://") || bannerUrl.startsWith("https://")) {
+                    image = new Image(bannerUrl, true);
+                } else {
+                    // Handle local resources
+                    String resourcePath = bannerUrl.startsWith("/") ? bannerUrl : "/" + bannerUrl;
+                    image = new Image(getClass().getResourceAsStream(resourcePath));
+                }
+            } else {
+                throw new IllegalArgumentException("No banner URL provided");
+            }
+
+            imageView.setImage(image);
+            imageView.setFitWidth(180);
+            imageView.setFitHeight(120);
+            imageView.setPreserveRatio(true);
+            imageView.setStyle("-fx-background-radius: 5;");
+        } catch (Exception e) {
+            System.err.println("Failed to load banner: " + e.getMessage());
+            imageView.setImage(new Image("https://via.placeholder.com/180x120"));
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+        }
+    }
+
+    private void handleCommunityCardClick(MouseEvent event, Community community) {
+        if (community.getId() <= 0) {
+            showAlert("Error", "Invalid community ID: " + community.getId());
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/community/Community-Posts.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the community ID
+            CommunityPostsController controller = loader.getController();
+            controller.setCommunityId(community.getId());
+            controller.start();
+
+            // Update the current view instead of creating new stage
+            bp.setCenter(root);
+
+        } catch (IOException e) {
+            System.err.println("Failed to load Community-Posts.fxml: " + e.getMessage());
+            showAlert("Error", "Unable to load community posts page");
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+            showAlert("Error", "A database error occurred");
+        }
     }
 
     private void showAlert(String title, String content) {

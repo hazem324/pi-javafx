@@ -177,6 +177,30 @@
     -fx-translate-y: -2;
 }
 
+
+
+
+#chartsButton {
+    -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 2, 2);
+    -fx-translate-y: 0;
+}
+
+#chartsButton:hover {
+    -fx-background-color: linear-gradient(to right, #00695c, #26a69a);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 3, 3);
+    -fx-translate-y: -2;
+}
+
 #securitySettingsButton {
     -fx-background-color: linear-gradient(to right, #00897b, #4db6ac);
     -fx-text-fill: #ffffff;

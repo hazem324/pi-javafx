@@ -1,5 +1,7 @@
+/* My Communities Page */
 .my-community-list-page {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: #f5f5f5; /* White Smoke */
+    -fx-padding: 20;
 }
 
 .content-scroll {
@@ -9,31 +11,70 @@
 
 .community-grid {
     -fx-padding: 20;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-alignment: center; /* Center the grid content */
     -fx-background-color: transparent;
 }
 
 .community-card {
-    -fx-alignment: center;
-    -fx-spacing: 10;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #dddddd;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
-    -fx-transition: all 0.2s ease-in-out;
+    -fx-background-color: white;
+    -fx-padding: 20; /* Increased padding for consistency */
+    -fx-spacing: 12; /* Match CommunityList spacing */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 2); /* Match shadow */
+    -fx-background-radius: 12; /* Match border radius */
+    -fx-border-color: #e0e0e0; /* Match border color */
+    -fx-border-width: 0.5; /* Match border width */
+    -fx-border-radius: 12; /* Match border radius */
+    -fx-min-width: 300; /* Match larger card size */
+    -fx-min-height: 250; /* Match larger card size */
+    -fx-alignment: top-center; /* Align content to top-center */
+    -fx-cursor: hand; /* Indicate clickable */
 }
 
 .community-card:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-background-color: #f8f8f8;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 16, 0, 0, 4); /* Match hover shadow */
+    -fx-scale-x: 1.02; /* Match hover scale */
+    -fx-scale-y: 1.02; /* Match hover scale */
+    -fx-background-color: #fafafa; /* Match hover background */
 }
 
 .community-card ImageView {
-    -fx-background-radius: 5;
+    -fx-background-radius: 5; /* Keep rounded corners for images */
+    -fx-fit-width: 260; /* Slightly larger image to fit card */
+    -fx-fit-height: 150; /* Adjusted for larger card */
 }
 
 .community-card Label {
-    -fx-text-alignment: center;
+    -fx-text-alignment: center; /* Center text */
+    -fx-font-family: 'Cambria'; /* Match CommunityList font */
+}
+
+.community-name {
+    -fx-font-size: 24px; /* Match CommunityList name size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.community-category {
+    -fx-font-size: 18px; /* Match CommunityList category size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #666;
+}
+
+/* ScrollPane Styles */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Section Title */
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-fill: #00897b; /* Match CommunityList title color */
 }

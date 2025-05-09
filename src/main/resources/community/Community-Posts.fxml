@@ -15,18 +15,18 @@
         <ScrollPane fitToWidth="true" styleClass="scroll-pane">
             <VBox styleClass="content-container" spacing="20">
                 <!-- New Post Form -->
-                <VBox styleClass="new-post-container">
+                <VBox styleClass="new-post-container" spacing="10" prefHeight="150.0">
                     <Text text="Ajouter une nouvelle publication" styleClass="section-title"/>
-                    <TextArea fx:id="postContent" styleClass="post-textarea" promptText="Quoi de neuf ?" prefRowCount="3"/>
+                    <TextArea fx:id="postContent" styleClass="post-textarea" promptText="Quoi de neuf ?" prefRowCount="2"/>
                     <HBox spacing="10" styleClass="post-actions">
                         <Button text="Ajouter une image" onAction="#handleImageUpload" styleClass="button"/>
                         <Button text="Publier" onAction="#handlePostSubmit" styleClass="button"/>
                     </HBox>
-                    <ImageView fx:id="postImagePreview" fitWidth="200" fitHeight="200" preserveRatio="true" visible="false" styleClass="image-view"/>
+                    <ImageView fx:id="postImagePreview" fitWidth="50" fitHeight="50" preserveRatio="true" visible="false" styleClass="image-view"/>
                 </VBox>
 
                 <!-- Posts Timeline -->
-                <VBox fx:id="postsContainer" styleClass="timeline-container" spacing="15">
+                <VBox fx:id="postsContainer" styleClass="timeline-container" spacing="20">
                     <!-- Post Template -->
                     <VBox styleClass="post-card">
                         <HBox styleClass="post-header">
@@ -53,7 +53,7 @@
                                 </graphic>
                             </Button>
                         </HBox>
-                        
+
                         <!-- Comments Section -->
                         <VBox styleClass="comments-section">
                             <!-- Comment Template -->

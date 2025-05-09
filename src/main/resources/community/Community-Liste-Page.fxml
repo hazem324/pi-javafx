@@ -8,16 +8,16 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0" 
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="800.0"
             styleClass="community-list-page" stylesheets="@/assets/style/community-styles.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.community.CommunityListController">
     <top>
         <Text text="Communautés" styleClass="section-title" style="-fx-padding: 20;"/>
     </top>
     <center>
         <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-            <GridPane fx:id="communitiesGrid" styleClass="communities-grid" hgap="20" vgap="20">
+            <GridPane fx:id="communitiesGrid" styleClass="communities-grid" hgap="20" vgap="20" alignment="CENTER">
                 <!-- Grid items will be added dynamically -->
             </GridPane>
         </ScrollPane>
