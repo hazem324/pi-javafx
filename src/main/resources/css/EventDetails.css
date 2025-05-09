@@ -1,0 +1,20 @@
+.back-button:hover {
+    -fx-background-color: #e63939;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
+
+.register-button:hover {
+    -fx-background-color: #3b82f6;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
+
+.download-button:hover {
+    -fx-background-color: #3b82f6;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}

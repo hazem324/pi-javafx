@@ -19,6 +19,7 @@ public class CategoryManagementController {
     @FXML private TextField nameField;
     @FXML private TextArea descriptionField;
     @FXML private Button addButton;
+    @FXML private TextField searchField;
 
     private final CategoryService categoryService = new CategoryService();
 
@@ -64,11 +65,17 @@ public class CategoryManagementController {
 
     private void loadCategories() {
         try {
-            List<Category> categories = categoryService.recuperer();
+            String searchName = searchField != null ? searchField.getText() : null;
+            List<Category> categories = categoryService.getCategories(searchName);
             categoryTable.getItems().setAll(categories);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load categories: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void searchCategories() {
+        loadCategories();
     }
 
     @FXML

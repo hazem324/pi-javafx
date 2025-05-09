@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,15 +13,20 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+
 import models.Product;
 import models.ProductCategory;
 import models.Cart;
 import services.ProductService;
+
 import services.ProductCategoryService;
 import services.CurrencyConversionService;
 import services.DynamicPricingService;
+
 import utils.CartStorage;
 
 import java.io.File;
@@ -805,4 +809,34 @@ public class ProductController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
+    @FXML
+    private void onVoirPanier() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/CartView.fxml"));
+            if (loader.getLocation() == null) {
+                showAlert("Error", "FXML file '/marketplace/CartView.fxml' not found.", Alert.AlertType.ERROR);
+                return;
+            }
+            Parent root = loader.load();
+            if (bp == null) {
+                showAlert("Error", "BorderPane is not initialized.", Alert.AlertType.ERROR);
+                return;
+            }
+            bp.setCenter(root);
+        } catch (IOException e) {
+            showAlert("Error", "Failed to load cart view: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    public void reloadProducts() {
+        try {
+            refreshProductList();
+        } catch (Exception e) {
+            System.out.println("Erreur rechargement produits : " + e.getMessage());
+        }
+    }
+
 }

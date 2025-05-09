@@ -1,0 +1,244 @@
+/* Common Styles */
+.root {
+    -fx-background-color: #f5f5f5;
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: #00897b;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #00796b;
+}
+
+.button:pressed {
+    -fx-background-color: #00695c;
+}
+
+/* Like Button Styles */
+.like-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666666;
+    -fx-font-size: 14px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.like-button:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+.like-button.liked {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #00897b;
+    -fx-border-color: #00897b;
+}
+
+.like-button .ikonli-font-icon {
+    -fx-icon-size: 16px;
+}
+
+/* Comments Section Styles */
+.comments-section {
+    -fx-spacing: 15;
+    -fx-padding: 15;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8;
+}
+
+.comment-container {
+    -fx-background-color: white;
+    -fx-padding: 12;
+    -fx-spacing: 8;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 1);
+}
+
+.comment-header {
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+}
+
+.comment-author {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-fill: #00897b;
+}
+
+.comment-time {
+    -fx-font-size: 12px;
+    -fx-fill: #999999;
+}
+
+.comment-content {
+    -fx-font-size: 14px;
+    -fx-fill: #333333;
+    -fx-wrap-text: true;
+}
+
+.comment-actions {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+/* ScrollPane Styles */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Community Posts Page */
+.community-posts-page {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.new-post-container {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-background-radius: 8;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-fill: #00897b;
+}
+
+.post-textarea {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4;
+    -fx-padding: 10;
+}
+
+.post-actions {
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+}
+
+.timeline-container {
+    -fx-spacing: 20;
+    -fx-padding: 20 0;
+}
+
+/* Post Card Styles */
+.post-card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-background-radius: 8;
+}
+
+.post-header {
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+}
+
+.post-author {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-fill: #00897b;
+}
+
+.post-time {
+    -fx-font-size: 12px;
+    -fx-fill: #999999;
+}
+
+.post-content {
+    -fx-font-size: 14px;
+    -fx-fill: #333333;
+    -fx-wrap-text: true;
+}
+
+.post-image {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4;
+}
+
+.post-footer {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+    -fx-padding: 10 0 0 0;
+}
+
+/* Community List Page */
+.community-list-page {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.communities-grid {
+    -fx-padding: 20;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+}
+
+.community-card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-background-radius: 8;
+    -fx-min-width: 250;
+    -fx-min-height: 200;
+}
+
+/* My Communities Page */
+.my-community-list-page {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.community-grid {
+    -fx-padding: 20;
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+}
+
+/* Common Card Styles */
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-background-radius: 8;
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: #00897b;
+}
+
+.card-description {
+    -fx-font-size: 14px;
+    -fx-fill: #666666;
+}
+
+/* Image Styles */
+.image-view {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4;
+}

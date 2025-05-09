@@ -31,15 +31,94 @@ public class LoginController {
     private final EmailService emailService = new EmailService();
 
     @FXML
+    // private void login(ActionEvent actionEvent) {
+    //     String email = emailTF.getText().trim();
+    //     String password = passwordTF.getText();
+
+    //     // Reset field styles
+    //     emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //     passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+
+    //     // Validation
+    //     if (email.isEmpty()) {
+    //         showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your email!");
+    //         emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //         return;
+    //     }
+
+    //     if (!isValidEmail(email)) {
+    //         showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter a valid email (e.g., user@domain.com)!");
+    //         emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //         return;
+    //     }
+
+    //     if (password.isEmpty()) {
+    //         showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your password!");
+    //         passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //         return;
+    //     }
+
+    //     // Proceed with login
+    //     try {
+    //         User user = userService.findByEmail(email);
+    //         if (user != null) {
+    //             if (user.isBlocked()) {
+    //                 showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
+    //                 return;
+    //             }
+    //             if (BCrypt.checkpw(password, user.getPassword())) {
+    //                 // Store user in SessionManager
+    //                 SessionManager.getInstance().setCurrentUser(user);
+
+    //                 if (user.getRoles().contains("ROLE_ADMIN")) {
+    //                     // Generate and send 2FA token for admin
+    //                     String token = userService.generateTwoFactorToken();
+    //                     LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
+    //                     userService.updateTwoFactorToken(user.getId(), token, expiry);
+    //                     try {
+    //                         emailService.sendTwoFactorEmail(user.getEmail(), token);
+    //                     } catch (MessagingException e) {
+    //                         showAlert(Alert.AlertType.ERROR, "Error", "Failed to send 2FA email: " + e.getMessage());
+    //                         return;
+    //                     }
+
+    //                     // Navigate to 2FA view for admin
+    //                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/TwoFactorAuth.fxml"));
+    //                     Parent root = loader.load();
+    //                     TwoFactorAuthController controller = loader.getController();
+    //                     controller.setUser(user);
+    //                     emailTF.getScene().setRoot(root);
+    //                 } else if (user.getRoles().contains("ROLE_STUDENT")) {
+    //                     // Navigate to student dashboard
+    //                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
+    //                     Parent root = loader.load();
+    //                     emailTF.getScene().setRoot(root);
+    //                 } else {
+    //                     showAlert(Alert.AlertType.ERROR, "Access Denied", "You do not have the necessary permissions to access this application.");
+    //                 }
+    //             } else {
+    //                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid password. Please try again!");
+    //                 passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //             }
+    //         } else {
+    //             showAlert(Alert.AlertType.ERROR, "Error", "User not found. Please check your email or sign up!");
+    //             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //         }
+    //     } catch (SQLException | IOException e) {
+    //         showAlert(Alert.AlertType.ERROR, "Error", "Error during login: " + e.getMessage());
+    //         emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
+    //     }
+    // }
+
     private void login(ActionEvent actionEvent) {
         String email = emailTF.getText().trim();
         String password = passwordTF.getText();
 
-        // Reset field styles
+        // Réinitialiser le style des champs
         emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         passwordTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
 
-        // Validation
+        // Validation des champs
         if (email.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Oops!", "Please enter your email!");
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
@@ -58,7 +137,7 @@ public class LoginController {
             return;
         }
 
-        // Proceed with login
+        // Traitement de la connexion
         try {
             User user = userService.findByEmail(email);
             if (user != null) {
@@ -66,30 +145,15 @@ public class LoginController {
                     showAlert(Alert.AlertType.ERROR, "Blocked", "Your account has been blocked by the administrators. Please contact support for more information.");
                     return;
                 }
+
                 if (BCrypt.checkpw(password, user.getPassword())) {
-                    // Store user in SessionManager
                     SessionManager.getInstance().setCurrentUser(user);
 
                     if (user.getRoles().contains("ROLE_ADMIN")) {
-                        // Generate and send 2FA token for admin
-                        String token = userService.generateTwoFactorToken();
-                        LocalDateTime expiry = LocalDateTime.now().plusMinutes(2);
-                        userService.updateTwoFactorToken(user.getId(), token, expiry);
-                        try {
-                            emailService.sendTwoFactorEmail(user.getEmail(), token);
-                        } catch (MessagingException e) {
-                            showAlert(Alert.AlertType.ERROR, "Error", "Failed to send 2FA email: " + e.getMessage());
-                            return;
-                        }
-
-                        // Navigate to 2FA view for admin
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/TwoFactorAuth.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/adminDashboard.fxml"));
                         Parent root = loader.load();
-                        TwoFactorAuthController controller = loader.getController();
-                        controller.setUser(user);
                         emailTF.getScene().setRoot(root);
                     } else if (user.getRoles().contains("ROLE_STUDENT")) {
-                        // Navigate to student dashboard
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
                         Parent root = loader.load();
                         emailTF.getScene().setRoot(root);
@@ -109,6 +173,7 @@ public class LoginController {
             emailTF.setStyle("-fx-background-color: #f4f4f9; -fx-border-color: #ff6b6b; -fx-border-radius: 5; -fx-background-radius: 5; -fx-prompt-text-fill: #888888; -fx-font-style: italic;");
         }
     }
+
 
     @FXML
     private void switchToSignup(ActionEvent actionEvent) {

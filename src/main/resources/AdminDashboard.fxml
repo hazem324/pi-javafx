@@ -26,10 +26,18 @@
                 <Button fx:id="usersButton" onAction="#showUsers" text="Users" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="profileButton" onAction="#showProfile" text="Profile" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="communitiesButton" onAction="#showCommunities" text="Communities" styleClass="sidebar-button" prefWidth="Infinity" />
+
+                <Button fx:id="requestButton" onAction="#showRequest" text="Gestion request" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="communitiesStatButton" onAction="#showCommunitiesStat" text="Community statistique" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="postsButton" onAction="#showPosts" text="Posts" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="eventsButton" onAction="#showEvents" text="Events" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="chartsButton" onAction="#showCharts" text="Charts" styleClass="sidebar-button" prefWidth="Infinity" />
+
                 <Button fx:id="categoriesButton" onAction="#showCategories" text="Categories" styleClass="sidebar-button" prefWidth="Infinity" />
                 <Button fx:id="productCategoriesButton" onAction="#showProductCategories" text="Product Category" styleClass="sidebar-button" prefWidth="Infinity" />
+                <Button fx:id="commendListButton" onAction="#showCommendList" text="Liste des commandes" styleClass="sidebar-button" prefWidth="Infinity" />
+
+                <Button fx:id="securitySettingsButton" onAction="#showSecuritySettings" text="Security Settings" styleClass="sidebar-button" prefWidth="Infinity" />
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button fx:id="logoutButton" onAction="#logout" text="Logout" styleClass="sidebar-button-logout" prefWidth="Infinity" />
             </children>

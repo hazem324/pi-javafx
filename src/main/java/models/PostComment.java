@@ -1,5 +1,6 @@
 package models;
 
+import entities.*;
 import java.time.LocalDateTime;
 
 public class PostComment {
@@ -49,8 +50,9 @@ public class PostComment {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    
+    public void setUser(User currentUser) {
+        this.user = currentUser;
     }
 
     public Post getPost() {
@@ -71,4 +73,6 @@ public class PostComment {
                 ", post=" + (post != null ? post.getId() : "null") +
                 '}';
     }
+
+   
 }

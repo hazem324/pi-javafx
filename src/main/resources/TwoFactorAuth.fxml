@@ -20,8 +20,8 @@
                     <Button fx:id="verifyButton" onAction="#verifyToken" style="-fx-background-color: #007bff; -fx-text-fill: #ffffff; -fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20 10 20; -fx-cursor: hand;">
                         <graphic>
                             <ImageView fitWidth="20.0" fitHeight="20.0">
-                                <image>
-                                    <Image url="@/images/verify-icon.png" />
+                                <image><![CDATA[
+                                    ]]><Image url="@/images/verify-icon.png" />
                                 </image>
                             </ImageView>
                         </graphic>

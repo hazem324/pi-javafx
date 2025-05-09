@@ -5,11 +5,13 @@ import entities.Event;
 import utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventService implements Service<Event> {
-
 
     private Connection cnx;
 
@@ -71,39 +73,25 @@ public class EventService implements Service<Event> {
 
     @Override
     public List<Event> recuperer() throws SQLException {
-        List<Event> events = new ArrayList<>();
-        String sql = "SELECT e.*, c.id as cat_id, c.name as cat_name, c.description as cat_description " +
-                "FROM event e LEFT JOIN category c ON e.category_id = c.id";
+        return getEvents(null, null, null, null);
+    }
+
+    // Fetch events by category for the pie chart
+    public Map<String, Integer> getEventsByCategory() throws SQLException {
+        Map<String, Integer> eventsByCategory = new HashMap<>();
+        String sql = "SELECT c.name, COUNT(e.id) as event_count " +
+                "FROM category c " +
+                "LEFT JOIN event e ON e.category_id = c.id " +
+                "GROUP BY c.id, c.name";
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                // Create the Category object
-                Category category = new Category();
-                category.setId(rs.getInt("cat_id"));
-                category.setName(rs.getString("cat_name"));
-                category.setDescription(rs.getString("cat_description"));
-
-                // Use the constructor to create the Event object
-                Event e = new Event(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("event_description"),
-                        rs.getTimestamp("event_date").toLocalDateTime(),
-                        rs.getDate("event_end") != null ? rs.getDate("event_end").toLocalDate() : null,
-                        rs.getString("event_location"),
-                        rs.getString("status"),
-                        category,
-                        rs.getInt("number_of_places"),
-                        rs.getString("image_filename")
-                );
-
-                events.add(e);
+                String categoryName = rs.getString("name");
+                int eventCount = rs.getInt("event_count");
+                eventsByCategory.put(categoryName, eventCount);
             }
-        } catch (SQLException e) {
-            System.err.println("Error retrieving events: " + e.getMessage());
-            throw e;
         }
-        return events;
+        return eventsByCategory;
     }
 
     // Method to check if an event with the given title already exists
@@ -118,5 +106,69 @@ public class EventService implements Service<Event> {
             }
         }
         return false;
+    }
+
+    // Fetch events with search, status filter, and date range filter
+    public List<Event> getEvents(String searchTitle, String statusFilter, LocalDate fromDate, LocalDate toDate) throws SQLException {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT e.*, c.id as cat_id, c.name as cat_name, c.description as cat_description " +
+                "FROM event e LEFT JOIN category c ON e.category_id = c.id " +
+                "WHERE 1=1";
+        List<String> conditions = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
+
+        if (searchTitle != null && !searchTitle.trim().isEmpty()) {
+            conditions.add("e.title LIKE ?");
+            parameters.add("%" + searchTitle.trim() + "%");
+        }
+        if (statusFilter != null && !statusFilter.equals("All")) {
+            conditions.add("e.status = ?");
+            parameters.add(statusFilter);
+        }
+        if (fromDate != null) {
+            conditions.add("e.event_date >= ?");
+            parameters.add(Timestamp.valueOf(fromDate.atStartOfDay()));
+        }
+        if (toDate != null) {
+            conditions.add("e.event_date <= ?");
+            parameters.add(Timestamp.valueOf(toDate.atTime(23, 59, 59)));
+        }
+
+        if (!conditions.isEmpty()) {
+            sql += " AND " + String.join(" AND ", conditions);
+        }
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i + 1, parameters.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Category category = new Category();
+                    category.setId(rs.getInt("cat_id"));
+                    category.setName(rs.getString("cat_name"));
+                    category.setDescription(rs.getString("cat_description"));
+
+                    Event e = new Event(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("event_description"),
+                            rs.getTimestamp("event_date").toLocalDateTime(),
+                            rs.getDate("event_end") != null ? rs.getDate("event_end").toLocalDate() : null,
+                            rs.getString("event_location"),
+                            rs.getString("status"),
+                            category,
+                            rs.getInt("number_of_places"),
+                            rs.getString("image_filename")
+                    );
+
+                    events.add(e);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving filtered events: " + e.getMessage());
+            throw e;
+        }
+        return events;
     }
 }

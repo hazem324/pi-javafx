@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.marketplace.CouponController"
+      spacing="10"
+      alignment="CENTER_LEFT"
+      stylesheets="@/assets/style/coupon.css">
+
+    <HBox styleClass="coupon-hbox" spacing="10" alignment="CENTER_LEFT">
+        <Label styleClass="coupon-label" text="Code promo :" />
+        <TextField fx:id="couponField" styleClass="coupon-field" promptText="Entrez votre code" onKeyReleased="#onTypingCoupon"/>
+        <Button fx:id="applyBtn" styleClass="apply-button" text="Appliquer" onAction="#applyCoupon"/>
+        <Button fx:id="cancelBtn" styleClass="cancel-button" text="Annuler" onAction="#cancelCoupon" visible="false"/>
+    </HBox>
+
+    <Label fx:id="messageLabel" styleClass="message-label"/>
+</VBox>

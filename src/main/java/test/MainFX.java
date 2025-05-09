@@ -6,21 +6,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MainFX extends Application {
 
-    // Static stage for switching views
+
     public static Stage primaryStage;
 
     public static void main(String[] args) {
+       
         System.out.println("Launching application...");
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-        try {
+
+       try {
+            // Test getUserCommunity(1)  
             System.out.println("Loading FXML...");
             FXMLLoader loader = new FXMLLoader();
             String initialFxml = "/login.fxml"; // Initial view
@@ -53,7 +57,7 @@ public class MainFX extends Application {
         }
     }
 
-    // Method to switch between FXML views
+
     public static void chargerVue(String fxmlPath) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         java.net.URL fxmlUrl = MainFX.class.getResource(fxmlPath);
