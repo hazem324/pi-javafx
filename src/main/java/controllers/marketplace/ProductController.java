@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,20 +14,16 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 
 import models.Product;
 import models.ProductCategory;
 import models.Cart;
 import services.ProductService;
-
 import services.ProductCategoryService;
 import services.CurrencyConversionService;
 import services.DynamicPricingService;
-
 import utils.CartStorage;
 
 import java.io.File;
@@ -42,9 +39,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProductController {
-    @FXML
-    private BorderPane bp;
-
+    @FXML private BorderPane bp;
     @FXML private GridPane productGrid;
     @FXML private Button addButton;
     @FXML private Button showFiltersButton;
@@ -102,11 +97,21 @@ public class ProductController {
 
     @FXML
     public void initialize() {
+        // Validate form fields for product_form.fxml
+        if (isFormView()) {
+            if (!validateFormFields()) {
+                showAlert("Initialization Error", "One or more form fields are not properly initialized. Please check FXML bindings.", Alert.AlertType.ERROR);
+            }
+        }
+
+        // Load categories
         try {
             categoryList.addAll(categoryService.getAllCategories());
         } catch (SQLException e) {
             showAlert("Error", "Failed to load categories: " + e.getMessage(), Alert.AlertType.ERROR);
         }
+
+        // Initialize categoryComboBox
         if (categoryComboBox != null) {
             categoryComboBox.setItems(categoryList);
             categoryComboBox.setCellFactory(lv -> new ListCell<>() {
@@ -124,15 +129,21 @@ public class ProductController {
                 }
             });
         }
+
+        // Initialize stockSpinner
         if (stockSpinner != null) {
             stockSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1));
             stockSpinner.setEditable(false);
         }
+
+        // Initialize currencyComboBox
         if (currencyComboBox != null) {
             ObservableList<String> currencies = FXCollections.observableArrayList("TND", "USD", "EUR");
             currencyComboBox.setItems(currencies);
             currencyComboBox.setValue("TND");
         }
+
+        // Initialize globalCurrencyComboBox
         if (globalCurrencyComboBox != null) {
             ObservableList<String> currencies = FXCollections.observableArrayList("TND", "USD", "EUR");
             globalCurrencyComboBox.setItems(currencies);
@@ -140,15 +151,41 @@ public class ProductController {
             globalCurrencyComboBox.setStyle("-fx-font-size: 14px; -fx-background-radius: 5;");
             globalCurrencyComboBox.setOnAction(e -> updateAllPrices());
         }
+
+        // Bind priceField to useDynamicPricingCheckBox
         if (useDynamicPricingCheckBox != null && priceField != null) {
             priceField.disableProperty().bind(useDynamicPricingCheckBox.selectedProperty());
         }
+
+        // Initialize filter components
         initializeFilterComponents();
+
+        // Load products
         try {
             refreshProductList();
         } catch (SQLException e) {
             showAlert("Error", "Failed to load products: " + e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private boolean isFormView() {
+        return nameField != null || descriptionField != null || priceField != null || formTitle != null;
+    }
+
+    private boolean validateFormFields() {
+        return nameField != null &&
+                descriptionField != null &&
+                priceField != null &&
+                imageUrlField != null &&
+                uploadImageButton != null &&
+                stockSpinner != null &&
+                categoryComboBox != null &&
+                currencyComboBox != null &&
+                discountField != null &&
+                useDynamicPricingCheckBox != null &&
+                saveButton != null &&
+                cancelButton != null &&
+                formTitle != null;
     }
 
     private void initializeFilterComponents() {
@@ -247,8 +284,7 @@ public class ProductController {
         voteBox.setAlignment(Pos.CENTER_LEFT);
         Label voteLabel = new Label("Votes:");
         voteLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2c3e50;");
-        voteBox.getChildren().addAll(voteLabel, filterVoteComboBox);
-        HBox buttonBox = new HBox(10);
+        voteBox.getChildren().addAll(voteLabel, filterVoteComboBox);        HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
         Button applyButton = new Button("Apply");
         applyButton.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 20; -fx-background-radius: 12;");
@@ -575,8 +611,16 @@ public class ProductController {
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/product_form.fxml"));
+            if (loader.getLocation() == null) {
+                showAlert("Error", "FXML file '/marketplace/product_form.fxml' not found.", Alert.AlertType.ERROR);
+                return;
+            }
             Parent root = loader.load();
             bp.setCenter(root);
+            ProductController formController = loader.getController();
+            formController.clearForm();
+            formController.formTitle.setText("Post Your Ad");
+            formController.saveButton.setText("Save");
         } catch (IOException e) {
             showAlert("Error", "Failed to open form: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
@@ -596,14 +640,24 @@ public class ProductController {
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/product_form.fxml"));
+            if (loader.getLocation() == null) {
+                showAlert("Error", "FXML file '/marketplace/product_form.fxml' not found.", Alert.AlertType.ERROR);
+                return;
+            }
             Parent formRoot = loader.load();
-            setEditingProduct(p);
-            fillForm(p);
-            formTitle.setText("Edit Product");
-            saveButton.setText("Update");
+            ProductController formController = loader.getController();
+            if (!formController.validateFormFields()) {
+                showAlert("Error", "Form fields are not properly initialized in the loaded FXML.", Alert.AlertType.ERROR);
+                return;
+            }
+            formController.setEditingProduct(p);
+            formController.fillForm(p);
+            formController.formTitle.setText("Edit Product");
+            formController.saveButton.setText("Update");
             bp.setCenter(formRoot);
         } catch (IOException e) {
             showAlert("Error", "Failed to open form: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
@@ -615,11 +669,14 @@ public class ProductController {
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketplace/product_list.fxml"));
+            if (loader.getLocation() == null) {
+                showAlert("Error", "FXML file '/marketplace/product_list.fxml' not found.", Alert.AlertType.ERROR);
+                return;
+            }
             Parent root = loader.load();
             bp.setCenter(root);
         } catch (IOException e) {
             showAlert("Error", "Failed to open product list: " + e.getMessage(), Alert.AlertType.ERROR);
-
             e.printStackTrace();
         }
     }
@@ -629,19 +686,27 @@ public class ProductController {
     }
 
     private void fillForm(Product p) {
-        nameField.setText(p.getProductName());
-        descriptionField.setText(p.getProductDescription());
+        if (!validateFormFields()) {
+            showAlert("Error", "Form fields are not initialized. Cannot fill form.", Alert.AlertType.ERROR);
+            return;
+        }
+        nameField.setText(p.getProductName() != null ? p.getProductName() : "");
+        descriptionField.setText(p.getProductDescription() != null ? p.getProductDescription() : "");
         priceField.setText(p.getProductPrice() > 0 ? String.valueOf(p.getProductPrice()) : "");
-        imageUrlField.setText(p.getImageUrl());
-        stockSpinner.getValueFactory().setValue(p.getProductStock());
+        imageUrlField.setText(p.getImageUrl() != null ? p.getImageUrl() : "");
+        stockSpinner.getValueFactory().setValue(p.getProductStock() >= 1 ? p.getProductStock() : 1);
         categoryComboBox.setValue(p.getProductCategory());
         currencyComboBox.setValue(p.getCurrency() != null ? p.getCurrency() : "TND");
-        discountField.setText(String.valueOf(p.getDiscount()));
+        discountField.setText(p.getDiscount() >= 0 ? String.valueOf(p.getDiscount()) : "0");
         useDynamicPricingCheckBox.setSelected(p.isUseDynamicPricing());
     }
 
     @FXML
     private void handleSave() {
+        if (!validateFormFields()) {
+            showAlert("Error", "Form fields are not initialized. Cannot save product.", Alert.AlertType.ERROR);
+            return;
+        }
         if (!validateForm()) {
             return;
         }
@@ -689,6 +754,10 @@ public class ProductController {
 
     @FXML
     private void handleUploadImage() {
+        if (imageUrlField == null || uploadImageButton == null) {
+            showAlert("Error", "Image upload components are not initialized.", Alert.AlertType.ERROR);
+            return;
+        }
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif")
@@ -791,6 +860,10 @@ public class ProductController {
     }
 
     private void clearForm() {
+        if (!validateFormFields()) {
+            showAlert("Error", "Form fields are not initialized. Cannot clear form.", Alert.AlertType.ERROR);
+            return;
+        }
         nameField.clear();
         descriptionField.clear();
         priceField.clear();
@@ -809,7 +882,6 @@ public class ProductController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
 
     @FXML
     private void onVoirPanier() {
@@ -838,5 +910,4 @@ public class ProductController {
             System.out.println("Erreur rechargement produits : " + e.getMessage());
         }
     }
-
 }

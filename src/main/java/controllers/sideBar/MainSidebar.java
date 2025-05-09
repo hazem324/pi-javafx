@@ -1,7 +1,7 @@
 package controllers.sideBar;
 
 
-import controllers.CommunityListController;
+import controllers.community.CommunityListController;
 import controllers.marketplace.ProductController;
 
 import controllers.EventDetailsController;
@@ -170,8 +170,6 @@ public class MainSidebar {
             e.printStackTrace();
         }
 
-    }}
-
     }
 
     public void loadPageWithRoot(Parent root) {
@@ -249,4 +247,6 @@ public class MainSidebar {
         alert.show();
     }
 }
+
+
 
