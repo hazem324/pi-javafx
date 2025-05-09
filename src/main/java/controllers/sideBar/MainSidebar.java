@@ -1,5 +1,9 @@
 package controllers.sideBar;
 
+
+import controllers.CommunityListController;
+import controllers.marketplace.ProductController;
+
 import controllers.EventDetailsController;
 import controllers.EventsController;
 import controllers.RegistrationDetailsController;
@@ -9,6 +13,7 @@ import entities.User;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +26,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainSidebar {
+
+
 
     @FXML private Button logoutButton;
     @FXML private BorderPane bp;
@@ -44,11 +51,13 @@ public class MainSidebar {
         loadPage("/profile/Profile");
     }
 
+
     @FXML
     public void AccederAuHome(ActionEvent actionEvent) {
         System.out.println("Navigating to Home");
         loadPage("/home/HomePage");
     }
+
 
     @FXML
     public void AccederAuAllCommunities(MouseEvent mouseEvent) {
@@ -62,6 +71,7 @@ public class MainSidebar {
         loadPage("/community/MyCommunitys");
     }
 
+
     @FXML
     public void AccederAuMarketPlace(MouseEvent mouseEvent) {
         System.out.println("Navigating to Marketplace");
@@ -71,6 +81,7 @@ public class MainSidebar {
     @FXML
     public void AccederAuPanier(MouseEvent mouseEvent) {
         System.out.println("Navigating to Cart");
+
         loadPage("/marketPlace/CartView");
     }
 
@@ -79,6 +90,7 @@ public class MainSidebar {
         System.out.println("Navigating to Events");
         loadPage("/events");
     }
+
 
     @FXML
     public void logout(ActionEvent actionEvent) {
@@ -111,6 +123,7 @@ public class MainSidebar {
         }
     }
 
+
     public void loadPage(String page) {
         try {
             String fxmlPath = page + ".fxml";
@@ -124,12 +137,12 @@ public class MainSidebar {
 
             FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
-
             if (bp == null) {
                 showError("BorderPane is not initialized. Please check FXML configuration.");
                 System.err.println("Error: bp is null in MainSidebar.loadPage");
                 return;
             }
+
 
             if (loader.getController() instanceof CommunityListController) {
                 CommunityListController communityListController = loader.getController();
@@ -144,12 +157,21 @@ public class MainSidebar {
                 System.out.println("Passing logged-in user to EventDetailsController: " + (loggedInUser != null ? loggedInUser.toString() : "null"));
             }
 
+            // Injection for ProductController
+            if (loader.getController() instanceof ProductController) {
+                ProductController productController = loader.getController();
+                productController.setBorderPane(bp); // Pass the MainSidebar's BorderPane to ProductController
+            }
+
             bp.setCenter(root);
         } catch (IOException e) {
             System.err.println("Failed to load page: " + page);
             showError("Failed to load page: " + e.getMessage());
             e.printStackTrace();
         }
+
+    }}
+
     }
 
     public void loadPageWithRoot(Parent root) {
@@ -227,3 +249,4 @@ public class MainSidebar {
         alert.show();
     }
 }
+

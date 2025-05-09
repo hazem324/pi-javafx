@@ -7,10 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
 
 public class MainFX extends Application {
+
 
     public static Stage primaryStage;
 
@@ -26,17 +26,23 @@ public class MainFX extends Application {
        try {
             // Test getUserCommunity(1)  
             System.out.println("Loading FXML...");
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sideBar/main.fxml"));
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
-
+            FXMLLoader loader = new FXMLLoader();
+            String initialFxml = "/login.fxml"; // Initial view
+            java.net.URL fxmlUrl = getClass().getResource(initialFxml);
+            if (fxmlUrl == null) {
+                System.err.println("FXML file not found at " + initialFxml);
+                Platform.exit();
+                return;
+            }
+            loader.setLocation(fxmlUrl);
             Parent root = loader.load();
 
             System.out.println("Creating scene...");
             Scene scene = new Scene(root, 1000, 600);
 
             System.out.println("Setting up stage...");
-            primaryStage = stage; // Étape 2 : Stocker le stage dans la variable statique
-            primaryStage.setTitle("Community Manager");
+            primaryStage = stage; // Store the stage
+            primaryStage.setTitle("CultureSpace");
             primaryStage.setScene(scene);
             primaryStage.setOnCloseRequest(e -> Platform.exit());
 
@@ -45,7 +51,7 @@ public class MainFX extends Application {
 
             System.out.println("Application started successfully");
         } catch (IOException e) {
-            System.err.println("Failed to load FXML:");
+            System.err.println("Failed to load FXML: " + e.getMessage());
             e.printStackTrace();
             Platform.exit();
         }
@@ -53,7 +59,12 @@ public class MainFX extends Application {
 
 
     public static void chargerVue(String fxmlPath) throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainFX.class.getResource(fxmlPath));
+        FXMLLoader loader = new FXMLLoader();
+        java.net.URL fxmlUrl = MainFX.class.getResource(fxmlPath);
+        if (fxmlUrl == null) {
+            throw new IOException("FXML file not found at " + fxmlPath);
+        }
+        loader.setLocation(fxmlUrl);
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("CultureSpace");

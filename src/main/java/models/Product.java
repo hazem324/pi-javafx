@@ -6,7 +6,8 @@ public class Product {
     private int id;
     private String productName;
     private String productDescription;
-    private double productPrice;
+    private double productPrice; // Reference price (user-entered price)
+    private String currency;
     private String imageUrl;
     private boolean status;
     private int productStock;
@@ -14,15 +15,15 @@ public class Product {
     private ProductCategory productCategory;
     private double discount;
     private boolean useDynamicPricing;
-    private double dynamicPrice;
+    private double dynamicPrice; // Cached dynamic price
     private int voteScore;
 
     // Constructors
     public Product() {
+        this.dynamicPrice = 0.0; // Initialize to 0.0
     }
 
-
-    public Product(int id, String productName, String productDescription, double productPrice,
+    public Product(int id, String productName, String productDescription, double productPrice, String currency,
                    String imageUrl, boolean status, int productStock, LocalDateTime createdAt,
                    ProductCategory productCategory, double discount, boolean useDynamicPricing,
                    double dynamicPrice, int voteScore) {
@@ -30,6 +31,7 @@ public class Product {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
+        this.currency = currency;
         this.imageUrl = imageUrl;
         this.status = status;
         this.productStock = productStock;
@@ -39,15 +41,6 @@ public class Product {
         this.useDynamicPricing = useDynamicPricing;
         this.dynamicPrice = dynamicPrice;
         this.voteScore = voteScore;
-    }
-
-    public Product(int id, String productName, String productDescription, double productPrice, String imageUrl, int productStock) {
-        this.id = id;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productPrice = productPrice;
-        this.imageUrl = imageUrl;
-        this.productStock = productStock;
     }
 
     public int getId() {
@@ -80,6 +73,14 @@ public class Product {
 
     public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getImageUrl() {
@@ -139,7 +140,10 @@ public class Product {
     }
 
     public double getDynamicPrice() {
-        return dynamicPrice;
+        if (useDynamicPricing && dynamicPrice != 0.0) {
+            return dynamicPrice; // Return the cached dynamic price
+        }
+        return productPrice; // Fallback to reference price if dynamic pricing is off or dynamic price isn't set
     }
 
     public void setDynamicPrice(double dynamicPrice) {
