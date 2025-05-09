@@ -1,7 +1,7 @@
 package services;
 
-import entities.Product;
-import entities.ProductCategory;
+import models.Product;
+import models.ProductCategory;
 import utils.MyDatabase;
 
 import java.sql.*;
@@ -21,16 +21,47 @@ public class ProductService {
         }
         dynamicPricingService = new DynamicPricingService();
     }
+    public Product getProductById(int productId) throws SQLException {
+        String sql = "SELECT p.*, c.id as category_id, c.name as category_name, c.description as category_description " +
+                "FROM product p LEFT JOIN product_category c ON p.product_category_id = c.id WHERE p.id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getInt("id"));
+                    product.setProductName(rs.getString("product_name"));
+                    product.setProductDescription(rs.getString("product_description"));
+                    product.setProductPrice(rs.getDouble("product_price"));
+                    product.setCurrency(rs.getString("currency"));
+                    product.setImageUrl(rs.getString("image_url"));
+                    product.setStatus(rs.getBoolean("status"));
+                    product.setProductStock(rs.getInt("product_stock"));
+                    product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    product.setDiscount(rs.getDouble("discount"));
+                    product.setUseDynamicPricing(rs.getBoolean("use_dynamic_pricing"));
+                    product.setDynamicPrice(rs.getDouble("dynamic_price"));
+                    ProductCategory category = new ProductCategory();
+                    category.setId(rs.getInt("category_id"));
+                    category.setName(rs.getString("category_name"));
+                    category.setDescription(rs.getString("category_description"));
+                    product.setProductCategory(category);
+                    product.setVoteScore(rs.getInt("vote_score"));
+                    return product;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving product by ID: " + e.getMessage());
+            throw e;
+        }
+        return null;
+    }
 
     public void addProduct(Product product) throws SQLException {
         try {
             // Calculate dynamic price if enabled
-            if (product.isUseDynamicPricing()) {
-                double dynamicPrice = dynamicPricingService.calculateDynamicPrice(product);
-                product.setDynamicPrice(dynamicPrice);
-            } else {
-                product.setDynamicPrice(product.getProductPrice()); // Fallback to base price
-            }
+            double dynamicPrice = dynamicPricingService.calculateDynamicPrice(product);
+            product.setDynamicPrice(dynamicPrice);
         } catch (Exception e) {
             System.err.println("Failed to calculate dynamic price: " + e.getMessage());
             product.setDynamicPrice(product.getProductPrice()); // Fallback to base price
@@ -74,12 +105,8 @@ public class ProductService {
     public void updateProduct(Product product) throws SQLException {
         try {
             // Calculate dynamic price if enabled
-            if (product.isUseDynamicPricing()) {
-                double dynamicPrice = dynamicPricingService.calculateDynamicPrice(product);
-                product.setDynamicPrice(dynamicPrice);
-            } else {
-                product.setDynamicPrice(product.getProductPrice()); // Fallback to base price
-            }
+            double dynamicPrice = dynamicPricingService.calculateDynamicPrice(product);
+            product.setDynamicPrice(dynamicPrice);
         } catch (Exception e) {
             System.err.println("Failed to calculate dynamic price: " + e.getMessage());
             product.setDynamicPrice(product.getProductPrice()); // Fallback to base price
@@ -133,42 +160,6 @@ public class ProductService {
 
     public List<Product> getAllProducts() throws SQLException {
         return searchProducts(null, null, null, null, null, null, null, null, "vote_score", "DESC");
-    }
-
-    public Product getProductById(int productId) throws SQLException {
-        String sql = "SELECT p.*, c.id as category_id, c.name as category_name, c.description as category_description " +
-                "FROM product p LEFT JOIN product_category c ON p.product_category_id = c.id WHERE p.id = ?";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setInt(1, productId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Product product = new Product();
-                    product.setId(rs.getInt("id"));
-                    product.setProductName(rs.getString("product_name"));
-                    product.setProductDescription(rs.getString("product_description"));
-                    product.setProductPrice(rs.getDouble("product_price"));
-                    product.setCurrency(rs.getString("currency"));
-                    product.setImageUrl(rs.getString("image_url"));
-                    product.setStatus(rs.getBoolean("status"));
-                    product.setProductStock(rs.getInt("product_stock"));
-                    product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                    product.setDiscount(rs.getDouble("discount"));
-                    product.setUseDynamicPricing(rs.getBoolean("use_dynamic_pricing"));
-                    product.setDynamicPrice(rs.getDouble("dynamic_price"));
-                    ProductCategory category = new ProductCategory();
-                    category.setId(rs.getInt("category_id"));
-                    category.setName(rs.getString("category_name"));
-                    category.setDescription(rs.getString("category_description"));
-                    product.setProductCategory(category);
-                    product.setVoteScore(rs.getInt("vote_score"));
-                    return product;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error retrieving product by ID: " + e.getMessage());
-            throw e;
-        }
-        return null;
     }
 
     public List<Product> searchProducts(
@@ -281,6 +272,7 @@ public class ProductService {
         return list;
     }
 
+    // New method to increment vote score
     public void incrementVoteScore(int productId) throws SQLException {
         String sql = "UPDATE product SET vote_score = vote_score + 1 WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -298,6 +290,7 @@ public class ProductService {
         }
     }
 
+    // New method to decrement vote score
     public void decrementVoteScore(int productId) throws SQLException {
         String sql = "UPDATE product SET vote_score = vote_score - 1 WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
