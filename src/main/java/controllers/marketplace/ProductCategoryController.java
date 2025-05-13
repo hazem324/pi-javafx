@@ -7,16 +7,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import models.ProductCategory;
 import services.ProductCategoryService;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class ProductCategoryController {
-
     // List view components
     @FXML private TableView<ProductCategory> categoryTable;
     @FXML private TableColumn<ProductCategory, Number> idColumn;
@@ -35,10 +42,22 @@ public class ProductCategoryController {
     private final ProductCategoryService service = new ProductCategoryService();
     private final ObservableList<ProductCategory> categoryList = FXCollections.observableArrayList();
     private ProductCategory editingCategory;
+    private AdminDashboardController dashboardController;
+
+    public ProductCategoryController() {
+        System.out.println("ProductCategoryController instantiated");
+    }
+
+    public void setDashboardController(AdminDashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+        System.out.println("setDashboardController called: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
+    }
 
     @FXML
     public void initialize() {
+        System.out.println("Initializing ProductCategoryController: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
         if (categoryTable != null) {
+            System.out.println("Initializing TableView for product categories");
             idColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()));
             nameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
             descriptionColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getDescription()));
@@ -69,72 +88,118 @@ public class ProductCategoryController {
                     }
                 }
             });
-            try {
-                refreshTable();
-            } catch (SQLException e) {
-                showAlert("Error", "Failed to load categories: " + e.getMessage(), Alert.AlertType.ERROR);
-            }
+            refreshTable();
+            System.out.println("TableView initialized with " + categoryList.size() + " categories");
         }
         if (nameField != null && categoryTable == null) {
-            // Form view: no additional initialization needed
+            System.out.println("Initializing form view");
         }
     }
 
     @FXML
     private void showAddForm() {
+        System.out.println("showAddForm called: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/product_category_form.fxml"));
-            Parent formRoot = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Add Category");
-            stage.setScene(new Scene(formRoot));
-            stage.show();
-            if (addButton != null && addButton.getScene() != null) {
-                addButton.getScene().getWindow().hide();
+            java.net.URL formUrl = getClass().getResource("/marketPlace/product_category_form.fxml");
+            if (formUrl == null) {
+                throw new IllegalStateException("Resource not found: /marketPlace/product_category_form.fxml");
             }
-        } catch (IOException e) {
-            showAlert("Error", "Failed to open form: " + e.getMessage(), Alert.AlertType.ERROR);
+            System.out.println("Loading add form: " + formUrl);
+            FXMLLoader loader = new FXMLLoader(formUrl);
+            loader.setControllerFactory(clazz -> {
+                ProductCategoryController controller = new ProductCategoryController();
+                controller.setDashboardController(dashboardController);
+                return controller;
+            });
+            Parent formRoot = loader.load();
+            ProductCategoryController formController = loader.getController();
+            formController.formTitle.setText("Add Category");
+            formController.saveButton.setText("Save");
+            if (dashboardController != null) {
+                dashboardController.setCenterContent(formRoot);
+                System.out.println("Add form loaded and set to dashboardPane");
+            } else {
+                System.err.println("Warning: dashboardController is null in showAddForm, using fallback Stage");
+                showAlert("Warning", "Dashboard controller not initialized. Opening form in new window.", AlertType.WARNING);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(formRoot));
+                stage.setTitle("Add Category");
+                stage.show();
+            }
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open form: " + e.getMessage(), AlertType.ERROR);
         }
     }
-    public void setDashboardController(AdminDashboardController dashboardController) {
-        System.out.println("setDashboardController called: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
-    }
+
     @FXML
     private void showEditForm(ProductCategory category) {
+        System.out.println("showEditForm called: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/product_category_form.fxml"));
+            java.net.URL formUrl = getClass().getResource("/marketPlace/product_category_form.fxml");
+            if (formUrl == null) {
+                throw new IllegalStateException("Resource not found: /marketPlace/product_category_form.fxml");
+            }
+            System.out.println("Loading edit form: " + formUrl);
+            FXMLLoader loader = new FXMLLoader(formUrl);
+            loader.setControllerFactory(clazz -> {
+                ProductCategoryController controller = new ProductCategoryController();
+                controller.setDashboardController(dashboardController);
+                return controller;
+            });
             Parent formRoot = loader.load();
             ProductCategoryController formController = loader.getController();
             formController.setEditingCategory(category);
             formController.fillForm(category);
             formController.formTitle.setText("Edit Category");
             formController.saveButton.setText("Update");
-            Stage stage = new Stage();
-            stage.setTitle("Edit Category");
-            stage.setScene(new Scene(formRoot));
-            stage.show();
-            if (categoryTable != null && categoryTable.getScene() != null) {
-                categoryTable.getScene().getWindow().hide();
+            if (dashboardController != null) {
+                dashboardController.setCenterContent(formRoot);
+                System.out.println("Edit form loaded and set to dashboardPane");
+            } else {
+                System.err.println("Warning: dashboardController is null in showEditForm, using fallback Stage");
+                showAlert("Warning", "Dashboard controller not initialized. Opening form in new window.", AlertType.WARNING);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(formRoot));
+                stage.setTitle("Edit Category");
+                stage.show();
             }
-        } catch (IOException e) {
-            showAlert("Error", "Failed to open form: " + e.getMessage(), Alert.AlertType.ERROR);
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open form: " + e.getMessage(), AlertType.ERROR);
         }
     }
 
     @FXML
     private void showListView() {
+        System.out.println("showListView called: dashboardController = " + (dashboardController != null ? "Not null" : "Null"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/product_category_list.fxml"));
-            Parent listRoot = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Product Categories");
-            stage.setScene(new Scene(listRoot));
-            stage.show();
-            if (cancelButton != null && cancelButton.getScene() != null) {
-                cancelButton.getScene().getWindow().hide();
+            java.net.URL listUrl = getClass().getResource("/marketPlace/product_category_list.fxml");
+            if (listUrl == null) {
+                throw new IllegalStateException("Resource not found: /marketPlace/product_category_list.fxml");
             }
-        } catch (IOException e) {
-            showAlert("Error", "Failed to open category list: " + e.getMessage(), Alert.AlertType.ERROR);
+            System.out.println("Loading list view: " + listUrl);
+            FXMLLoader loader = new FXMLLoader(listUrl);
+            loader.setControllerFactory(clazz -> {
+                ProductCategoryController controller = new ProductCategoryController();
+                controller.setDashboardController(dashboardController);
+                return controller;
+            });
+            Parent listRoot = loader.load();
+            if (dashboardController != null) {
+                dashboardController.setCenterContent(listRoot);
+                System.out.println("List view loaded and set to dashboardPane");
+            } else {
+                System.err.println("Warning: dashboardController is null in showListView, using fallback Stage");
+                showAlert("Warning", "Dashboard controller not initialized. Opening list in new window.", AlertType.WARNING);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(listRoot));
+                stage.setTitle("Category List");
+                stage.show();
+            }
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open category list: " + e.getMessage(), AlertType.ERROR);
         }
     }
 
@@ -149,24 +214,26 @@ public class ProductCategoryController {
         try {
             if (editingCategory == null) {
                 service.addCategory(category);
-                showAlert("Success", "Category created successfully!", Alert.AlertType.INFORMATION);
+                showAlert("Success", "Category created successfully!", AlertType.INFORMATION);
             } else {
                 service.updateCategory(category);
-                showAlert("Success", "Category updated successfully!", Alert.AlertType.INFORMATION);
+                showAlert("Success", "Category updated successfully!", AlertType.INFORMATION);
             }
             showListView();
         } catch (SQLException e) {
-            showAlert("Error", "Failed to save category: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+            showAlert("Error", "Failed to save category: " + e.getMessage(), AlertType.ERROR);
         }
     }
 
     private void handleDelete(ProductCategory category) {
         try {
             service.deleteCategory(category.getId());
-            showAlert("Success", "Category deleted successfully!", Alert.AlertType.INFORMATION);
+            showAlert("Success", "Category deleted successfully!", AlertType.INFORMATION);
             refreshTable();
         } catch (SQLException e) {
-            showAlert("Error", "Failed to delete category: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+            showAlert("Error", "Failed to delete category: " + e.getMessage(), AlertType.ERROR);
         }
     }
 
@@ -179,39 +246,39 @@ public class ProductCategoryController {
         descriptionField.setText(category.getDescription());
     }
 
-    private void refreshTable() throws SQLException {
-        categoryList.setAll(service.getAllCategories());
-        categoryTable.setItems(categoryList);
+    private void refreshTable() {
+        try {
+            categoryList.setAll(service.getAllCategories());
+            categoryTable.setItems(categoryList);
+            System.out.println("Refreshed table with " + categoryList.size() + " categories");
+        } catch (SQLException e) {
+            System.err.println("Error refreshing table: " + e.getMessage());
+            showAlert("Error", "Failed to load categories: " + e.getMessage(), AlertType.ERROR);
+        }
     }
 
     private boolean validateForm() {
         StringBuilder errors = new StringBuilder();
-
-        // Name validation
         String name = nameField.getText();
         if (name == null || name.trim().isEmpty()) {
             errors.append("Name cannot be blank.\n");
         } else if (name.length() < 4) {
             errors.append("Name must be at least 4 characters long.\n");
         }
-
-        // Description validation
         String description = descriptionField.getText();
         if (description == null || description.trim().isEmpty()) {
             errors.append("Description cannot be blank.\n");
         } else if (description.length() < 10) {
             errors.append("Description must be at least 10 characters long.\n");
         }
-
         if (errors.length() > 0) {
-            showAlert("Validation Error", errors.toString(), Alert.AlertType.ERROR);
+            showAlert("Validation Error", errors.toString(), AlertType.ERROR);
             return false;
         }
-
         return true;
     }
 
-    private void showAlert(String title, String content, Alert.AlertType alertType) {
+    private void showAlert(String title, String content, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

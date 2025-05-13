@@ -38,7 +38,8 @@ public class ConfirmationCommandeController {
     @FXML
     private void onRetourHome() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/marketPlace/CartView.fxml"));
+
             Parent root = loader.load();
 
             // Récupérer le contrôleur de la page d'accueil
