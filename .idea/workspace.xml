@@ -6,12 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f5cd777b-3171-4a13-8698-c87f3fa437d9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ConfirmationCommandeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ConfirmationCommandeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/sideBar/MainSidebar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/sideBar/MainSidebar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/marketPlace/TrackingView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/marketPlace/TrackingView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sideBar/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sideBar/main.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +104,7 @@
       <workItem from="1747319382602" duration="152000" />
       <workItem from="1747319561375" duration="64000" />
       <workItem from="1747319653931" duration="1323000" />
+      <workItem from="1747331116504" duration="741000" />
     </task>
     <servers />
   </component>

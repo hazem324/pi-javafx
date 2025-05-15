@@ -53,7 +53,7 @@ public class MainSidebar {
     @FXML
     public void AccederAuAccueil(MouseEvent mouseEvent){
       System.out.println("Navigating to home");
-        loadPage("/home/home");
+        // loadPage("/home/home");
     }
 
     @FXML
