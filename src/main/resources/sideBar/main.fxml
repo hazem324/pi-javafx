@@ -17,7 +17,7 @@
     <left>
         <!-- Left Sidebar -->
         <VBox prefHeight="1080.0" prefWidth="280.0" styleClass="side-nav">
-            <Button styleClass="nav-button" text="Profil" />
+            <!-- <Button styleClass="nav-button" text="Profil" /> -->
             <!-- <Button styleClass="nav-button" text="Home" onMouseClicked="#AccederAuAccueil"/> -->
             <Button styleClass="nav-button" text="Liste des Communautés" onMouseClicked="#AccederAuAllCommunities" />
             <Button styleClass="nav-button" text="Mes Communautés" onMouseClicked="#AccederAuMyCommunities" />
