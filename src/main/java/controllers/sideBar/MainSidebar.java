@@ -21,7 +21,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
-import controllers.community.CommunityListController;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -51,6 +50,11 @@ public class MainSidebar {
         loadPage("/profile/Profile");
     }
 
+    @FXML
+    public void AccederAuAccueil(MouseEvent mouseEvent){
+      System.out.println("Navigating to home");
+        loadPage("/home/home");
+    }
 
     @FXML
     public void AccederAuHome(ActionEvent actionEvent) {

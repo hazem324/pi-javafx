@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="69f36965-200f-4937-9c28-d59b5d66590f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cssdialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    <list default="true" id="f5cd777b-3171-4a13-8698-c87f3fa437d9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ConfirmationCommandeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ConfirmationCommandeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ProductCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/marketplace/ProductCategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/marketplace/TrackingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/marketplace/TrackingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/sideBar/MainSidebar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/sideBar/MainSidebar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/marketPlace/TrackingView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/marketPlace/TrackingView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sideBar/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sideBar/main.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,31 +22,32 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
+  &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="2wq2pyshDMM9zPxHJwXm2gkZoO2" />
+  <component name="ProjectId" id="2wn62QkhvWIWibxPKLSNfMVQBEp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.pi-javafx [javafx:run].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/3A/PI_Java/Pi_jfx/test_merge_latest/pi-javafx",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.PI3A61 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.pi-javafx [javafx:run].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backup&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ACER/Desktop/Nouveau dossier/pi-javafx&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="pi-javafx [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
       <MavenSettings>
@@ -98,15 +96,20 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="69f36965-200f-4937-9c28-d59b5d66590f" name="Changes" comment="" />
-      <created>1746754969505</created>
+      <changelist id="f5cd777b-3171-4a13-8698-c87f3fa437d9" name="Changes" comment="" />
+      <created>1746664783660</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1746754969505</updated>
-      <workItem from="1746754970603" duration="1821000" />
-      <workItem from="1746778528047" duration="112000" />
-      <workItem from="1746778651702" duration="3148000" />
-      <workItem from="1746781938096" duration="1179000" />
+      <updated>1746664783660</updated>
+      <workItem from="1746664784816" duration="1025000" />
+      <workItem from="1746667143601" duration="4390000" />
+      <workItem from="1746737698611" duration="10034000" />
+      <workItem from="1747273807762" duration="1009000" />
+      <workItem from="1747316434449" duration="644000" />
+      <workItem from="1747317314970" duration="927000" />
+      <workItem from="1747319382602" duration="152000" />
+      <workItem from="1747319561375" duration="64000" />
+      <workItem from="1747319653931" duration="1323000" />
     </task>
     <servers />
   </component>

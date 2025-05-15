@@ -1,0 +1,177 @@
+/* Root Styling */
+.root {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #e8ecef);
+}
+
+/* BorderPane Styling */
+BorderPane {
+    -fx-background-color: transparent;
+    -fx-padding: 30;
+}
+
+/* VBox Styling */
+VBox {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-spacing: 20;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 4);
+}
+
+/* Label Styling */
+Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+Label[style*="-fx-font-size: 24px"] {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+Label[style*="-fx-font-size: 16px"] {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* HBox Styling */
+HBox {
+    -fx-spacing: 10;
+    -fx-alignment: CENTER;
+}
+
+/* TextField Styling */
+TextField {
+    -fx-background-color: transparent;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 2 0;
+    -fx-font-size: 14px;
+    -fx-padding: 8 0;
+    -fx-prompt-text-fill: #999999;
+    -fx-transition: all 0.3s ease;
+}
+
+TextField:focused {
+    -fx-border-color: #00897b;
+}
+
+/* Button Styling */
+Button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 8;
+    -fx-padding: 12 24;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 2, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+Button[style*="#0AAE61"] {
+    -fx-background-color: #00897b;
+}
+
+Button[style*="#0AAE61"]:hover {
+    -fx-background-color: #00796b;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 3, 3);
+}
+
+Button[style*="#0AAE61"]:pressed {
+    -fx-background-color: #00695c;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+/* Specific Styling for Afficher Button */
+.display-button {
+    -fx-background-color: #00897b;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 2, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.display-button:hover {
+    -fx-background-color: #00796b;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 3, 3);
+}
+
+.display-button:pressed {
+    -fx-background-color: #00695c;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+/* ProgressIndicator Styling */
+ProgressIndicator {
+    -fx-progress-color: #00897b;
+    -fx-accent: #00897b;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+
+/* TableView Styling */
+TableView {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-padding: 0;
+}
+
+TableView .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #00897b, #00796b);
+    -fx-background-radius: 8 8 0 0;
+    -fx-border-color: transparent;
+}
+
+TableView .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+TableView .column-header .label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 12;
+    -fx-alignment: CENTER;
+}
+
+TableView .table-cell {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+    -fx-padding: 12;
+    -fx-alignment: CENTER;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+TableView .table-row-cell:odd {
+    -fx-background-color: #f8fafc;
+}
+
+TableView .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+TableView .table-row-cell:hover {
+    -fx-background-color: #e3f2fd;
+}
+
+TableView .table-row-cell:empty .table-cell {
+    -fx-text-fill: #999999;
+    -fx-font-style: italic;
+}
