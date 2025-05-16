@@ -94,8 +94,8 @@ public class OtpEntryController {
         // Email server settings (using Mailtrap)
         String host = "sandbox.smtp.mailtrap.io";
         String port = "2525";
-        String username = "821a4ea22fe070";
-        String password = "2747895b201008";
+        String username = "3c703bd7912d71";
+        String password = "69f3099cdaf6c1";
 
         // Set properties for the email session
         Properties properties = new Properties();

@@ -11,8 +11,8 @@ import jakarta.mail.internet.MimeMessage;
 public class EmailService {
     private final String host = "sandbox.smtp.mailtrap.io";
     private final int port = 2525;
-    private final String username = "821a4ea22fe070";
-    private final String password = "2747895b201008";
+    private final String username = "3c703bd7912d71";
+    private final String password = "69f3099cdaf6c1";
 
     public void sendTwoFactorEmail(String recipientEmail, String token) throws MessagingException {
         Properties props = new Properties();
@@ -29,7 +29,7 @@ public class EmailService {
         });
 
         MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("no-reply@yourapp.com"));
+        message.setFrom(new InternetAddress("no-reply@CultureSpace.com"));
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
         message.setSubject("Your 2FA Verification Code");
         message.setText("Your verification code is: " + token + "\nThis code expires in 2 minutes.");

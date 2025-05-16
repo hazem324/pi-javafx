@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5cd777b-3171-4a13-8698-c87f3fa437d9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/OtpEntryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/OtpEntryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/MyDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/totp_secrets.json" beforeDir="false" afterPath="$PROJECT_DIR$/totp_secrets.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,25 +30,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.PI3A61 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.pi-javafx [javafx:run].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;backup&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ACER/Desktop/Nouveau dossier/pi-javafx&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.PI3A61 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.pi-javafx [javafx:run].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "backup",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/3A/PI_Java/Pi_jfx/Calture_Space_Official/pi-javafx",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="pi-javafx [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
       <MavenSettings>
@@ -105,10 +112,23 @@
       <workItem from="1747319561375" duration="64000" />
       <workItem from="1747319653931" duration="1323000" />
       <workItem from="1747331116504" duration="741000" />
+      <workItem from="1747349576077" duration="2845000" />
+      <workItem from="1747352584778" duration="1014000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/LoginController.java</url>
+          <line>255</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
